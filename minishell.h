@@ -1,40 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/22 16:40:53 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/08/22 19:59:23 by mukhairu         ###   ########.fr       */
+/*   Created: 2023/08/22 17:49:54 by mukhairu          #+#    #+#             */
+/*   Updated: 2023/08/22 19:19:50 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-void	handle_signal(int signum)
-{
-	if (signum == SIGINT)
-	{
-		write(1, "\n", 1);
-	}
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
+# include <stdlib.h>
+# include <stdio.h>
+# include <unistd.h>
+# include <signal.h>
+# include <sys/wait.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
-int	main(void)
-{
-	printf("Hello\n");
-	if (signal(SIGINT, handle_signal) == SIG_ERR)
-	{
-		perror("Error! Signal handler!\n");
-		return (1);
-	}
-	while (1)
-	{
-		readline("MiniDaShell %");
-		pause();
-	}
-	return (0);
-}
+#endif // !MINISHELL_H
