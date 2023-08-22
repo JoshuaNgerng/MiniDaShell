@@ -1,2 +1,5 @@
 limau is lemon
 Or is it?? `VSauce music plays`
+
+INCLUDES = -I inc -I ${LIBFT_DIR} -I ${PRINT_DIR} -I/usr/local/opt/readline/include
+READLINE	= -lreadline -L/usr/local/opt/readline/lib 
