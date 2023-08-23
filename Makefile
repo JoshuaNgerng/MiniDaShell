@@ -13,15 +13,15 @@
 NAME = minishell
 OBJ_DIR = obj
 SRC_DIR = src
-S_NAME = main free parse token utlis errmsg
+S_NAME = main #free parse token utlis errmsg
 _SRC = $(addsuffix .c, $(S_NAME))
 SRC = $(addprefix $(SRC_DIR)/, $(_SRC))
 OBJ = $(addprefix $(OBJ_DIR)/, $(_SRC:.c=.o))
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 CMEM = -fsanitize=address -g3
-INC = -I includes -I lib/includes -Ireadline
-LIBFT = -L lib -lft
+INC = -I includes -I libft -Ireadline  -I/usr/local/opt/readline/include
+LIBFT = -L libft -lft -lreadline -L/usr/local/opt/readline/lib
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	mkdir -p $(OBJ_DIR)
@@ -29,7 +29,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 #$(<:%.c=%.o)
 
 $(NAME): $(OBJ)
-	$(MAKE) -C lib
+	$(MAKE) -C libft
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(INC) $(LIBFT)
 
 all : $(NAME)
@@ -38,7 +38,7 @@ oclean:
 	rm -f $(OBJ)
 
 clean: oclean
-	$(MAKE) fclean -C lib
+	$(MAKE) fclean -C libft
 
 fclean: clean
 	rmdir $(OBJ_DIR)

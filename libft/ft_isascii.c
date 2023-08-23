@@ -1,40 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/22 16:40:53 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/08/22 19:59:23 by mukhairu         ###   ########.fr       */
+/*   Created: 2022/10/04 17:04:20 by mukhairu          #+#    #+#             */
+/*   Updated: 2022/10/13 15:37:17 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	handle_signal(int signum)
+int	ft_isascii(int c)
 {
-	if (signum == SIGINT)
-	{
-		write(1, "\n", 1);
-	}
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-
-int	main(void)
-{
-	printf("Hello\n");
-	if (signal(SIGINT, handle_signal) == SIG_ERR)
-	{
-		perror("Error! Signal handler!\n");
+	if (c >= 0 && c <= 127)
 		return (1);
-	}
-	while (1)
-	{
-		readline("MiniDaShell %");
-		pause();
-	}
 	return (0);
 }
+
+/*int	main(void)
+{
+	int	c1 = 49;
+	int	c2 = 130;
+
+	printf("%d\n", ft_isascii(c1));
+	printf("%d\n", ft_isascii(c2));
+	return (0);
+}*/
