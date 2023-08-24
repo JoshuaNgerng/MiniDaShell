@@ -1,3 +1,13 @@
 # MiniDaShell
 
-figuring out the read functions and what it does in the project
+branches
+
+limauCtrl
+testing signal
+
+waifu
+done parsing, doing pipex part of it
+have not done open quotation
+not done expansion
+not done or || 
+
