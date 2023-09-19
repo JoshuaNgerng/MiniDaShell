@@ -25,6 +25,7 @@ void	handle_signal(int signum)
 
 int	main(void)
 {
+	char	*freer;
 	// signal(SIGQUIT, SIG_IGN);
 	printf("Hello, welcome to MINIDASHELL!\n");
 	if (signal(SIGINT, handle_signal) == SIG_ERR
@@ -33,10 +34,14 @@ int	main(void)
 		perror("Error! Signal handler!\n");
 		return (1);
 	}
-	while (1)
+	freer = readline("MiniDaShell %");
+	while (freer && ft_strncmp(freer, "exit", 5))
 	{
-		readline("MiniDaShell %");
-		pause();
+		free(freer);
+		freer = readline("MiniDaShell %");
 	}
+	if (!freer)
+		free(freer);
+	printf("exit\n");
 	return (0);
 }

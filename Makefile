@@ -20,8 +20,8 @@ OBJ = $(addprefix $(OBJ_DIR)/, $(_SRC:.c=.o))
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 CMEM = -fsanitize=address -g3
-INC = -I includes -I libft -Ireadline  -I/usr/local/opt/readline/include
-LIBFT = -L libft -lft -lreadline -L/usr/local/opt/readline/lib
+INC = -I includes -I libft -Ireadline  #-I/usr/local/opt/readline/include
+LIBFT = -L libft -lft -lreadline #-L/usr/local/opt/readline/lib
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	mkdir -p $(OBJ_DIR)
@@ -41,7 +41,7 @@ clean: oclean
 	$(MAKE) fclean -C libft
 
 fclean: clean
-	rmdir $(OBJ_DIR)
+	rm -rf $(OBJ_DIR)
 	rm -f $(NAME)
 
 re: fclean all
