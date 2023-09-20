@@ -1,0 +1,14 @@
+cat
+cat 1|0 cat
+cat 5|4 cat 3|2 cat 1|0 cat
+cat          3|2   cat 1|0 cat
+3
+21
+0
+
+5
+43
+21
+0
+cat 5<<4 lim 3|2 cat 1|0 cat
+cat 5<< lim 4|3 cat 2<< lim 1|0 cat
