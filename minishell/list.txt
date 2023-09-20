@@ -2,8 +2,9 @@ done process
 files
 dup
 execve
-
-reworking files (tmr)
+reworking files
+got fork -> pipe -> exe working
+basic all running
 
 need to rework && and || 
 then need to work on '' and ""
