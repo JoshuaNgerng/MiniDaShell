@@ -18,7 +18,7 @@ _SRC = $(addsuffix .c, $(S_NAME))
 SRC = $(addprefix $(SRC_DIR)/, $(_SRC))
 OBJ = $(addprefix $(OBJ_DIR)/, $(_SRC:.c=.o))
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
 CMEM = -fsanitize=address -g3
 INC = -I includes -I libft -Ireadline  #-I/usr/local/opt/readline/include
 LIBFT = -L libft -lft -lreadline #-L/usr/local/opt/readline/lib

@@ -6,7 +6,7 @@
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:40:53 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/09/20 19:00:49 by mukhairu         ###   ########.fr       */
+/*   Updated: 2023/09/21 19:06:49 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,19 @@ void	handle_signal(int signum)
 // 	return (1);
 // }
 
+void go_cwd(char *input)
+{
+	int i;
+
+	i = 0;
+	while (input[i] != ' ' && input[i])
+		i++;
+	while (input[i] == ' ' && input[i])
+		i++;
+	if (chdir(&input[i]))
+		perror(&input[i]);
+}
+
 //reuturn 0 means success, 1 means failed
 int	builtin_runs(char *usr_int)
 {
@@ -51,36 +64,33 @@ int	builtin_runs(char *usr_int)
 		printf("current directory: %s\n", cwd);
 	}
 	if (!ft_strncmp(usr_int, "cd", 2))
-		printf("Stuff happends here: Change directory. Update must be made\n");
+		go_cwd(usr_int);
 	return (0);
 }
 
-// int	main(void)
-// {
-// 	char	*freer;
-// 	// signal(SIGQUIT, SIG_IGN);
-// 	printf("Hello, welcome to MINIDASHELL!\n");
-// 	if (signal(SIGINT, handle_signal) == SIG_ERR
-// 		&& signal(SIGQUIT, handle_signal) == SIG_ERR)
-// 	{
-// 		perror("Error! Signal handler!\n");
-// 		return (1);
-// 	}
-// 	freer = readline("MiniDaShell %");
-// 	while (freer && (freer, "exit", 5))
-// 	{
-// 		free(freer);
-// 		freer = readline("MiniDaShell %");
-// 	}
-// 	if (!freer)
-// 		free(freer);
-// 	printf("exit\n");
-// 	return (0);
-// }
+char	*get_prompt(void)
+{
+	char	root[] = "MiniDaShell:";
+	char	dir[256];
+	char	*out;
+	char	*temo;
+
+	getcwd(dir, sizeof(dir));
+	out = ft_strjoin(root, dir);
+	if (!out)
+		return (NULL);
+	temo = out;
+	out = ft_strjoin(out, "% ");
+	if (!out)
+		return (free(temo), NULL);
+	free(temo);
+	return(out);
+}
 
 int main(void)
 {
-	char *freer;
+	char	*prompt;
+	char	*freer;
 	// signal(SIGQUIT, SIG_IGN);
 	printf("Hello, welcome to MINIDASHELL!\n");
 	if (signal(SIGINT, handle_signal) == SIG_ERR && signal(SIGQUIT, handle_signal) == SIG_ERR)
@@ -90,13 +100,17 @@ int main(void)
 	}
 	while (1)
 	{
-		freer = readline("MiniDaShell %");
+		prompt = get_prompt();
+		freer = readline(prompt);
 		if (builtin_runs(freer))
 			break ;
 		free(freer);
+		free(prompt);
 	}
 	if (freer)
 		free(freer);
+	if (prompt)
+		free(prompt);
 	printf("exit\n");
 	return (0);
 }
