@@ -6,7 +6,7 @@
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:40:53 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/09/21 19:06:49 by mukhairu         ###   ########.fr       */
+/*   Updated: 2023/09/22 18:47:07 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,29 +68,69 @@ int	builtin_runs(char *usr_int)
 	return (0);
 }
 
-char	*get_prompt(void)
+char	*get_prompt(char *root)
 {
-	char	root[] = "MiniDaShell:";
 	char	dir[256];
 	char	*out;
 	char	*temo;
 
+	// printf(GREEN);
 	getcwd(dir, sizeof(dir));
 	out = ft_strjoin(root, dir);
 	if (!out)
 		return (NULL);
+	// printf(RESET);
 	temo = out;
-	out = ft_strjoin(out, "% ");
+	printf(YELLOW);
+	out = ft_strjoin(out, "\033[0m % ");
 	if (!out)
 		return (free(temo), NULL);
 	free(temo);
 	return(out);
 }
 
-int main(void)
+char	*get_env_ptr(char **env, char *var, int len)
 {
+	char	**buffer;
+
+	buffer = env;
+	while (buffer)
+	{
+		if (!ft_strncmp(*buffer, var, len))
+			break ;
+		buffer ++;
+	}
+	return (*(buffer) + len + 1);
+}
+
+char	*root_init(char **env)
+{
+	char	*name1;
+	char	*name2;
+	char	*temp;
+	char	*out;
+
+	name2 = get_env_ptr(env, "NAME", 4);
+	name1 = get_env_ptr(env, "LOGNAME", 7);
+	out = ft_strjoin(name1, "@");
+	temp = out;
+	out = ft_strjoin(out, name2);
+	free(temp);
+	temp = out;
+	out = ft_strjoin(out, ":\033[0;34m");
+	free(temp);
+	return (out);
+}
+
+int main(int ac, char **av, char **env)
+{
+	(void)ac;
+	(void)av;
+	char	*root;
 	char	*prompt;
 	char	*freer;
+
+	root = root_init(env);
 	// signal(SIGQUIT, SIG_IGN);
 	printf("Hello, welcome to MINIDASHELL!\n");
 	if (signal(SIGINT, handle_signal) == SIG_ERR && signal(SIGQUIT, handle_signal) == SIG_ERR)
@@ -100,8 +140,11 @@ int main(void)
 	}
 	while (1)
 	{
-		prompt = get_prompt();
+		printf(GREEN);
+		prompt = get_prompt(root);
+		
 		freer = readline(prompt);
+		
 		if (builtin_runs(freer))
 			break ;
 		free(freer);
@@ -111,6 +154,7 @@ int main(void)
 		free(freer);
 	if (prompt)
 		free(prompt);
+	free(root);
 	printf("exit\n");
 	return (0);
 }
