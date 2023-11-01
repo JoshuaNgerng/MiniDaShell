@@ -6,7 +6,7 @@
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 17:49:54 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/09/22 18:07:14 by mukhairu         ###   ########.fr       */
+/*   Updated: 2023/10/25 17:55:45 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,15 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+//LinkedList for the env
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}					t_env;
+
+
 //Colour Text
 # define RED "\033[0;31m"
 # define GREEN "\033[0; 32m"
@@ -31,5 +40,7 @@
 # define CYAN "\033[0;36m"
 # define WHITE "\033[0;37m"
 # define RESET "\033[0m"
+
+t_env	*get_env_state(env);
 
 #endif // !MINISHELL_H
