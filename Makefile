@@ -13,7 +13,7 @@
 NAME = minishell
 OBJ_DIR = obj
 SRC_DIR = src
-S_NAME = main parse_env env_linklist env_freelist.c #free parse token utlis errmsg
+S_NAME = main env_parse env_list env_freelist #free parse token utlis errmsg
 _SRC = $(addsuffix .c, $(S_NAME))
 SRC = $(addprefix $(SRC_DIR)/, $(_SRC))
 OBJ = $(addprefix $(OBJ_DIR)/, $(_SRC:.c=.o))

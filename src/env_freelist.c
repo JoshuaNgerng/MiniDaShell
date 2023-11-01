@@ -12,7 +12,27 @@
 
 #include "minishell.h"
 
-void	list_free_env(t_env *list)
+void	free_env_1(t_env *list)
 {
-	t_list	
+	t_env	*temp;
+
+	if (!list)
+		return ;
+	temp = list;
+	free(temp);
+}
+
+
+void	free_all_env(t_env *list)
+{
+	t_env *temp;
+
+	if (!list)
+		return ;
+	while (list != NULL)
+	{
+		temp = list;
+		free_env_1(temp);
+		list = list->next;
+	}
 }

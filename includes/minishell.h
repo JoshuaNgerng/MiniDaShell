@@ -30,7 +30,6 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
-
 //Colour Text
 # define RED "\033[0;31m"
 # define GREEN "\033[0; 32m"
@@ -41,6 +40,10 @@ typedef struct s_env
 # define WHITE "\033[0;37m"
 # define RESET "\033[0m"
 
-t_env	*get_env_state(env);
+//env
+t_env	*ft_env_new(char *key, char *value);
+t_env	ft_env_add(t_env **list, t_list *new);
+t_env	*get_env_state(char **env);
+void	free_env_1(t_env *list);
 
 #endif // !MINISHELL_H

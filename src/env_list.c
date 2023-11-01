@@ -12,20 +12,20 @@
 
 #include "minishell.h"
 
-t_env	*ft_linknew(char *key, char *value)
+t_env	*ft_env_new(char *key, char *value)
 {
 	t_env *list;
 
 	list = (t_env *)malloc(sizeof(t_list));
 	if (!list)
 		return (NULL);
-	list -> key = key;
-	list -> value = value;
-	list -> next = NULL;
+	list->key = key;
+	list->value = value;
+	list->next = NULL;
 	return (list);
 }
 
-t_env ft_linkadd(t_env **list, t_list *new)
+t_env	ft_env_add(t_env **list, t_list *new)
 {
 	if (!list || !new)
 		return ;

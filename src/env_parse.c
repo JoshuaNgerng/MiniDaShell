@@ -13,12 +13,19 @@
 #include "minishell.h"
 
 //Test
-t_env	*get_env_state(env)
+t_env	*get_env_state(char **env)
 {
 	int	i;
+	t_env	*list;
 
 	i = 0;
-	while ()
+	if (!env)
+		return ;
+	while(!env)
+	{
+		// list = ft_env_new()
+		i++;
+	}
 }
 
 //add new node, put new node in list, delete list
