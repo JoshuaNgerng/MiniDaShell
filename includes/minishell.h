@@ -6,7 +6,7 @@
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 17:49:54 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/10/25 17:55:45 by mukhairu         ###   ########.fr       */
+/*   Updated: 2023/11/03 07:42:00 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ typedef struct s_env
 
 //env
 t_env	*ft_env_new(char *key, char *value);
-t_env	ft_env_add(t_env **list, t_list *new);
+void	ft_env_add(t_env **list, t_env *new);
+void	ft_env_addback(t_env **list, t_env *new);
 t_env	*get_env_state(char **env);
 void	free_env_1(t_env *list);
 
