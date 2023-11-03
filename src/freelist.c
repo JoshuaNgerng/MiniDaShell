@@ -1,40 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_freelist.c                                     :+:      :+:    :+:   */
+/*   freelist.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/25 19:00:21 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/11/03 17:11:09 by mukhairu         ###   ########.fr       */
+/*   Created: 2023/11/03 17:18:36 by mukhairu          #+#    #+#             */
+/*   Updated: 2023/11/03 17:23:56 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_env_1(t_env *list)
+void	free2d(char **str)
 {
-	t_env	*temp;
+	int	i;
 
-	if (!list)
-		return ;
-	temp = list;
-	free(temp->key);
-	free(temp->value);
-	free(temp);
-}
-
-
-void	free_all_env(t_env *list)
-{
-	t_env *temp;
-
-	if (!list)
-		return ;
-	while (list != NULL)
+	i = 0;
+	while (str[i])
 	{
-		temp = list;
-		list = list->next;
-		free_env_1(temp);
+		free(str[i]);
+		i++;
 	}
+	free(str);
 }

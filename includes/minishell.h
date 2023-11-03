@@ -6,7 +6,7 @@
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 17:49:54 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/11/03 07:42:00 by mukhairu         ###   ########.fr       */
+/*   Updated: 2023/11/03 17:23:07 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,9 @@ void	ft_env_add(t_env **list, t_env *new);
 void	ft_env_addback(t_env **list, t_env *new);
 t_env	*get_env_state(char **env);
 void	free_env_1(t_env *list);
+void	free_all_env(t_env *list);
+void	print_env(t_env *env);
+
+void	free2d(char **str);
 
 #endif // !MINISHELL_H

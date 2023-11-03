@@ -6,7 +6,7 @@
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:40:53 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/11/03 07:41:52 by mukhairu         ###   ########.fr       */
+/*   Updated: 2023/11/03 16:28:25 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,15 +130,9 @@ int main(int ac, char **av, char **env)
 	char	*prompt;
 	char	*freer;
 	t_env	*env_state;
-	t_env	*test;
 
 	env_state = get_env_state(env);
-	test = env_state;
-	while (test->next)
-	{
-		printf("%s\n", test->key);
-		test = test->next;
-	}
+	print_env(env_state);
 	root = root_init(env);
 	// signal(SIGQUIT, SIG_IGN);
 	printf("Hello, welcome to MINIDASHELL!\n");
@@ -164,6 +158,7 @@ int main(int ac, char **av, char **env)
 	if (prompt)
 		free(prompt);
 	free(root);
+	free_all_env(env_state);
 	printf("exit\n");
 	return (0);
 }

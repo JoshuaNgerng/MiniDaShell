@@ -6,7 +6,7 @@
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 17:50:25 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/11/03 07:42:03 by mukhairu         ###   ########.fr       */
+/*   Updated: 2023/11/03 17:06:52 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,15 @@ void	ft_env_addback(t_env **list, t_env *new)
 {
 	t_env	*temp;
 
+	if (!new)
+		return ;
 	if (!list)
 		return ;
 	if (!*list)
 		*list = new;
 	else
 	{
+		temp = *list;
 		while (temp->next)
 			temp = temp->next;
 		temp->next = new;
