@@ -6,7 +6,7 @@
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 17:49:54 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/11/03 17:23:07 by mukhairu         ###   ########.fr       */
+/*   Updated: 2023/11/07 17:42:41 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_env
 # define RESET "\033[0m"
 
 //env
-t_env	*ft_env_new(char *key, char *value);
+t_env	*ft_env_new(char *env);
 void	ft_env_add(t_env **list, t_env *new);
 void	ft_env_addback(t_env **list, t_env *new);
 t_env	*get_env_state(char **env);

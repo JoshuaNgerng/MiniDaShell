@@ -6,21 +6,36 @@
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 17:50:25 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/11/03 17:06:52 by mukhairu         ###   ########.fr       */
+/*   Updated: 2023/11/07 17:47:27 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*ft_env_new(char *key, char *value)
+t_env	*ft_env_new(char *env)
 {
-	t_env *list;
+	int		i;
+	t_env	*list;
 
-	list = (t_env *)malloc(sizeof(t_env));
+	list = malloc(sizeof(t_env));
 	if (!list)
 		return (NULL);
-	list->key = key;
-	list->value = value;
+	i = 0;
+	while (env[i] && env[i] != '=')
+		i ++;
+	list->key = ft_substr(env, 0, i);
+	if (!list->key)
+	{
+		free(list);
+		return (NULL);
+	}
+	list->value = ft_strdup(&env[i + 1]);
+	if (!list->value)
+	{
+		free(list);
+		free(list->key);
+		return (NULL);
+	}
 	list->next = NULL;
 	return (list);
 }
@@ -31,10 +46,11 @@ void	ft_env_addback(t_env **list, t_env *new)
 
 	if (!new)
 		return ;
-	if (!list)
-		return ;
 	if (!*list)
+	{
 		*list = new;
+		printf("first run\n");
+	}
 	else
 	{
 		temp = *list;

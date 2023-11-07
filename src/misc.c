@@ -1,40 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_freelist.c                                     :+:      :+:    :+:   */
+/*   misc.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/25 19:00:21 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/11/03 19:09:32 by mukhairu         ###   ########.fr       */
+/*   Created: 2023/11/07 16:56:31 by mukhairu          #+#    #+#             */
+/*   Updated: 2023/11/07 17:44:50 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_env_1(t_env *list)
+int	chk_dbl(char *str, char c)
 {
-	t_env	*temp;
+	int	i;
+	int	cnt;
 
-	if (!list)
-		return ;
-	temp = list;
-	free(temp->key);
-	free(temp->value);
-	free(temp);
-}
-
-
-void	free_all_env(t_env *list)
-{
-	t_env *temp;
-
-	if (!list)
-		return ;
-	while (list != NULL)
+	i = -1;
+	cnt = 0;
+	while (str[i++])
 	{
-		temp = list;
-		list = list->next;
-		free_env_1(temp);
+		if (str[i] == c)
+			cnt++;
 	}
+	if (cnt > 1)
+		return (1);
+	return (0);
 }

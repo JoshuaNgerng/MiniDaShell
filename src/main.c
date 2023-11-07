@@ -6,7 +6,7 @@
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:40:53 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/11/03 16:28:25 by mukhairu         ###   ########.fr       */
+/*   Updated: 2023/11/07 16:49:40 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,17 +90,16 @@ char	*get_prompt(char *root)
 }
 
 char	*get_env_ptr(char **env, char *var, int len)
-{
-	char	**buffer;
+{;
+	int		i;
 
-	buffer = env;
-	while (buffer)
+	i = -1;
+	while (env[++i])
 	{
-		if (!ft_strncmp(*buffer, var, len))
-			break ;
-		buffer ++;
+		if (!ft_strncmp(env[i], var, len))
+			return (env[i] + len + 1);
 	}
-	return (*(buffer) + len + 1);
+	return (NULL);
 }
 
 char	*root_init(char **env)
@@ -111,9 +110,12 @@ char	*root_init(char **env)
 	char	*out;
 
 	name2 = get_env_ptr(env, "NAME", 4);
+	if (!name2)
+		name2 = get_env_ptr(env, "LOGNAME", 7);
 	name1 = get_env_ptr(env, "LOGNAME", 7);
 	out = ft_strjoin(name1, "@");
 	temp = out;
+	printf("AAAAA: %s\n", name2);
 	out = ft_strjoin(out, name2);
 	free(temp);
 	temp = out;
@@ -143,7 +145,6 @@ int main(int ac, char **av, char **env)
 	}
 	while (1)
 	{
-		printf(GREEN);
 		prompt = get_prompt(root);
 		
 		freer = readline(prompt);
