@@ -6,7 +6,7 @@
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 17:49:54 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/11/07 17:50:07 by mukhairu         ###   ########.fr       */
+/*   Updated: 2023/11/09 13:39:27 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 t_env	*get_env_state(char **env)
 {
 	int		i;
-	// int		j;
 	t_env	*temp;
 	t_env	*list;
 	// char	**str;
@@ -27,19 +26,7 @@ t_env	*get_env_state(char **env)
 		return (NULL);
 	while(env[i])
 	{
-		// if (chk_dbl(env[i], "="))
-		// {
-		// 	i++;
-		// 	continue ;
-		// }
-		// str = ft_split(env[i], '=');
-		// j = -1;
-		// while (str[++j])
-		// 	printf("testing j: %d\n", j);
-		// if (j > 2)
-		// 	printf("testing key j %s\n", str[0]);
 		temp = ft_env_new(env[i]);
-		// printf("test %s \n", temp->key);
 		ft_env_addback(&list, temp);
 		// free(str);
 		i++;

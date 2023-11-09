@@ -6,7 +6,7 @@
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:40:53 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/11/07 16:49:40 by mukhairu         ###   ########.fr       */
+/*   Updated: 2023/11/09 16:15:28 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ int main(int ac, char **av, char **env)
 		
 		if (builtin_runs(freer))
 			break ;
+		export(env_state, "limau=ctrl");
 		free(freer);
 		free(prompt);
 	}
@@ -159,6 +160,7 @@ int main(int ac, char **av, char **env)
 	if (prompt)
 		free(prompt);
 	free(root);
+	print_env(env_state);
 	free_all_env(env_state);
 	printf("exit\n");
 	return (0);
