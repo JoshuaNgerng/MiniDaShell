@@ -6,7 +6,7 @@
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:40:53 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/11/09 16:15:28 by mukhairu         ###   ########.fr       */
+/*   Updated: 2023/11/12 17:22:11 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,7 @@ int main(int ac, char **av, char **env)
 		if (builtin_runs(freer))
 			break ;
 		export(env_state, "limau=ctrl");
+		unset(env_state, "check for limau any errors");
 		free(freer);
 		free(prompt);
 	}
