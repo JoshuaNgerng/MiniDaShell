@@ -6,7 +6,7 @@
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/25 17:50:25 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/11/09 13:39:37 by mukhairu         ###   ########.fr       */
+/*   Updated: 2023/11/13 13:25:03 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,7 @@ void	ft_env_addback(t_env **list, t_env *new)
 	if (!new)
 		return ;
 	if (!*list)
-	{
 		*list = new;
-		printf("first run\n");
-	}
 	else
 	{
 		temp = *list;

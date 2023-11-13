@@ -6,7 +6,7 @@
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 17:49:54 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/11/12 16:48:20 by mukhairu         ###   ########.fr       */
+/*   Updated: 2023/11/13 19:45:44 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ void	print_env(t_env *env);
 void	free2d(char **str);
 
 void	export(t_env *list, char *str);
+void	print_export(t_env *list);
 t_env	*chk_key(t_env *list, char *str);
 
-void	unset(t_env *list, char *input);
+t_env	*unset(t_env *list, char *input);
 #endif // !MINISHELL_H

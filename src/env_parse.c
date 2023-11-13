@@ -6,7 +6,7 @@
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 17:49:54 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/11/09 13:39:27 by mukhairu         ###   ########.fr       */
+/*   Updated: 2023/11/13 18:19:47 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	print_env(t_env *env)
 {
 	t_env	*temp;
 
-	printf(":(\n");
 	temp = env;
 	while (temp)
 	{
