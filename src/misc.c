@@ -6,13 +6,13 @@
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 16:56:31 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/11/14 18:22:03 by mukhairu         ###   ########.fr       */
+/*   Updated: 2023/11/15 15:23:43 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	chk_stx(char *str)
+int	chk_stx(char *str, int vld)
 {
 	char	*chk_str;
 	int i;
@@ -21,17 +21,22 @@ int	chk_stx(char *str)
 	i = 1;
 	if (!ft_isalpha(str[0]))
 	{
-		printf("Error: %s: invalid identifier\n", str);
+		printf("Error: %s: invalid syntax\n", str);
 		return (0);
 	}
 	while (chk_str[i] && chk_str[i] != '=')
 	{
 		if (!ft_isalnum(chk_str[i]) && chk_str[i] != '_')
 		{
-			printf("Error: %s: invalid identifier\n", str);
+			printf("Error: %s: invalid syntax\n", str);
 			return (0);
 		}
 		i++;
+	}
+	if (chk_str[i] != '=' && vld == 1)
+	{
+		printf("Error: %s: invalid syntax\n", str);
+			return (0);
 	}
 	return (1);
 }

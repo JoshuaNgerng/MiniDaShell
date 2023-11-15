@@ -6,7 +6,7 @@
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 16:17:50 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/11/13 19:31:51 by mukhairu         ###   ########.fr       */
+/*   Updated: 2023/11/15 15:28:09 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,20 +50,20 @@ t_env	*unset(t_env *list, char *input)
 	int		i;
 
 	temp = list;
-	i = 0;
+	i = -1;
 	key = ft_split(input, ' ');
-	while (key[i])
+	while (key[++i])
 	{
+		if (!chk_stx(key[i], 0))
+			continue ;
 		temp = chk_key(temp, key[i]);
 		if (!temp)
 		{
 			temp = list;
-			i++;
 			continue ;
 		}
 		list = unset_proc(list, temp);
 		temp = list;
-		i++;
 	}
 	free2d(key);
 	return (temp);

@@ -6,7 +6,7 @@
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 12:35:06 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/11/14 18:25:54 by mukhairu         ###   ########.fr       */
+/*   Updated: 2023/11/15 15:25:14 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	export(t_env *list, char *str)
 	splitted = ft_split(str, ' ');
 	while (splitted[++i])
 	{
-		if (!chk_stx(splitted[i]))
+		if (!chk_stx(splitted[i], 1))
 			continue ;
 		temp = ft_env_new(splitted[i]);
 		check = chk_key(list, temp->key);
@@ -52,61 +52,6 @@ void	export(t_env *list, char *str)
 	}
 	free2d(splitted);
 }
-
-// char	**split_str(c har *str)
-// {
-// 	char **words;
-// 	char	*key;
-// 	char	*val;
-// 	int		i;
-	
-// 	i = 0;
-// 	words = ft_split(str, ' ');
-// 	while (words[i])
-// 	{
-// 		if (!chk_stx(words[i]))
-// 		{
-// 			i++;
-// 			continue ;
-// 		}
-// 		while (str[i] && str[i] != '=')
-// 			i++;
-// 		key = ft_substr(str, 0, i);
-// 		if (!str[i])
-// 			val =  ft_strdup("");
-// 		else
-// 			val = ft_strdup(&str[i + 1]);
-// 		i++;
-
-// 	}
-
-// 	return (NULL);
-// }
-
-// void	export(t_env *list, char *str)
-// {
-// 	t_env	*temp;
-
-// 	char	**splitted;
-// 	int		i;
-
-// 	i = 0;
-// 	splitted  = split_str(str);
-// 	// the export process
-// 	// key = some_func
-// 	temp = chk_key(list, key);
-// 	if (!temp)
-// 	{
-// 		temp = ft_env_new(str);
-// 		ft_env_addback(&list, temp);
-// 		free(key);
-// 		free(val);
-// 		return ;
-// 	}
-// 	free(temp->value);
-// 	temp->value = val;
-// 	free(key);
-// }
 
 /*
 ptr

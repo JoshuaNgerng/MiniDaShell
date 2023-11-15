@@ -6,7 +6,7 @@
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 17:49:54 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/11/14 12:44:38 by mukhairu         ###   ########.fr       */
+/*   Updated: 2023/11/15 15:21:56 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	free_all_env(t_env *list);
 void	print_env(t_env *env);
 
 void	free2d(char **str);
-int		chk_stx(char *str);
+int		chk_stx(char *str, int vld);
 
 void	export(t_env *list, char *str);
 void	print_export(t_env *list);

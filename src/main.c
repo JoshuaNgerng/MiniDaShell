@@ -6,7 +6,7 @@
 /*   By: mukhairu <mukhairu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/22 16:40:53 by mukhairu          #+#    #+#             */
-/*   Updated: 2023/11/14 18:09:51 by mukhairu         ###   ########.fr       */
+/*   Updated: 2023/11/15 15:26:43 by mukhairu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,9 +151,9 @@ int main(int ac, char **av, char **env)
 		
 		if (builtin_runs(freer))
 			break ;
-		export(env_state, "limau=c@trl =wow");
-		// env_state = unset(env_state, "check for SHELL limau any errors");
-		print_env(env_state);
+		export(env_state, "limau=c@trl wow");
+		env_state = unset(env_state, "check for :: limau any errors");
+		// print_env(env_state);
 		free(freer);
 		free(prompt);
 	}
@@ -163,7 +163,7 @@ int main(int ac, char **av, char **env)
 		free(prompt);
 	free(root);
 	// printf("\nTest env with unset and export\n");
-	// print_env(env_state);
+	print_env(env_state);
 	free_all_env(env_state);
 	printf("exit\n");
 	return (0);
