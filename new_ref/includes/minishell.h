@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/20 08:38:25 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/20 16:40:11 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define FILES 15
 # define LOGIC 96
 # define OPERATORS 112
-# define BRACKERS 384
+# define BRACKETS 384
 // typedef struct s_index
 // {
 // 	int	index1;
@@ -51,26 +51,21 @@ FILES here_doc | read | write | append
 OPERATORS pipe | or | and
 LOGIC or | and
 BRACKETS start_b | end_b
+' 34
+" 39
 */
 enum	e_token
 {
 	here_doc = 1,
-	read = 2,
-	write = 4,
-	append = 8,
+	_read = 2,
+	_write = 4,
+	_append = 8,
 	pipe = 16,
-	or = 32,
-	and = 64,
+	_or = 32,
+	_and = 64,
 	start_b = 128,
 	end_b = 256
 }	;
-
-typedef struct s_check
-{
-	char	quo;
-	char	token;
-	int		brac;
-}	t_check;
 
 typedef struct s_token
 {
@@ -94,7 +89,7 @@ typedef struct s_proc
 	t_token			*f_out;
 	char			out;
 	char			in;
-	struct t_proc	*next;
+	struct s_proc	*next;
 }	t_proc;
 
 typedef struct s_block
@@ -143,13 +138,15 @@ void	free_process_section(t_shell *s);
 void	free_all(t_shell *s);
 void	*errmsg(int e);
 void	*errmsg_var(int e, char *msg, int len);
+void	*errmsg_token(int token);
 void	*errmsg_errno(int e);
 void	handle_error(t_shell *s, int ext_code);
 int		shell_init(t_shell *s);
 int		msg_init(t_root *msg);
-char	check_logical_operator(char *input, int *index);
-char	check_redirection(char *input, int *index);
-char	check_input(char *input, int i);
+int		check_logical_operator(char *input, int *index);
+int		check_redirection(char *input, int *index);
+int		iter_token(char *input, int i, int *new);
+int		check_input(char *input, int i);
 // t_block	*process_input(t_shell *s, char *input);
 
 #endif

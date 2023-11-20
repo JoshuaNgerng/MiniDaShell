@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+/* 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include <unistd.h>
@@ -97,7 +98,7 @@ every partion have one cmd
 only one active input file nearest to a cmd (however it still detects other input file)
 create all output file but only further file is writen into
 */
-
+/*
 // change file system struct
 typedef struct s_data
 {
@@ -197,5 +198,6 @@ void	dev_print_tokens(t_token *t);
 void	dev_print_data(t_data *d);
 void	dev_print_proc(t_proc *p);
 */
-
+/*
 #endif
+*/

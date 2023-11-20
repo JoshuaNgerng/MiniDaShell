@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 10:05:18 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/10 23:37:42 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/20 16:53:09 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,25 @@ void	*errmsg_var(int e, char *msg, int len)
 	return (NULL);
 }
 
-void	*errmsg_token(char *input)
+void	*errmsg_token(int token)
 {
-	if (input[0] == input[1])
-		errmsg_var(1, input, 2);
-	else
-		errmsg_var(1, input, 1);
-	return (NULL);
+	char	**s;
+	int		*i;
+	int		index;
+	int		check;
+
+	s = (char *[9]){"<<", "<", ">", ">>", "|", "||", "&&", "(", ")"};
+	i = (int[]){2, 1, 1, 2, 1, 2, 2, 1, 1};
+	index = 0;
+	check = 0;
+	if (!token || token < 0)
+		return (NULL);
+	while (!check)
+	{
+		check = (token & (1 << index));
+		index ++;
+	}
+	return (errmsg_var(1, s[index -1], index - 1));
 }
 
 void	*errmsg_errno(int e)

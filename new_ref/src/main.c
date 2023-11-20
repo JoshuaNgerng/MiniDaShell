@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:31:16 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/17 16:28:05 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/20 11:35:38 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,19 +53,19 @@ char	*join_buffer(t_shell *s, t_token *t)
 
 char	*get_user_input(t_shell *s)
 {
-	char	c;
+	int		c;
 	char	*r;
 	t_token	*head;
 
 	head = NULL;
 	r = get_input(s, s->root.prompt);
 	c = check_input(r, 0);
-	if (ft_checkset(c, "hrwa"))
+	if (c & FILES)
 	{
 		c = -1;
-		errmsg_var();
+		errmsg_var(0, NULL, 0); //checklater
 	}
-	if (c > 0 && c != 'c')
+	if (c > 0)
 	{
 		if (complete_input(s, &head, r, c))
 			return (free_tokens(head), NULL);
@@ -92,7 +92,7 @@ int	main(int ac, char **av, char **env)
 
 	if (shell_init(&s))
 		return (s.ext_code);
-	input = get_input(s.root);
+	input = get_user_input(&s);
 	while (input)
 	{
 		errno = 0;
@@ -102,7 +102,7 @@ int	main(int ac, char **av, char **env)
 		}
 		s.input = 0;
 		free(input);
-		input = get_input(s.root);
+		input = get_user_input(&s);
 	}
 	return (free_all(&s), s.ext_code);
 }
