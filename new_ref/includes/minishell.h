@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/10 23:43:52 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/20 08:38:25 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,10 @@
 # define GREEN "\33[0;32m"
 # define BLUE "\33[0;34m"
 # define RESET "\33[0m"
-
-/*
-se on p hrwa
-( 28 : [( c] , [( >*] , [( (] ! [( &&] , [( ||] , [( |] , [( )]
-	   [&& (] , [|| (] , [( (] ! [| (] , []>* (] , []) (]
-) 29 : [) &&] , [) ||] , [) )] 
-	   [c )] , []
-" 34
-& 38
-' 39
-< 60
-> 62
-| 124
-*/
-
+# define FILES 15
+# define LOGIC 96
+# define OPERATORS 112
+# define BRACKERS 384
 // typedef struct s_index
 // {
 // 	int	index1;
@@ -57,6 +46,25 @@ se on p hrwa
 // 	char	*input;
 // }	t_loop;
 
+/*
+FILES here_doc | read | write | append
+OPERATORS pipe | or | and
+LOGIC or | and
+BRACKETS start_b | end_b
+*/
+enum	e_token
+{
+	here_doc = 1,
+	read = 2,
+	write = 4,
+	append = 8,
+	pipe = 16,
+	or = 32,
+	and = 64,
+	start_b = 128,
+	end_b = 256
+}	;
+
 typedef struct s_check
 {
 	char	quo;
@@ -67,7 +75,7 @@ typedef struct s_check
 typedef struct s_token
 {
 	char			*token;
-	char			type;
+	int				type;
 	struct s_token	*next;
 }	t_token;
 
