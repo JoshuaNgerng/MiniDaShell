@@ -6,11 +6,20 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:31:16 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/20 11:35:38 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/21 12:23:05 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+int	int_strcpy(char *dst, int index, const char *src)
+{
+	int	j;
+
+	j = -1;
+	while (src[++ j])
+		dst[index ++] = src[j];
+	return (index);
+}
 
 int	get_size(t_token *t)
 {
@@ -60,10 +69,10 @@ char	*get_user_input(t_shell *s)
 	head = NULL;
 	r = get_input(s, s->root.prompt);
 	c = check_input(r, 0);
-	if (c & FILES)
+	if (c > 0 && c & FILES)
 	{
 		c = -1;
-		errmsg_var(0, NULL, 0); //checklater
+		errmsg_var(1, "newline", 7);
 	}
 	if (c > 0)
 	{
@@ -78,6 +87,7 @@ char	*get_user_input(t_shell *s)
 	}
 	if (r)
 		add_history(r);
+	printf("test added to history %s\n");
 	if (c == -1)
 		s->input = 1;
 	return (r);
@@ -86,11 +96,11 @@ char	*get_user_input(t_shell *s)
 int	main(int ac, char **av, char **env)
 {
 	(void)ac;
-	(void)env;
+	(void)av;
 	char	*input;
 	t_shell	s;
 
-	if (shell_init(&s))
+	if (shell_init(&s, env))
 		return (s.ext_code);
 	input = get_user_input(&s);
 	while (input)
@@ -98,11 +108,13 @@ int	main(int ac, char **av, char **env)
 		errno = 0;
 		if (!s.input)
 		{
-			bash();
+			printf("processing input\n");
 		}
 		s.input = 0;
 		free(input);
+		errno = 0;
 		input = get_user_input(&s);
 	}
+	write(1, "\nexit\n", 6);
 	return (free_all(&s), s.ext_code);
 }

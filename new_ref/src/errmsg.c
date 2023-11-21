@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 10:05:18 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/20 16:53:09 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/21 09:47:31 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	*errmsg_token(int token)
 
 void	*errmsg_errno(int e)
 {
-	char	ptr;
+	char	*ptr;
 
 	if (e == 1)
 		write(2, "Cannot access enviroment variable: ", 35);
@@ -81,6 +81,5 @@ void	*errmsg_errno(int e)
 void	handle_error(t_shell *s, int ext_code)
 {
 	s->status = ext_code;
-	free_tokens(s->input);
 	s->input = 1;
 }

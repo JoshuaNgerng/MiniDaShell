@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 19:16:28 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/10 17:57:33 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/21 11:45:58 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*get_input(t_shell *s, char *prompt)
 		r = readline(prompt);
 		if (!r)
 		{
-			if (errno)
+			if (errno == ENOMEM)
 				return (handle_error(s, 137), errmsg_errno(2), NULL);
 			return (NULL);
 		}

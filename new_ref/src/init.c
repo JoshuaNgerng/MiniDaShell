@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 10:21:56 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/09 10:57:28 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/21 11:42:15 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*root_init(char **env)
 	char	*tmp2;
 
 	tmp1 = get_env(env, "LOGNAME", 7);
-	tmp2 = get_env(env, "NAME", 4);
+	tmp2 = get_env(env, "USER", 4);
 	len1 = strlen(tmp1);
 	len2 = strlen(tmp2);
 	out = (char *) malloc ((len1 + len2 + 14) * sizeof(char));
@@ -76,13 +76,14 @@ char	*get_prompt(char *direc, char *root)
 	len = ft_strlen(direc);
 	len_root = ft_strlen(root);
 	out = (char *) malloc ((len + len_root + 14) * sizeof(char));
+	if (!out)
 		return (free(root), NULL);
-	ft_strncpy(out, root, len_root);
-	ft_strncpy(&out[len_root], BLUE, 7);
+	ft_strlcpy(out, root, len_root + 1);
+	ft_strlcpy(&out[len_root], BLUE, 8);
 	i = len_root + 7;
-	ft_strncpy(&out[i], direc, len);
+	ft_strlcpy(&out[i], direc, len + 1);
 	i += len;
-	ft_strncpy(&out[i], RESET, 4);
+	ft_strlcpy(&out[i], RESET, 5);
 	i += 4;
 	out[i ++] = '$';
 	out[i ++] = ' ';
@@ -90,11 +91,11 @@ char	*get_prompt(char *direc, char *root)
 	return (out);
 }
 
-int	msg_init(prompt *msg)
+int	msg_init(t_root *msg)
 {
 	if (!getcwd(msg->directory, 4096))
 		return (errmsg_errno(3), 1);
-	msg->prompt = get_prompt(msg->directory, msg->root);
+	msg->prompt = get_prompt(msg->directory, msg->root_msg);
 	if (!msg->prompt)
 		return (1);
 	msg->change = 0;
@@ -105,6 +106,7 @@ int	shell_init(t_shell *s, char **env)
 {
 	static t_shell	zero_shell;
 
+	errno = 0;
 	*s = zero_shell;
 	s->env = env;
 	s->path = get_path(env);
@@ -112,8 +114,8 @@ int	shell_init(t_shell *s, char **env)
 		return (1);
 	s->root.root_msg = root_init(env);
 	if (!s->root.root_msg)
-		return (free(s->path), 1)
-	if (msg_init(&s->msg))
-		return (free(s->msg.root), free(s->path), 1);
+		return (free(s->path), 1);
+	if (msg_init(&s->root))
+		return (free(s->root.root_msg), free(s->path), 1);
 	return (0);
 }

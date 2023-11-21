@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/20 16:40:11 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/21 09:51:22 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ enum	e_token
 	_read = 2,
 	_write = 4,
 	_append = 8,
-	pipe = 16,
+	_pipe = 16,
 	_or = 32,
 	_and = 64,
 	start_b = 128,
@@ -118,7 +118,6 @@ typedef struct s_shell
 	int		ext_code;
 	char	**env;
 	char	**path;
-	t_block	*input;
 	t_root	root;
 	t_block	process_section;
 }	t_shell;
@@ -133,7 +132,7 @@ void	free_token(t_token *t);
 void	free_tokens(t_token *t);
 void	free_process(t_proc *p);
 void	free_processes(t_proc *p);
-void	free_block(t_block *b);
+// void	free_block(t_block *b);
 void	free_process_section(t_shell *s);
 void	free_all(t_shell *s);
 void	*errmsg(int e);
@@ -141,8 +140,9 @@ void	*errmsg_var(int e, char *msg, int len);
 void	*errmsg_token(int token);
 void	*errmsg_errno(int e);
 void	handle_error(t_shell *s, int ext_code);
-int		shell_init(t_shell *s);
+int		shell_init(t_shell *s, char **env);
 int		msg_init(t_root *msg);
+int		complete_input(t_shell *s, t_token **head, char *r, int c);
 int		check_logical_operator(char *input, int *index);
 int		check_redirection(char *input, int *index);
 int		iter_token(char *input, int i, int *new);

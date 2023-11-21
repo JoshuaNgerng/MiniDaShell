@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 19:50:32 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/08 19:50:36 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/21 09:51:14 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,13 @@ void	free_process_section(t_shell *s)
 	free_processes(s->process_section.proc);
 	free(s->process_section.pfd);
 	free(s->process_section.pid);
-	s->process_section = (t_sect){0, 0, 0, 0, 0, 0, 0};
+	s->process_section = (t_block){0, 0, 0, 0, 0, 0, 0};
 }
 
 void	free_all(t_shell *s)
 {
 	free_strs(s->path);
-	free_blocks(s->input);
+	// free_blocks(s->input);
 	free(s->root.root_msg);
 	free(s->root.prompt);
 	free_process_section(s);
