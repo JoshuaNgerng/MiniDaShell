@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:31:16 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/21 12:51:43 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/21 13:35:52 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	*get_user_input(t_shell *s)
 		add_history(r);
 	printf("test added to history %s\n", r);
 	if (c == -1)
-		s->input = 1;
+		s->check = 1;
 	return (r);
 }
 
@@ -99,24 +99,20 @@ int	main(int ac, char **av, char **env)
 {
 	(void)ac;
 	(void)av;
-	char	*input;
 	t_shell	s;
 
 	if (shell_init(&s, env))
 		return (s.ext_code);
-	input = get_user_input(&s);
-	while (input)
+	s.input = get_user_input(&s);
+	while (s.check)
 	{
 		errno = 0;
 		if (!s.input)
-		{
-			printf("processing input\n");
-		}
-		s.input = 0;
-		free(input);
+			bash(&s);
+		free_reset(s);
 		errno = 0;
 		system("leaks minishell");
-		input = get_user_input(&s);
+		s.input = get_user_input(&s);
 	}
 	write(1, "\nexit\n", 6);
 	system("leaks minishell");

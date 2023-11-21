@@ -14,7 +14,7 @@ NAME = minishell
 OBJ_DIR = obj
 SRC_DIR = src
 # S_NAME = main free parse expand expand2 token bash process file pipe valid utlis errmsg
-S_NAME = main init input input2 check errmsg free free2 utlis
+S_NAME = main init input input2 check errmsg token bash free free2 utlis
 _SRC = $(addsuffix .c, $(S_NAME))
 SRC = $(addprefix $(SRC_DIR)/, $(_SRC))
 OBJ = $(addprefix $(OBJ_DIR)/, $(_SRC:.c=.o))

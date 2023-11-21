@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 10:05:18 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/21 09:47:31 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/21 16:57:27 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,11 @@ void	*errmsg_errno(int e)
 	else if (e == 3)
 		write(2, "Cannot get directory path: ", 27);
 	else if (e == 4)
-		write(2, "t_block (malloc): ", 18);
-	else if (e == 5)
 		write(2, "t_token (malloc): ", 18);
+	else if (e == 5)
+		write(2, "t_proc (malloc): ", 17);
+	else if (e == 6)
+		write(2, "t_buffer (malloc): ", 19);
 	ptr = strerror(errno);
 	if (ptr)
 		write(2, ptr, ft_strlen(ptr));

@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/21 09:51:22 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/21 17:04:59 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,21 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
+typedef struct s_ptr
+{
+	t_token	*head;
+	t_token	*tail;
+}	t_ptr;
+
 typedef struct s_buffer
 {
-	int				size;
-	t_token			*cmd;
-	struct s_buffer	*next;
+	int		size;
+	t_ptr	cmd;
+	t_ptr	here_doc;
+	t_ptr	read;
+	t_ptr	out;
 }	t_buffer;
+
 
 typedef struct s_proc
 {
@@ -114,8 +123,9 @@ typedef struct s_root
 typedef struct s_shell
 {
 	int		status;
-	int		input;
+	int		check;
 	int		ext_code;
+	char	*input;
 	char	**env;
 	char	**path;
 	t_root	root;
@@ -147,6 +157,9 @@ int		check_logical_operator(char *input, int *index);
 int		check_redirection(char *input, int *index);
 int		iter_token(char *input, int i, int *new);
 int		check_input(char *input, int i);
+int		bash(t_shell *s);
+t_token	*tokenize_input(t_shell *s, int *index, int *type);
+int		process_init(t_shell *s, int *i, int *type);
 // t_block	*process_input(t_shell *s, char *input);
 
 #endif

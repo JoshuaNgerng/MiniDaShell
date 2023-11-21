@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 16:29:09 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/21 09:51:05 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/21 13:33:09 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,28 @@ void	free_tokens(t_token *t)
 		tmp = t;
 		t = t->next;
 		free_token(tmp);
+	}
+}
+
+void	free_process(t_proc *p)
+{
+	if (!p)
+		return ;
+	free_strs(p->cmd);
+	free_tokens(p->here_doc);
+	free_tokens(p->f_read);
+	free_tokens(p->f_out);
+	free(p);
+}
+
+void	free_processes(t_proc *p)
+{
+	t_proc *tmp;
+
+	while (p)
+	{
+		tmp = p;
+		p = p->next;
+		free_process(tmp);
 	}
 }

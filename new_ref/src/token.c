@@ -6,12 +6,12 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 11:11:00 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/10 08:49:44 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/21 16:28:52 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+/*
 char	check_logical_operator(t_loop *loop)
 {
 	int		i;
@@ -168,24 +168,57 @@ int	tokenize_input(t_block *b, t_shell *s, t_loop *loop)
 	ptr->next = NULL;
 	return (0);
 }
+*/
 
-/*
+t_token	*get_token(char *input, int *index, int *type)
+{
 	int		i;
-	int		j;
-	t_token	*head;
-	t_token	*temp;
+	t_token	*out;
+
+	i = *index;
+	out = (t_token *) malloc (sizeof(t_token));
+	if (!out)
+		return (NULL);
+	out->type = 0;
+	i = pass_space(input, i);
+	if (input[i] == '<' || input[i] == '>')
+		out->type = check_redirection(input, &i);
+	
+	return (out);
+}
+
+int	find_token_input(t_token **tail, char *input, int *index, int *type)
+{
+	int		i;
 	t_token	*new;
 
-	if (head_init(&head, input))
-		return (NULL);
-	temp = head;
-	while (input[j])
+	i = *index;
+	i = pass_space(input, i);
+	if (input[i] == '<' || input[i] == '>')
 	{
-		i = j;
-		j = find_token_in_input(s, input, i);
-		if (j < 0)
-			return (free_tokens(head), NULL);
+		*type = check_redirection(input, &i);
+		i = pass_space(input, i);
 	}
-	temp->next = NULL;
+	(*tail)->next = NULL;
+	return (0);
+}
+
+//(t_token *) malloc (sizeof(t_token));
+t_token	*tokenize_input(t_shell *s, int *index, int *type)
+{
+	t_token *head;
+	t_token	*tail;
+
+	*type = 0;
+	head = NULL;
+	if (find_token_input(&head, s->input, index, type))
+		return (errmsg_errno(4), handle_error(s, 137), NULL);
+	tail = head;
+	while (s->input[*index] && *type & LOGIC)
+	{
+		type = 0;
+		if (loop_input(&tail, s->input, index, &type))
+			return (1);
+	}
 	return (head);
-*/
+}
