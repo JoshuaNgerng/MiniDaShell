@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 16:42:42 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/21 17:05:46 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/21 17:07:57 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	get_process_node(t_proc **ptr, t_block *b, t_token *t)
 
 	buffer = (t_buffer){0, 0, 0};
 	*ptr = NULL;
-	new = (t_proc *) malloc (sizeof(t_proc));
+	new = (t_proc *) malloc(sizeof(t_proc));
 	if (!new)
 		return (errmsg_errno(5), 1);
 	while (t)
@@ -45,6 +45,7 @@ int	get_process_node(t_proc **ptr, t_block *b, t_token *t)
 		free(f_ptr);
 		t = t->next;
 	}
+	new->cmd = (char **) malloc(sizeof(char *));
 	*ptr = new;
 	return (0);
 }
