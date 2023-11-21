@@ -6,46 +6,96 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 16:42:42 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/21 17:07:57 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/21 22:41:08 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	transfer_token(t_proc *new, t_token *t)
+void	transfer_token_ptr(t_ptr *p, t_token *t)
 {
-	if (t->type == here_doc)
-		;
-	else if (t->type == _read)
-		;
-	else if (t->type == _write || t->type == _append)
-		;
+	if (!p)
+	{
+		p->head = t;
+		p->tail = p->head;
+		p->tail->next = NULL;
+		return ;
+	}
+	else
+		p->tail->next = t;
+	p->tail = p->tail->next;
+	p->tail->next = NULL;
 }
 
-int	transfer_token_buffer(t_buffer *b, t_token *t)
+void	transfer_token_buffer(t_proc *p, t_buffer *b,  t_block *block, t_token *t)
 {
+	if (t->type == here_doc)
+	{
+		transfer_token_ptr(&b->here_doc, t);
+		p->in = here_doc;
+		block->add ++;
+	}
+	else if (t->type == _read)
+	{
+		transfer_token_ptr(&b->read, t);
+		p->in = _read;
+	}
+	else if (t->type == _write || t->type == _append)
+		transfer_token_ptr(&b->out, t);
+	else
+	{
+		transfer_token_ptr(&b->cmd, t);
+		b->size ++;
+	}
 	return (0);
+}
+
+void	transfer_token_proc(t_proc *new, t_buffer buffer)
+{
+	int		i;
+	t_token	*ptr;
+
+	new->here_doc = buffer.here_doc.head;
+	new->f_read = buffer.read.head;
+	new->f_out = buffer.out.head;
+	if (!new->cmd)
+	{
+		free_tokens(buffer.cmd.head);
+		return ;
+	}
+	i = -1;
+	while (++ i < buffer.size)
+	{
+		new->cmd[i] = buffer.cmd.head->token;
+		ptr = buffer.cmd.head;
+		buffer.cmd.head = buffer.cmd.head->next;
+	}
 }
 
 int	get_process_node(t_proc **ptr, t_block *b, t_token *t)
 {
-	t_token		*f_ptr;
-	t_proc 		*new;
+	t_proc		*new;
 	t_buffer	buffer;
 
-	buffer = (t_buffer){0, 0, 0};
+	buffer = (t_buffer){0, (t_ptr){0, 0}, (t_ptr){0, 0}, \
+						(t_ptr){0, 0}, (t_ptr){0, 0}};
 	*ptr = NULL;
 	new = (t_proc *) malloc(sizeof(t_proc));
 	if (!new)
 		return (errmsg_errno(5), 1);
+	b->num ++;
 	while (t)
 	{
-		transfer_token_buffer(&buffer, t);
-		f_ptr = t;
-		free(f_ptr);
+		transfer_token_buffer(new, &buffer, b, t);
 		t = t->next;
 	}
-	new->cmd = (char **) malloc(sizeof(char *));
+	new->cmd = (char **) malloc((buffer.size + 1) * sizeof(char *));
+	transfer_token_proc(new, buffer);
+	if (!new->cmd)
+	{
+		*ptr = NULL;
+		return (free(new), 1);
+	}
 	*ptr = new;
 	return (0);
 }

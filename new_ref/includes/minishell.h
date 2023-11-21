@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/21 17:04:59 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/21 23:02:51 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,15 +89,13 @@ typedef struct s_buffer
 	t_ptr	out;
 }	t_buffer;
 
-
 typedef struct s_proc
 {
 	char			**cmd;
 	t_token			*here_doc;
 	t_token			*f_read;
 	t_token			*f_out;
-	char			out;
-	char			in;
+	int				in;
 	struct s_proc	*next;
 }	t_proc;
 

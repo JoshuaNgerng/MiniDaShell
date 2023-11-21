@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 05:25:04 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/21 09:57:13 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/22 00:12:36 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,21 +58,26 @@ int	check_redirection(char *input, int *index)
 
 int	iter_token(char *input, int i, int *new)
 {
+	int	ref;
+
+	ref = 0;
 	while (input[i] && !ft_checkset(input[i], "&|<> "))
 	{
 		if (!ft_isascii(input[i]))
 			return (errmsg(1), -1);
 		if (input[i] == '"' || input[i] == '\'')
 		{
-			*new = input[i];
-			while (input[i] && input[i] != *new)
+			ref = input[i];
+			while (input[i] && input[i] != ref)
 				i ++;
-			if (input[i] == *new)
-				*new = 0;
+			if (input[i] == ref)
+				ref = 0;
 			else
 				return (i);
 		}
 		i ++;
 	}
+	if (new)
+		*new = ref;
 	return (i);
 }
