@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:31:16 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/21 12:23:05 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/21 12:51:43 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	get_size(t_token *t)
 	while (t)
 	{
 		out += ft_strlen(t->token);
-		if (!t->type)
+		if (t->type)
 			out ++;
 		t = t->next;
 	}
@@ -49,10 +49,12 @@ char	*join_buffer(t_shell *s, t_token *t)
 		return (free_tokens(t), handle_error(s, 137), NULL);
 	i = 0;
 	ptr = t;
+	printf("start type %d\n", t->type);
 	while (ptr)
 	{
-		i = int_strcpy(out, i, t->token);
-		if (!t->type)
+		i = int_strcpy(out, i, ptr->token);
+		printf("cont type %d\n", ptr->type);
+		if (ptr->type)
 			out[i ++] = '\n';
 		ptr = ptr->next;
 	}
@@ -87,7 +89,7 @@ char	*get_user_input(t_shell *s)
 	}
 	if (r)
 		add_history(r);
-	printf("test added to history %s\n");
+	printf("test added to history %s\n", r);
 	if (c == -1)
 		s->input = 1;
 	return (r);
@@ -113,8 +115,10 @@ int	main(int ac, char **av, char **env)
 		s.input = 0;
 		free(input);
 		errno = 0;
+		system("leaks minishell");
 		input = get_user_input(&s);
 	}
 	write(1, "\nexit\n", 6);
+	system("leaks minishell");
 	return (free_all(&s), s.ext_code);
 }

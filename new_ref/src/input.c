@@ -43,12 +43,12 @@ int	complete_quo(t_shell *s, t_token **tail, int *c)
 	new->token = r;
 	(*tail) = (*tail)->next;
 	(*tail)->next = NULL;
-	new->type = -1;
+	new->type = *c;
 	i = int_strchr(r, *c);
 	if (i >= 0)
 	{
 		*c = check_input(r, i);
-		new->type = *c;
+		new->type = 0;
 	}
 	return (0);
 }
@@ -87,7 +87,10 @@ int	complete_input(t_shell *s, t_token **head, char *r, int c)
 		return (free(r), 1);
 	(*head)->token = r;
 	tail = (*head);
+	tail->type = 0;
 	tail->next = NULL;
+	if (c == '\'' || c == '"')
+		tail->type = c;
 	while (c > 0 && c != end_b)
 	{
 		if (c == '\'' || c == '"')
