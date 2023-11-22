@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 16:42:42 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/22 13:43:39 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/22 17:01:20 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,9 @@ static int	get_process_node(t_proc **ptr, t_block *b, t_token *t)
 	t_proc		*new;
 	t_buffer	buffer;
 
-	buffer = (t_buffer){0, (t_ptr){0, 0}, (t_ptr){0, 0}, \
-						(t_ptr){0, 0}, (t_ptr){0, 0}};
+	buffer = (t_buffer){0, (t_ptr){0, 0}, \
+			(t_ptr){0, 0}, (t_ptr){0, 0}, (t_ptr){0, 0}};
 	*ptr = NULL;
-	printf("test intial\n");
-	dev_print_tokens(t);
 	new = (t_proc *) malloc(sizeof(t_proc));
 	if (!new)
 		return (errmsg_errno(5), 1);
@@ -67,19 +65,11 @@ static int	get_process_node(t_proc **ptr, t_block *b, t_token *t)
 		temp = t;
 		t = t->next;
 		transfer_token_buffer(new, &buffer, b, temp);
-		// printf("test transfer loop\n");
-		// dev_print_tokens(buffer.cmd.head);
-		// dev_print_tokens(buffer.here_doc.head);
-		// dev_print_tokens(buffer.read.head);
-		// dev_print_tokens(buffer.out.head);
 	}
 	new->cmd = (char **) malloc((buffer.size + 1) * sizeof(char *));
 	transfer_token_proc(new, buffer);
 	if (!new->cmd)
-	{
-		*ptr = NULL;
-		return (free(new), 1);
-	}
+		return (free_process(new), 1);
 	*ptr = new;
 	return (0);
 }
