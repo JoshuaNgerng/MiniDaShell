@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/22 12:08:11 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/22 13:44:32 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,8 +158,11 @@ int		check_redirection(char *input, int *index);
 int		iter_token(char *input, int i, int *new);
 int		check_input(char *input, int i);
 int		bash(t_shell *s);
-t_token	*tokenize_input(t_shell *s, int *index, int *type);
+int		tokenize_input(t_shell *s, t_token **head, int *index, int *type);
 int		process_init(t_shell *s, int *i, int *type);
+void	transfer_token_buffer(t_proc *p, t_buffer *b, \
+								t_block *block, t_token *t);
+int		do_processes(t_shell *s);
 // t_block	*process_input(t_shell *s, char *input);
 
 void	dev_print_tokens(t_token *t);

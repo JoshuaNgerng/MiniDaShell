@@ -6,46 +6,21 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 16:42:42 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/22 11:05:51 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/22 13:43:39 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	transfer_token_ptr(t_ptr *p, t_token *t)
+static int	pid_pfd_init(t_block *b)
 {
-	if (!(p->tail))
-	{
-		p->head = t;
-		p->tail = p->head;
-		p->tail->next = NULL;
-		return ;
-	}
-	p->tail->next = t;
-	p->tail = p->tail->next;
-	p->tail->next = NULL;
-}
-
-static void	transfer_token_buffer(t_proc *p, t_buffer *b,  t_block *block, t_token *t)
-{
-	if (t->type == here_doc)
-	{
-		transfer_token_ptr(&b->here_doc, t);
-		p->in = here_doc;
-		block->add ++;
-	}
-	else if (t->type & _read)
-	{
-		transfer_token_ptr(&b->read, t);
-		p->in = _read;
-	}
-	else if (t->type & _write || t->type & _append)
-		transfer_token_ptr(&b->out, t);
-	else
-	{
-		transfer_token_ptr(&b->cmd, t);
-		b->size ++;
-	}
+	b->pid = (int *) malloc (b->num * sizeof(int));
+	if (!b->pid)
+		return (1);
+	b->pfd = (int *) malloc ((b->num + b->add) * sizeof(int));
+	if (!b->pfd)
+		return (1);
+	return (0);
 }
 
 static void	transfer_token_proc(t_proc *new, t_buffer buffer)
@@ -114,22 +89,23 @@ int	process_init(t_shell *s, int *i, int *type)
 	t_token	*buffer;
 	t_proc	*ptr;
 
-	buffer = tokenize_input(s, i, type);
-	if (!buffer)
+	if (tokenize_input(s, &buffer, i, type))
 		return (1);
-	// printf("testing i(%d) type(%d)\n", *i, *type);
+	if (!buffer)
+		return (0);
 	if (get_process_node(&s->process_section.proc, &s->process_section, buffer))
 		return (1);
 	ptr = s->process_section.proc;
-	while (s->input[*i] && !(*type & LOGIC))
+	while (s->input[*i] && !(*type & (LOGIC | BRACKETS)))
 	{
-		buffer = tokenize_input(s, i, type);
-		if (!buffer)
+		if (tokenize_input(s, &buffer, i, type))
 			return (free_process_section(s), 1);
 		if (get_process_node(&ptr->next, &s->process_section, buffer))
 			return (free_process_section(s), 1);
 		ptr = ptr->next;
 	}
 	ptr->next = NULL;
+	if (pid_pfd_init(&s->process_section))
+		return (free_process_section(s), 1);
 	return (0);
 }

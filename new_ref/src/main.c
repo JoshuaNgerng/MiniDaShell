@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:31:16 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/22 12:11:00 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/22 12:33:15 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,15 +99,15 @@ char	*get_user_input(t_shell *s)
 int	main(int ac, char **av, char **env)
 {
 	t_shell	s;
+
 	(void) ac;
 	(void) av;
-
+	errno = 0;
 	if (shell_init(&s, env))
 		return (s.ext_code);
 	s.input = get_user_input(&s);
 	while (s.input)
 	{
-		errno = 0;
 		if (!s.check)
 			bash(&s);
 		free_reset(&s);

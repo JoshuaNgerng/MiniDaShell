@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 11:11:00 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/22 11:02:34 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/22 13:13:08 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,7 @@ static t_token	*get_token(char *input, int i, int *index, int *type)
 	out = (t_token *) malloc (sizeof(t_token));
 	if (!out)
 		return (NULL);
-	if (input[i] == '(')
-	{
-		*type = start_b;
-		j = i + 1;
-	}
-	else if (input[i] == ')')
-	{
-		*type = end_b;
-		j = i + 1;
-	}
-	else
-		j = iter_token(input, i, NULL);
+	j = iter_token(input, i, NULL);
 	// printf("testing indexes i(%d) j(%d)\n", i, j);
 	out->type = *type;
 	out->token = ft_substr(input, i, j - i);
@@ -48,14 +37,24 @@ static int	get_token_input_helper(char *input, int *i, int *index, int *type)
 	{
 		*type = check_logical_operator(input, i);
 		*index = *i;
-		return (1);
+	}
+	else if (input[*i] == '(')
+	{
+		*type = start_b;
+		*index = *i + 1;
+	}
+	else if (input[*i] == ')')
+	{
+		*type = end_b;
+		*index = *i + 1;
 	}
 	else if (input[*i] == '<' || input[*i] == '>')
 	{
 		*type = check_redirection(input, i);
 		*i = pass_space(input, *i);
+		return (0);
 	}
-	return (0);
+	return (1);
 }
 
 static int	get_token_input(t_token **tail, char *input, int *index, int *type)
@@ -87,28 +86,27 @@ static int	get_token_input(t_token **tail, char *input, int *index, int *type)
 	return (0);
 }
 
-t_token	*tokenize_input(t_shell *s, int *index, int *type)
+int	tokenize_input(t_shell *s, t_token **head, int *index, int *type)
 {
-	t_token *head;
 	t_token	*tail;
 
 	*type = 0;
-	head = NULL;
-	if (get_token_input(&head, s->input, index, type))
-		return (errmsg_errno(4), handle_error(s, 137), NULL);
-	tail = head;
+	*head = NULL;
+	if (get_token_input(head, s->input, index, type))
+		return (errmsg_errno(4), handle_error(s, 137), 1);
+	tail = *head;
 	// printf("outer testing index %d type %d\n", *index, *type);
 	while (s->input[*index] && !(*type & OPERATORS))
 	{
 		*type = 0;
 		if (get_token_input(&tail, s->input, index, type))
 			return (free_tokens(head), errmsg_errno(4), \
-					handle_error(s, 137), NULL);
+					handle_error(s, 137), 1);
 		// printf("inner testing index %d type %d\n", *index, *type);
 	}
 	// printf("test return tokens\n");
 	// dev_print_tokens(head);
-	return (head);
+	return (0);
 }
 // ls > a
 // 0123456
