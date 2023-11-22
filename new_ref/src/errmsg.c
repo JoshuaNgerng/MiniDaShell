@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 10:05:18 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/21 16:57:27 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/22 11:04:36 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,5 @@ void	*errmsg_errno(int e)
 void	handle_error(t_shell *s, int ext_code)
 {
 	s->status = ext_code;
-	s->input = 1;
+	s->check = 1;
 }

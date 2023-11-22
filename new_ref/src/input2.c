@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	get_new_token(char *input, int i, int *new, int *brac)
+static int	get_new_token(char *input, int i, int *new, int *brac)
 {
 	if (input[i] == '>' || input[i] == '<')
 		*new = check_redirection(input, &i);
@@ -39,7 +39,7 @@ int	get_new_token(char *input, int i, int *new, int *brac)
 	return (i);
 }
 
-int	check_inside_loop(char *input, int i, int *prev, int *brac)
+static int	check_inside_loop(char *input, int i, int *prev, int *brac)
 {
 	int	j;
 	int	new;

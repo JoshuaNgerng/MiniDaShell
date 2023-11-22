@@ -6,11 +6,12 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:31:16 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/21 13:35:52 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/22 12:11:00 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 int	int_strcpy(char *dst, int index, const char *src)
 {
 	int	j;
@@ -97,19 +98,19 @@ char	*get_user_input(t_shell *s)
 
 int	main(int ac, char **av, char **env)
 {
-	(void)ac;
-	(void)av;
 	t_shell	s;
+	(void) ac;
+	(void) av;
 
 	if (shell_init(&s, env))
 		return (s.ext_code);
 	s.input = get_user_input(&s);
-	while (s.check)
+	while (s.input)
 	{
 		errno = 0;
-		if (!s.input)
+		if (!s.check)
 			bash(&s);
-		free_reset(s);
+		free_reset(&s);
 		errno = 0;
 		system("leaks minishell");
 		s.input = get_user_input(&s);

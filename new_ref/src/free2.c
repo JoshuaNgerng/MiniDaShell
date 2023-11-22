@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 19:50:32 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/21 13:39:49 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/22 08:24:51 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	free_process_section(t_shell *s)
 void	free_reset(t_shell *s)
 {
 	s->check = 0;
+	free(s->input);
 	s->input = 0;
 	free_process_section(s);
 }

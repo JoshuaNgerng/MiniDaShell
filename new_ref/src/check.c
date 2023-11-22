@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 05:25:04 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/22 00:12:36 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/22 09:38:28 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	check_redirection(char *input, int *index)
 	else if (input[i] == '<')
 		out = _read;
 	*index = i + 1;
-	if (out == _append || out == here_doc)
+	if (!(out == _write || out == _read))
 		*index = i + 2;
 	return (out);
 }

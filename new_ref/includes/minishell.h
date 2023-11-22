@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/21 23:02:51 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/22 12:08:11 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ BRACKETS start_b | end_b
 ' 34
 " 39
 */
+
 enum	e_token
 {
 	here_doc = 1,
@@ -142,6 +143,7 @@ void	free_process(t_proc *p);
 void	free_processes(t_proc *p);
 // void	free_block(t_block *b);
 void	free_process_section(t_shell *s);
+void	free_reset(t_shell *s);
 void	free_all(t_shell *s);
 void	*errmsg(int e);
 void	*errmsg_var(int e, char *msg, int len);
@@ -159,5 +161,8 @@ int		bash(t_shell *s);
 t_token	*tokenize_input(t_shell *s, int *index, int *type);
 int		process_init(t_shell *s, int *i, int *type);
 // t_block	*process_input(t_shell *s, char *input);
+
+void	dev_print_tokens(t_token *t);
+void	dev_print_data(t_proc *p);
 
 #endif

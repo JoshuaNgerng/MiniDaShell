@@ -23,7 +23,7 @@
 // 	return (-1);
 // }
 
-int	complete_quo(t_shell *s, t_token **tail, int *c)
+static int	complete_quo(t_shell *s, t_token **tail, int *c)
 {
 	int		i;
 	char	*r;
@@ -53,7 +53,7 @@ int	complete_quo(t_shell *s, t_token **tail, int *c)
 	return (0);
 }
 
-int	complete_sp(t_shell *s, t_token **tail, int *c)
+static int	complete_sp(t_shell *s, t_token **tail, int *c)
 {
 	char	*r;
 	t_token	*new;
