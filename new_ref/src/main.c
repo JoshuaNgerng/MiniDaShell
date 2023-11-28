@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:31:16 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/22 12:33:15 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/28 11:52:26 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,9 @@ char	*join_buffer(t_shell *s, t_token *t)
 		return (free_tokens(t), handle_error(s, 137), NULL);
 	i = 0;
 	ptr = t;
-	printf("start type %d\n", t->type);
 	while (ptr)
 	{
 		i = int_strcpy(out, i, ptr->token);
-		printf("cont type %d\n", ptr->type);
 		if (ptr->type)
 			out[i ++] = '\n';
 		ptr = ptr->next;

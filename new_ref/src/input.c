@@ -12,16 +12,19 @@
 
 #include "minishell.h"
 
-// int	int_strchr(char *str, char c)
-// {
-// 	int	i;
+static void	complete_quo_helper(t_token *new, char *r, int *c)
+{
+	int	i;
 
-// 	i = -1;
-// 	while (str[++i])
-// 		if (str[i] == c)
-// 			return (i);
-// 	return (-1);
-// }
+	new->token = r;
+	new->type = *c;
+	i = int_strchr(r, *c);
+	if (i >= 0)
+	{
+		*c = check_input(r, i);
+		new->type = 0;
+	}
+}
 
 static int	complete_quo(t_shell *s, t_token **tail, int *c)
 {
@@ -40,16 +43,9 @@ static int	complete_quo(t_shell *s, t_token **tail, int *c)
 	(*tail)->next = new;
 	if (!new)
 		return (handle_error(s, 137), errmsg_errno(2), 1);
-	new->token = r;
 	(*tail) = (*tail)->next;
 	(*tail)->next = NULL;
-	new->type = *c;
-	i = int_strchr(r, *c);
-	if (i >= 0)
-	{
-		*c = check_input(r, i);
-		new->type = 0;
-	}
+	complete_quo_helper(new, r, c);
 	return (0);
 }
 
@@ -78,9 +74,26 @@ static int	complete_sp(t_shell *s, t_token **tail, int *c)
 	return (0);
 }
 
+int	complete_input_helper(t_shell *s, t_token **tail, char *r, int *c)
+{
+	if (*c == '\'' || *c == '"')
+	{
+		if (complete_quo(s, tail, c))
+			return (1);
+	}
+	else if (*c & OPERATORS)
+	{
+		if (complete_sp(s, tail, c))
+			return (1);
+	}
+	else if (*c > 0 && *c & FILES)
+		return (1);
+	return (0);
+}
+
 int	complete_input(t_shell *s, t_token **head, char *r, int c)
 {
-	t_token *tail;
+	t_token	*tail;
 
 	(*head) = (t_token *) malloc (sizeof(t_token));
 	if (!(*head))
@@ -92,19 +105,6 @@ int	complete_input(t_shell *s, t_token **head, char *r, int c)
 	if (c == '\'' || c == '"')
 		tail->type = c;
 	while (c > 0 && c != end_b)
-	{
-		if (c == '\'' || c == '"')
-		{
-			if (complete_quo(s, &tail, &c))
-				return (1);
-		}
-		else if (c & OPERATORS)
-		{
-			if (complete_sp(s, &tail, &c))
-				return (1);
-		}
-		else if (c > 0 && c & FILES)
-			return (1);
-	}
+		complete_input_helper(s, &tail, r, &c);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 16:42:42 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/22 17:01:20 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/28 14:03:27 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 static int	pid_pfd_init(t_block *b)
 {
-	b->pid = (int *) malloc (b->num * sizeof(int));
+	b->pid = (int *) malloc(b->num * sizeof(int));
 	if (!b->pid)
 		return (1);
-	b->pfd = (int *) malloc ((b->num + b->add) * sizeof(int));
+	b->pfd = (int *) malloc((b->num + b->add) * sizeof(int));
 	if (!b->pfd)
 		return (1);
 	return (0);
@@ -47,7 +47,7 @@ static void	transfer_token_proc(t_proc *new, t_buffer buffer)
 	new->cmd[i] = NULL;
 }
 
-static int	get_process_node(t_proc **ptr, t_block *b, t_token *t)
+static int	get_process_node(t_shell *s, t_proc **ptr, t_block *b, t_token *t)
 {
 	t_token		*temp;
 	t_proc		*new;
@@ -58,7 +58,7 @@ static int	get_process_node(t_proc **ptr, t_block *b, t_token *t)
 	*ptr = NULL;
 	new = (t_proc *) malloc(sizeof(t_proc));
 	if (!new)
-		return (errmsg_errno(5), 1);
+		return (handle_error(s, 137), errmsg_errno(5), 1);
 	b->num ++;
 	while (t)
 	{
@@ -66,10 +66,12 @@ static int	get_process_node(t_proc **ptr, t_block *b, t_token *t)
 		t = t->next;
 		transfer_token_buffer(new, &buffer, b, temp);
 	}
+	if (expand_tokens(s, &buffer))
+		return (1);
 	new->cmd = (char **) malloc((buffer.size + 1) * sizeof(char *));
 	transfer_token_proc(new, buffer);
 	if (!new->cmd)
-		return (free_process(new), 1);
+		return (handle_error(s, 137), free_process(new), 1);
 	*ptr = new;
 	return (0);
 }
@@ -83,19 +85,19 @@ int	process_init(t_shell *s, int *i, int *type)
 		return (1);
 	if (!buffer)
 		return (0);
-	if (get_process_node(&s->process_section.proc, &s->process_section, buffer))
-		return (1);
 	ptr = s->process_section.proc;
+	if (get_process_node(s, &ptr, &s->process_section, buffer))
+		return (1);
 	while (s->input[*i] && !(*type & (LOGIC | BRACKETS)))
 	{
 		if (tokenize_input(s, &buffer, i, type))
 			return (free_process_section(s), 1);
-		if (get_process_node(&ptr->next, &s->process_section, buffer))
+		if (get_process_node(s, &ptr->next, &s->process_section, buffer))
 			return (free_process_section(s), 1);
 		ptr = ptr->next;
 	}
 	ptr->next = NULL;
 	if (pid_pfd_init(&s->process_section))
-		return (free_process_section(s), 1);
+		return (handle_error(s, 137), free_process_section(s), 1);
 	return (0);
 }

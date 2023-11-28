@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 10:05:18 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/22 11:04:36 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/28 15:04:39 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	*errmsg_token(int token)
 	int		check;
 
 	s = (char *[9]){"<<", "<", ">", ">>", "|", "||", "&&", "(", ")"};
-	i = (int[]){2, 1, 1, 2, 1, 2, 2, 1, 1};
+	i = (int []){2, 1, 1, 2, 1, 2, 2, 1, 1};
 	index = 0;
 	check = 0;
 	if (!token || token < 0)
@@ -72,6 +72,10 @@ void	*errmsg_errno(int e)
 		write(2, "t_proc (malloc): ", 17);
 	else if (e == 6)
 		write(2, "t_buffer (malloc): ", 19);
+	else if (e == 7)
+		write(2, "subshell (fork): ", 19);
+	else if (e == 8)
+		write(2, "t_env (malloc): ", 16);
 	ptr = strerror(errno);
 	if (ptr)
 		write(2, ptr, ft_strlen(ptr));
