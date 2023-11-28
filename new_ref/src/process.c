@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 16:42:42 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/28 14:03:27 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/28 16:06:33 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,6 @@ static int	get_process_node(t_shell *s, t_proc **ptr, t_block *b, t_token *t)
 		t = t->next;
 		transfer_token_buffer(new, &buffer, b, temp);
 	}
-	if (expand_tokens(s, &buffer))
-		return (1);
 	new->cmd = (char **) malloc((buffer.size + 1) * sizeof(char *));
 	transfer_token_proc(new, buffer);
 	if (!new->cmd)
