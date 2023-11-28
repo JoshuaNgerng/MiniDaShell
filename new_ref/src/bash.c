@@ -6,14 +6,46 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 13:30:13 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/22 13:44:10 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/28 08:19:52 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	get_end_brac(char *input, int i)
+{
+	int	brac;
+
+	brac = 1;
+	while (input[i] && brac)
+	{
+		if (input[i] == '(')
+			brac ++;
+		else if (input[i] == ')')
+			brac --;
+		i ++;
+	}
+	return (i);
+}
+
 int	subshell(t_shell *s, int *index)
 {
+	int	i;
+	int	end;
+	int	pid;
+
+	pid = fork();
+	if (pid < 0)
+		return (errmsg_errno(), handle_error(s, 137), -1);
+	end = get_end_brac(s->input, *index);
+	if (!pid)
+	{
+		;
+	}
+	else
+	{
+		;
+	}
 	return (0);
 }
 

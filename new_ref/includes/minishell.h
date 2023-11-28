@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/22 13:44:32 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/25 18:14:51 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,5 +167,5 @@ int		do_processes(t_shell *s);
 
 void	dev_print_tokens(t_token *t);
 void	dev_print_data(t_proc *p);
-
+# define NULL 0
 #endif
