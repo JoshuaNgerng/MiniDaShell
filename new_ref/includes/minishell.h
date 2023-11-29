@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/29 13:23:01 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/29 17:33:00 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,13 @@ typedef struct s_token
 	int				type;
 	struct s_token	*next;
 }	t_token;
+
+typedef struct s_sect
+{
+	t_token			*section;
+	int				operator;
+	struct s_sect	*next;
+}	t_sect;
 
 typedef struct s_ptr
 {
