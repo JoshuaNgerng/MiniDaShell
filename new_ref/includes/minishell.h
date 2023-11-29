@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/28 14:31:42 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/29 13:23:01 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,12 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct s_env_buffer
+{
+	t_env				*env;
+	struct s_env_buffer	*next;
+}	t_env_buffer;
+
 typedef struct s_shell
 {
 	int		status;
@@ -177,6 +183,9 @@ int		bash(t_shell *s);
 int		do_bash(t_shell *s, int *index);
 int		tokenize_input(t_shell *s, t_token **head, int *index, int *type);
 int		process_init(t_shell *s, int *i, int *type);
+int		expand(t_shell *s, t_buffer *b);
+int		search_expand(char *str, t_env **list, int *check);
+void	copy_expand(char *dst, t_env *list, char *src);
 void	transfer_token_buffer(t_proc *p, t_buffer *b, \
 								t_block *block, t_token *t);
 int		do_processes(t_shell *s);

@@ -6,17 +6,88 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 11:17:32 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/28 17:27:27 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/29 13:18:39 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	expand_file(t_shell *s, t_token *t)
+{
+	int		len;
+	int		check;
+	t_env	*env;
+	char	*out;
+
+	check = 0;
+	env = NULL;
+	if (search_expand(t->token, &env, &check);
+	if (check)
+		return (errmsg(-1), 1);
+	out = (char *) malloc((len + 1) * sizeof(char));
+	if (!out)
+		return (1);
+	copy_expand(out, env, t->token);
+	free(t->token);
+	t->token = out;
+	return (0);
+}
+
 int	expand_cmd(t_shell *s, t_token *t)
+{
+	int		len;
+	t_env	*env;
+	char	*out;
+
+	env = NULL;
+	len = search_expand(t->token, &env, NULL);
+	out = (char *) malloc((len + 1) * sizeof(char));
+	if (!out)
+		return (1);
+	copy_expand(out, env, t->token);
+	free(t->token);
+	t->token = out;
+	return (0);
+}
+
+int	expand_here_doc(t_shell *s, t_token *t)
+{
+	int		i;
+	int		j;
+	int		len;
+	char	*out;
+
+	i = -1;
+	len = 0;
+	while (t->token[++ i])
+		if (t->token[i] != '\'' || t->token[i] != '"')
+			len ++;
+	len = i - len;
+	out = (char *) malloc((len + 1) * sizeof(char));
+	if (!out)
+		return (1);
+	i = -1;
+	j = 0;
+	while (t->token[++ i])
+		if (t->token[i] != '\'' || t->token[i] != '"')
+			out[j ++] = t->token[i];
+	out[j] = '\0';
+	free(t->token);
+	t->token = out;
+	return (0);
+}
+
+int	loop_tokens(t_shell *s, t_token *t, int(*f)(t_shell *, t_token *))
 {
 	t_token	*ptr;
 
-	
+	ptr = t;
+	while (ptr)
+	{
+		if (f(s, ptr))
+			return (1);
+		ptr = ptr->next;
+	}
 	return (0);
 }
 
@@ -24,22 +95,22 @@ int	expand(t_shell *s, t_buffer *b)
 {
 	if (b->cmd.head)
 	{
-		if (expand_cmd(s, b->cmd.head))
+		if (loop_tokens(s, b->cmd.head, &expand_cmd))
 			return (1);
 	}
 	if (b->here_doc.head)
 	{
-		if (expand_here_doc(s, b->here_doc.head))
+		if (loop_tokens(s, b->here_doc.head, &expand_here_doc))
 			return (1);
 	}
 	if (b->read.head)
 	{
-		if (expand_files(s, b->read.head))
+		if (loop_tokens(s, b->read.head, &expand_file))
 			return (1);
 	}
 	if (b->out.head)
 	{
-		if (expand_files(s, b->out.head))
+		if (loop_tokens(s, b->out.head, &expand_file))
 			return (1);
 	}
 	return (0);
