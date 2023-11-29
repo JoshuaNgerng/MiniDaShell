@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 12:12:07 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/29 13:13:39 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/29 17:34:41 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	search_expand(char *str, t_env **list, int *check)
 		if (str[i] == '\'' || str[i] == '"')
 			quo = read_quo(str[i], quo);
 		else if (str[i] == '$' && (!quo || quo == '"'))
+			;
 	}
 	if (check)
 		*check = space;
