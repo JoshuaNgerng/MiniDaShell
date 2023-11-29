@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 11:17:32 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/29 13:18:39 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/29 19:42:25 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,19 @@ int	expand_file(t_shell *s, t_token *t)
 {
 	int		len;
 	int		check;
-	t_env	*env;
+	t_token	*list;
 	char	*out;
 
 	check = 0;
-	env = NULL;
-	if (search_expand(t->token, &env, &check);
+	list = NULL;
+	if (search_expand(t->token, &list, &len, &check))
+		return (1);
 	if (check)
 		return (errmsg(-1), 1);
 	out = (char *) malloc((len + 1) * sizeof(char));
 	if (!out)
 		return (1);
-	copy_expand(out, env, t->token);
+	copy_expand(out, list, t->token);
 	free(t->token);
 	t->token = out;
 	return (0);
@@ -36,15 +37,16 @@ int	expand_file(t_shell *s, t_token *t)
 int	expand_cmd(t_shell *s, t_token *t)
 {
 	int		len;
-	t_env	*env;
+	t_token	*list;
 	char	*out;
 
-	env = NULL;
-	len = search_expand(t->token, &env, NULL);
+	list = NULL;
+	if (search_expand(t->token, &list, &len, NULL))
+		return (1);
 	out = (char *) malloc((len + 1) * sizeof(char));
 	if (!out)
 		return (1);
-	copy_expand(out, env, t->token);
+	copy_expand(out, list, t->token);
 	free(t->token);
 	t->token = out;
 	return (0);

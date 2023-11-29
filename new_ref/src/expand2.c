@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 12:12:07 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/29 17:34:41 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/29 19:46:18 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,25 +24,35 @@ static int	read_quo(char ref, int quo)
 	return (quo);
 }
 
-int	search_expand(char *str, t_env **list, int *check)
+int	search_expand(char *str, t_token **list, int *len, int *check)
 {
-	int	i;
-	int	len;
-	int	quo;
-	int	space;
+	int		i;
+	int		l;
+	int		quo;
+	int		space;
+	t_ptr	buffer;
 
 	space = 0;
 	i = -1;
+	l = 0;
+	buffer = (t_ptr){0, 0};
 	while (str[++ i])
 	{
 		if (str[i] == '\'' || str[i] == '"')
 			quo = read_quo(str[i], quo);
 		else if (str[i] == '$' && (!quo || quo == '"'))
-			;
+		{
+			if ()
+				return (1);
+		}
+		else
+			l ++;
 	}
+	*list = buffer.head;
 	if (check)
 		*check = space;
-	return (len);
+	*len = l;
+	return (0);
 }
 
 static int	copy_expand_var(char *dst, int *j, t_env **list, char *src)
@@ -52,7 +62,7 @@ static int	copy_expand_var(char *dst, int *j, t_env **list, char *src)
 	return (i);
 }
 
-void	copy_expand(char *dst, t_env *list, char *src)
+void	copy_expand(char *dst, t_token *list, char *src)
 {
 	int	i;
 	int	j;
