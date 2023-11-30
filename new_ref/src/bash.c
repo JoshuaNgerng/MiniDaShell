@@ -6,12 +6,12 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 13:30:13 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/28 10:46:41 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/11/30 23:19:41 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+/*
 static int	get_end_brac(char *input, int i)
 {
 	int	brac;
@@ -89,8 +89,6 @@ int	do_bash(t_shell *s, int *index)
 
 	i = *index;
 	type = 0;
-	if (process_init(s, &i, &type))
-		return (1);
 	if (type == start_b)
 	{
 		if (subshell(s, &i))
@@ -105,13 +103,79 @@ int	do_bash(t_shell *s, int *index)
 	*index = i;
 	return (0);
 }
+*/
+
+int	process_child(t_shell *s, t_processor *p, t_proc *proc)
+{
+	return (0);
+}
+
+// process children need to reset pid index
+int	process_children(t_shell *s, t_processor *p, t_sect *sect)
+{
+	t_proc	*ptr;
+
+	p->index_p = 0;
+	if (prepare_pipes())
+		return (1);
+	ptr = sect->block;
+	while (ptr)
+	{
+		if (process_child(s, p, ptr))
+			return (1);
+		p->index_p ++;
+		ptr = ptr->next;
+	}
+	// close pipes then waitpid
+	return (0);
+}
+
+t_sect	*get_next_process(t_shell *s, t_sect *buffer, int type)
+{
+	int		skip;
+	t_sect	*ptr;
+
+	skip = 0;
+	if (type == _or && !s->status)
+		skip = type;
+	else if (type == _and && s->status)
+		skip = type;
+	if (skip)
+	{
+		while (buffer && buffer->operator != skip)
+		{
+			ptr = buffer;
+			buffer = buffer->next;
+			free_sect(buffer);
+		}
+	}
+	return (buffer);
+}
 
 int	bash(t_shell *s)
 {
-	int	i;
+	int			type;
+	t_processor	*p;
+	t_sect		*ptr;
 
-	i = 0;
-	while (s->input[i])
-		do_bash(s, &i);
+	p = &s->processor;
+	if (tokenize_and_sectioning(s, p))
+		return (1);
+	p->here_doc_pipe = (int *) malloc(p->here_doc_num * sizeof(int) * 2);
+	if (!p->here_doc_pipe || do_here_doc(s, p))
+		return (1);
+	while (p->buffer)
+	{
+		ptr = p->buffer;
+		p->buffer = p->buffer->next;
+		type = p->buffer->operator;
+		p->pid = (int *) malloc(ptr->pid * sizeof(int));
+		p->pipe = (int *) malloc(ptr->pid * sizeof(int) * 2);
+		if (!p->pid || !p->pipe)
+			return (1);
+		if (expand(s, ptr) || process_children(s, &p, ptr))
+			return (1);
+		p->buffer = get_next_process(s, p->buffer, type);
+	}
 	return (0);
 }

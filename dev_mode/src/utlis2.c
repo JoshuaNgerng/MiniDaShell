@@ -1,18 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   buffer.c                                           :+:      :+:    :+:   */
+/*   utlis2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/22 13:34:03 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/25 21:14:43 by jngerng          ###   ########.fr       */
+/*   Created: 2023/11/28 08:41:32 by jngerng           #+#    #+#             */
+/*   Updated: 2023/11/30 22:16:50 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	transfer_token_ptr(t_ptr *p, t_token *t)
+int	strcpy_index(char *dst, int start, char *src)
+{
+	int	len;
+
+	len = -1;
+	while (src[++ len])
+		dst[start + len] = src[len];
+	return (len);
+}
+
+void	transfer_token_ptr(t_ptr *p, t_token *t)
 {
 	if (!(p->tail))
 	{
@@ -26,25 +36,17 @@ static void	transfer_token_ptr(t_ptr *p, t_token *t)
 	p->tail->next = NULL;
 }
 
-void	transfer_token_buffer(t_proc *p, t_buffer *b, \
-								t_block *block, t_token *t)
+int	get_here_doc_num_proc(t_proc *p)
 {
-	if (t->type == here_doc)
+	int		out;
+	t_token	*ptr;
+
+	out = 0;
+	ptr = p->here_doc;
+	while (ptr)
 	{
-		transfer_token_ptr(&b->here_doc, t);
-		p->in = here_doc;
-		block->add ++;
+		out ++;
+		ptr = ptr->next;
 	}
-	else if (t->type & _read)
-	{
-		transfer_token_ptr(&b->read, t);
-		p->in = _read;
-	}
-	else if (t->type & _write || t->type & _append)
-		transfer_token_ptr(&b->out, t);
-	else
-	{
-		transfer_token_ptr(&b->cmd, t);
-		b->size ++;
-	}
+	return (out);
 }
