@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 10:05:18 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/28 15:04:39 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/01 14:31:03 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,16 +76,36 @@ void	*errmsg_errno(int e)
 		write(2, "subshell (fork): ", 19);
 	else if (e == 8)
 		write(2, "t_env (malloc): ", 16);
-	ptr = strerror(errno);
-	if (ptr)
+	else if (e == 9)
+		write(2, "dup2: ", 6);
+	else if (e == 10)
+		write(2, "find_cmd (malloc): ", 19);
+	else if (e == 11)
+		write(2, "get_cmd_array (malloc): ", 24);
+	if (errno > 0)
+	{
+		ptr = strerror(errno);
 		write(2, ptr, ft_strlen(ptr));
+	}
 	write(2, "\n", 1);
 	errno = 0;
 	return (NULL);
 }
 
-void	handle_error(t_shell *s, int ext_code)
+void	*sp_errmsg(int e, char *msg)
 {
-	s->status = ext_code;
-	s->check = 1;
+	char	*ptr;
+
+	if (msg)
+		write(2, msg, ft_strlen(msg));
+	if (e == 3)
+		write(2, ": ", 2);
+	if (errno > 0)
+	{
+		ptr = strerror(errno);
+		write(2, ptr, ft_strlen(ptr));
+	}
+	write(2, "\n", 1);
+	errno = 0;
+	return (NULL);
 }

@@ -28,7 +28,6 @@ static void	complete_quo_helper(t_token *new, char *r, int *c)
 
 static int	complete_quo(t_shell *s, t_token **tail, int *c)
 {
-	int		i;
 	char	*r;
 	t_token	*new;
 
@@ -74,7 +73,7 @@ static int	complete_sp(t_shell *s, t_token **tail, int *c)
 	return (0);
 }
 
-int	complete_input_helper(t_shell *s, t_token **tail, char *r, int *c)
+int	complete_input_helper(t_shell *s, t_token **tail, int *c)
 {
 	if (*c == '\'' || *c == '"')
 	{
@@ -105,6 +104,6 @@ int	complete_input(t_shell *s, t_token **head, char *r, int c)
 	if (c == '\'' || c == '"')
 		tail->type = c;
 	while (c > 0 && c != end_b)
-		complete_input_helper(s, &tail, r, &c);
+		complete_input_helper(s, &tail, &c);
 	return (0);
 }

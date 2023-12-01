@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 11:17:32 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/30 22:42:05 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/01 17:19:12 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	expand_here_doc(t_shell *s, t_token *t)
 	return (0);
 }
 
-int	loop_tokens(t_shell *s, t_token *t)
+int	loop_files(t_shell *s, t_token *t)
 {
 	t_token	*ptr;
 

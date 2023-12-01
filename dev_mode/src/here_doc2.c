@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 19:06:43 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/30 20:47:24 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/01 16:48:24 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static int	empty_here_doc(char *lim)
 {
 	int		l;
-	int		i;
 	int		x;
 	char	*buffer;	
 
@@ -38,7 +37,6 @@ static int	empty_here_doc(char *lim)
 static int	here_doc_write(char *lim, int pfd)
 {
 	int		l;
-	int		i;
 	int		x;
 	int		e;
 	char	*buffer;	
@@ -84,6 +82,7 @@ int	loop_here_doc_helper(t_shell *s, t_token *t, int *pfd, int *index)
 		i = *index;
 		if (here_doc_write(ptr->token, pfd[i * 2]))
 			return (1);
+		printf("write here_doc to %d\n", pfd[i * 2]);
 		*index = i + 1;
 	}
 	return (0);

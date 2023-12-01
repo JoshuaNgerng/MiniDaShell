@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 08:41:32 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/30 22:16:50 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/01 16:42:11 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,37 @@ int	get_here_doc_num_proc(t_proc *p)
 		ptr = ptr->next;
 	}
 	return (out);
+}
+
+void	close_pipes(int *pipes, int len)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++ i < len)
+	{
+		j = i * 2;
+		close(pipes[j]);
+		close(pipes[j + 1]);
+	}
+}
+
+int	prepare_pipes(int *pipes, int len)
+{
+	int	i;
+
+	i = -1;
+	while (++ i < len)
+	{
+		if (pipe(&pipes[i * 2]))
+			return (close_pipes(pipes, i), 1);
+	}
+	return (0);
+}
+
+void	handle_error(t_shell *s, int ext_code)
+{
+	s->status = ext_code;
+	s->check = 1;
 }

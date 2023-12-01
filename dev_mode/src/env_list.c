@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 13:03:32 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/30 09:18:56 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/01 17:21:10 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	export(t_shell *s, char **cmd)
 			return (handle_error(s, 137), 1);
 		ptr = search_env(s->env, new->key, 0);
 		if (!ptr)
-			env_list_addback(s->env, new);
+			env_list_addback(&s->env, new);
 		else
 		{
 			ptr->value = new->value;
@@ -72,6 +72,26 @@ int	export(t_shell *s, char **cmd)
 		}
 	}
 	return (0);
+}
+
+t_env	*unset_proc(t_env *head, t_env *target)
+{
+	t_env	*ptr;
+	t_env	*ptr2;
+
+	if (!target->prev)
+	{
+		head = target->next;
+		head->prev = NULL;
+		free_env_node(target);
+		return (head);
+	}
+	ptr = target->prev;
+	ptr2 = target->next;
+	ptr->next = ptr2;
+	ptr2->prev = ptr;
+	free_env_node(target);
+	return (head);
 }
 
 int	unset(t_shell *s, char **cmd)

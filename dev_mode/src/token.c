@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 11:11:00 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/30 17:26:06 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/01 15:56:48 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ static t_token	*get_token(char *input, int i, int *index, int *type)
 	if (!out)
 		return (NULL);
 	if (input[i] == '(')
-		j = get_brac(input, i);
+		j = get_bracket(input, i);
 	else if (input[i] == '$' && input[i + 1] == '(')
-		j = get_brac(input, i + 1);
+		j = get_bracket(input, i + 1);
 	else
 		j = iter_token(input, i, NULL);
 	// printf("testing indexes i(%d) j(%d)\n", i, j);
@@ -118,7 +118,7 @@ int	tokenize_input(t_shell *s, t_token **head, int *index, int *type)
 	{
 		*type = 0;
 		if (get_token_input(&tail, s->input, index, type))
-			return (free_tokens(head), errmsg_errno(4), \
+			return (free_tokens(*head), errmsg_errno(4), \
 					handle_error(s, 137), 1);
 		// printf("inner testing index %d type %d\n", *index, *type);
 	}

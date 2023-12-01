@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 13:30:13 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/30 23:19:41 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/01 16:21:37 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	do_bash(t_shell *s, int *index)
 }
 */
 
-int	process_child(t_shell *s, t_processor *p, t_proc *proc)
+int	special_process(t_shell *s, t_processor *p, t_proc *proc)
 {
 	return (0);
 }
@@ -113,20 +113,29 @@ int	process_child(t_shell *s, t_processor *p, t_proc *proc)
 // process children need to reset pid index
 int	process_children(t_shell *s, t_processor *p, t_sect *sect)
 {
-	t_proc	*ptr;
+	int		i;
+	t_proc	*store;
 
 	p->index_p = 0;
-	if (prepare_pipes())
+	if (sect->pid == 1)
+		return (special_process(s, p, sect->block));
+	if (prepare_pipes(p->pipe, p->pipe_num))
 		return (1);
-	ptr = sect->block;
-	while (ptr)
+	while (sect->block)
 	{
-		if (process_child(s, p, ptr))
+		store = sect->block;
+		sect->block = sect->block->next;
+		store->next = NULL;
+		if (process_child(s, p, store))
 			return (1);
+		free_process(store);
 		p->index_p ++;
-		ptr = ptr->next;
 	}
-	// close pipes then waitpid
+	close_pipes(p->pipe, p->pipe_num);
+	close_pipes(p->here_doc_pipe, p->here_doc_num);
+	i = -1;
+	while (++ i < sect->pid)
+		waitpid(p->pid[i], &s->status, 0);
 	return (0);
 }
 
@@ -148,8 +157,31 @@ t_sect	*get_next_process(t_shell *s, t_sect *buffer, int type)
 			buffer = buffer->next;
 			free_sect(buffer);
 		}
+		if (buffer)
+		{
+			ptr = buffer;
+			buffer = buffer->next;
+			free_sect(buffer);
+		}
 	}
 	return (buffer);
+}
+
+int	bash_helper(t_shell *s, t_processor *p)
+{
+	p->pipe_num = p->buffer->pid - 1;
+	p->pid = (int *) malloc(p->buffer->pid * sizeof(int));
+	p->pipe = (int *) malloc(p->pipe_num * sizeof(int) * 2);
+	if (!p->pid || !p->pipe)
+		return (handle_error(s, 137), 1);
+	if (expand(s, p->buffer) || process_children(s, p, p->buffer))
+		return (1);
+	if (p->pid)
+		free(p->pid);
+	p->pid = NULL;
+	if (p->pipe)
+		free(p->pipe);
+	return (0);
 }
 
 int	bash(t_shell *s)
@@ -162,20 +194,21 @@ int	bash(t_shell *s)
 	if (tokenize_and_sectioning(s, p))
 		return (1);
 	p->here_doc_pipe = (int *) malloc(p->here_doc_num * sizeof(int) * 2);
-	if (!p->here_doc_pipe || do_here_doc(s, p))
+	if (!p->here_doc_pipe)
+		return (handle_error(s, 137), 1);
+	if (do_here_doc(s, p))
 		return (1);
 	while (p->buffer)
 	{
+		type = p->buffer->operator;
+		if (bash_helper(s, p))
+			return (1);
 		ptr = p->buffer;
 		p->buffer = p->buffer->next;
-		type = p->buffer->operator;
-		p->pid = (int *) malloc(ptr->pid * sizeof(int));
-		p->pipe = (int *) malloc(ptr->pid * sizeof(int) * 2);
-		if (!p->pid || !p->pipe)
-			return (1);
-		if (expand(s, ptr) || process_children(s, &p, ptr))
-			return (1);
+		free_sect(ptr);
 		p->buffer = get_next_process(s, p->buffer, type);
 	}
+	free(p->here_doc_pipe);
+	p->here_doc_pipe = NULL;
 	return (0);
 }

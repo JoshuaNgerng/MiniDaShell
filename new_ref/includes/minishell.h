@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/30 23:13:49 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/01 17:30:28 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ typedef struct s_sect
 typedef struct s_processor
 {
 	int		here_doc_num;
+	int		pipe_num;
 	int		index_h;
 	int		index_p;
 	t_sect	*buffer;
@@ -143,7 +144,9 @@ typedef struct s_env
 	char			*key;
 	char			*value;
 	struct s_env	*next;
+	struct s_env	*prev;
 }	t_env;
+
 
 typedef struct s_shell
 {
@@ -163,6 +166,8 @@ int		pass_space(char *input, int start);
 char	*get_env(char **env, char *var, int len);
 char	*get_input(t_shell *s, char *prompt);
 int		int_strchr(char *s, char c);
+void	close_pipes(int *pipes, int len);
+int		prepare_pipes(int *pipes, int len);
 int		strcpy_index(char *dst, int start, char *src);
 // int		get_end_brac(char *input, int i);
 void	free_strs(char **s);
@@ -182,6 +187,7 @@ void	*errmsg(int e);
 void	*errmsg_var(int e, char *msg, int len);
 void	*errmsg_token(int token);
 void	*errmsg_errno(int e);
+void	*sp_errmsg(int e, char *msg);
 void	handle_error(t_shell *s, int ext_code);
 int		shell_init(t_shell *s, char **env);
 t_env	*env_list_init(char **env);
@@ -198,12 +204,29 @@ int		check_input(char *input, int i);
 int		bash(t_shell *s);
 int		do_bash(t_shell *s, int *index);
 int		tokenize_input(t_shell *s, t_token **head, int *index, int *type);
+void	transfer_token_ptr(t_ptr *p, t_token *t);
+// section
+int		tokenize_and_sectioning(t_shell *s, t_processor	*p);
+//
+int		add_process(t_shell *s, t_ptr_p *ptr, t_sect *sec, int *index);
 // here doc
 int		get_here_doc_num_proc(t_proc *p);
+int		do_here_doc(t_shell *s, t_processor *p);
 int		loop_here_doc(t_shell *s, t_processor *p, int *pfd);
 //expand
 int		expand_here_doc(t_shell *s, t_token *t);
+int		copy_expand(char *dst, char *src, t_token *list, int file);
+int		search_expand(char *str, t_env *env, t_token **list, int *len);
+int		expand_cmd(t_token *now, t_token **prev, t_shell *s, int *size);
 int		expand(t_shell *s, t_sect *sect);
+// fork
+int		process_child(t_shell *s, t_processor *p, t_proc *hold);
+// files
+int		cycle_output_files(t_token *f_out);
+int		cycle_input_files(t_token *f_read);
+//cmd
+char	**get_cmd_array(t_token *cmd);
+int		find_cmd(char **path, char **path_cmd, char *cmd, int *ext_code);
 // int		process_init(t_shell *s, int *i, int *type);
 // int		expand(t_shell *s, t_buffer *b);
 // int		expand_cmd(t_token *now, t_token **prev, t_shell *s, int *size);
@@ -215,7 +238,7 @@ int		expand(t_shell *s, t_sect *sect);
 // int		do_processes(t_shell *s);
 // t_block	*process_input(t_shell *s, char *input);
 
-void	dev_print_tokens(t_token *t);
-void	dev_print_data(t_proc *p);
+// void	dev_print_tokens(t_token *t);
+// void	dev_print_data(t_proc *p);
 // # define NULL 0
 #endif

@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 16:29:09 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/30 22:59:31 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/01 16:41:21 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	free_process(t_proc *p)
 {
 	if (!p)
 		return ;
-	free_strs(p->cmd);
+	free_tokens(p->cmd);
 	free_tokens(p->here_doc);
 	free_tokens(p->f_read);
 	free_tokens(p->f_out);

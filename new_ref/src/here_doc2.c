@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 19:06:43 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/30 20:47:24 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/01 16:48:25 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static int	empty_here_doc(char *lim)
 {
 	int		l;
-	int		i;
 	int		x;
 	char	*buffer;	
 
@@ -38,7 +37,6 @@ static int	empty_here_doc(char *lim)
 static int	here_doc_write(char *lim, int pfd)
 {
 	int		l;
-	int		i;
 	int		x;
 	int		e;
 	char	*buffer;	

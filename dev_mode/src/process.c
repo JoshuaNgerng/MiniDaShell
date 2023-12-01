@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 16:42:42 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/30 18:36:42 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/01 16:09:04 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	process_init(t_shell *s, int *i, int *type)
 }
 */
 
-void	cont_proc_list(t_sect *new, t_ptr_p *ptr)
+void	cont_proc_list(t_proc *new, t_ptr_p *ptr)
 {
 	if (!ptr->head)
 	{
@@ -116,8 +116,7 @@ void	cont_proc_list(t_sect *new, t_ptr_p *ptr)
 	ptr->tail->next = NULL;
 }
 
-void	transfer_token_buffer(t_proc *p, t_buffer *b, \
-								t_sect *sec, t_token *t)
+void	transfer_token_buffer(t_proc *p, t_buffer *b, t_token *t)
 {
 	if (t->type == here_doc)
 	{
@@ -159,7 +158,7 @@ int	add_process(t_shell *s, t_ptr_p *ptr, t_sect *sec, int *index)
 	{
 		temp = list;
 		list = list->next;
-		transfer_token_buffer(new, &buffer, sec, temp);
+		transfer_token_buffer(new, &buffer, temp);
 	}
 	cont_proc_list(new, ptr);
 	return (type);

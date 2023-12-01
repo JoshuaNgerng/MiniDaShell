@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 15:56:23 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/30 22:15:31 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/01 16:20:01 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ int	tokenize_and_sectioning(t_shell *s, t_processor	*p)
 {
 	int		index;
 	int		type;
-	t_token	*list;
 	t_ptr_s	buffer;
 
 	index = 0;

@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 12:37:20 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/28 15:06:26 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/01 17:22:07 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,19 +39,21 @@ void	env_list_addback(t_env **list, t_env *new)
 		while (temp->next)
 			temp = temp->next;
 		temp->next = new;
+		new->next = NULL;
+		new->prev = temp;
 	}
 }
 
-t_env	*search(t_env *head, char *key)
+t_env	*search_env(t_env *head, char *key, int len)
 {
-	int		len;
+	int		test_len;
 	t_env	*ptr;
 
 	ptr = head;
 	while (ptr)
 	{
-		len = ft_strlen(key);
-		if (!ft_strncmp(ptr->key, key, len) && len == ft_strlen(ptr->key))
+		test_len = ft_strlen(ptr->key);
+		if (!ft_strncmp(ptr->key, key, len) && len == test_len)
 			return (ptr);
 		ptr = ptr->next;
 	}
@@ -91,11 +93,13 @@ t_env	*env_list_init(char **env)
 	if (!head)
 		return (NULL);
 	ptr = head;
+	head->prev = NULL;
 	while (env[++ i])
 	{
 		equal = find_equal_sign(env[i]);
 		new = make_env_node(env[i], equal);
 		ptr->next = new;
+		new->prev = ptr;
 		if (!new)
 			return (free_env_list(head), NULL);
 		ptr = ptr->next;
