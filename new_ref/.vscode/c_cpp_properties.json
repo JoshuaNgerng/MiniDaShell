@@ -3,9 +3,9 @@
         {
             "name": "Linux",
             "includePath": [
-                "/usr/include/**",
-                "includes",
-                "libft/includes"
+                "libft/includes",
+				"includes",
+				"/usr/include/**"
             ],
             "defines": [],
             "cStandard": "c17",

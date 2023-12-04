@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 12:37:20 by jngerng           #+#    #+#             */
-/*   Updated: 2023/12/01 17:22:20 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/04 20:04:03 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	find_equal_sign(char *s)
 	int	i;
 
 	i = -1;
-	while (s[++ i] && s[i] != '=')
+	while (s[++ i])
 	{
 		if (s[i] == '=')
 			return (i);
@@ -77,6 +77,7 @@ t_env	*make_env_node(char *env, int equal)
 	if (!new->value)
 		return (errmsg_errno(8), free(new->key), free(new), NULL);
 	new->next = NULL;
+	new->prev = NULL;
 	return (new);
 }
 
@@ -98,6 +99,7 @@ t_env	*env_list_init(char **env)
 		equal = find_equal_sign(env[i]);
 		new = make_env_node(env[i], equal);
 		ptr->next = new;
+		new->prev = ptr;
 		if (!new)
 			return (free_env_list(head), NULL);
 		ptr = ptr->next;

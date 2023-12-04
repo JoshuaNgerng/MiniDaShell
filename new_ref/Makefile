@@ -14,7 +14,9 @@ NAME = minishell
 OBJ_DIR = obj
 SRC_DIR = src
 # S_NAME = main free parse expand expand2 token bash process file pipe valid utlis errmsg
-S_NAME = main init env_init env_list input input2 check errmsg token section process bash here_doc here_doc2 child cmd file expand expand2 expand3 free free2 utlis utlis2
+S_NAME = main init env_init env_list input input2 check errmsg token section \
+		process bash here_doc here_doc2 child cmd file expand expand2 expand3 \
+		free free2 utlis utlis2 builtin
 _SRC = $(addsuffix .c, $(S_NAME))
 SRC = $(addprefix $(SRC_DIR)/, $(_SRC))
 OBJ = $(addprefix $(OBJ_DIR)/, $(_SRC:.c=.o))

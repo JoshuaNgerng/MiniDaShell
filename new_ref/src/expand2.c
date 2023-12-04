@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/29 12:12:07 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/30 14:11:47 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/04 21:17:43 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,19 @@ int	get_env_token(t_env *env, char *str, t_ptr *ptr, int *index, int *len)
 	t_env	*search;
 	t_token	*new;
 
-	i = *index;
-	new = (t_token *) malloc(sizeof(t_token *));
+	i = *index + 1;
+	new = (t_token *) malloc(sizeof(t_token));
 	if (!new)
 		return (1);
-	while (!ft_checkset(str[i], "*$ \\\"'"))
+	while (str[i] && !ft_checkset(str[i], "*$ \\\"'"))
 		i ++;
-	search = search_env(env, &str[*index], i);
+	search = search_env(env, &str[(*index) + 1], i - 1);
 	if (!search)
-		new->token = NULL;
+	{
+		new->token = ft_strdup("");
+		if (len)
+			*len += ft_strlen(new->token);
+	}
 	else
 	{
 		new->token = search->value;
@@ -56,12 +60,11 @@ int	search_expand(char *str, t_env *env, t_token **list, int *len)
 	int		i;
 	int		l;
 	int		quo;
-	int		space;
 	t_ptr	buffer;
 
-	space = 0;
 	i = -1;
 	l = 0;
+	quo = 0;
 	buffer = (t_ptr){0, 0};
 	while (str[++ i])
 	{
@@ -102,7 +105,7 @@ static int	copy_expand_helper(char *dst, t_token *list, int *check, int quo)
 		while (list->token[++ i])
 		{
 			if (list->token[i] == ' ')
-				check = 1;
+				*check = 1;
 			dst[i] = list->token[i];
 		}
 	}
@@ -131,7 +134,7 @@ int	copy_expand(char *dst, char *src, t_token *list, int file)
 		else if (src[i] == '$' && (!quo || quo == '"'))
 		{
 			j += copy_expand_helper(&dst[j], list, &check, quo);
-			if (file && check < 0)
+			if (file && check == 1)
 				return (errmsg_var(-1, &src[i + 1], list->type), 1);
 			i += list->type;
 			list = list->next;

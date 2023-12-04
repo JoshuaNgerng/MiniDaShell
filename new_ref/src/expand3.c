@@ -6,17 +6,14 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 10:54:49 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/30 14:23:32 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/04 20:23:53 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// cmd four iter
-
 int	get_length(char *str, int index)
 {
-	int	i;
 	int	len;
 	int	quo;
 
@@ -68,7 +65,8 @@ int	clean_token(t_token *t, char *str, int *index)
 		j ++;
 	}
 	new_str[i] = '\0';
-	free(t->token);
+	if (t->token)
+		free(t->token);
 	*index = j;
 	t->token = new_str;
 	return (0);
@@ -92,6 +90,7 @@ int	expand_env_cmd(char *str, t_ptr *buffer, t_token *next)
 			buffer->tail->next = next;
 			return (1);
 		}
+		new->token = NULL;
 		buffer->tail = buffer->tail->next;
 		if (clean_token(buffer->tail, str, &i))
 			return (1);
@@ -101,7 +100,7 @@ int	expand_env_cmd(char *str, t_ptr *buffer, t_token *next)
 	return (0);
 }
 
-int	expand_cmd(t_token *now, t_token **prev, t_shell *s, int *size)
+int	expand_cmd(t_token *now, t_token **prev, t_shell *s)//, int *size)
 {
 	int		len;
 	char	*line;
@@ -115,7 +114,7 @@ int	expand_cmd(t_token *now, t_token **prev, t_shell *s, int *size)
 	list = NULL;
 	if (search_expand(now->token, s->env, &list, &len))
 		return (handle_error(s, 137), 1);
-	line = (char *)malloc ((len + 1) * sizeof(char));
+	line = (char *) malloc((len + 1) * sizeof(char));
 	if (!line)
 		return (free_tokens_empty(list), handle_error(s, 137), 1);
 	copy_expand(line, now->token, list, 0);
@@ -123,8 +122,9 @@ int	expand_cmd(t_token *now, t_token **prev, t_shell *s, int *size)
 	if (expand_env_cmd(line, &buffer, next))
 		return (free(line), handle_error(s, 137), 1);
 	if (!*prev)
-		return (0);
+		return (free(line), 0);
 	(*prev)->next = buffer.head;
 	*prev = buffer.tail;
+	free(line);
 	return (0);
 }

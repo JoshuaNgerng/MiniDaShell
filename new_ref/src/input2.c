@@ -31,7 +31,7 @@ static int	get_new_token(char *input, int i, int *new, int *brac)
 	else if (input[i] == ')')
 	{
 		*new = end_b;
-		(*brac)++;
+		(*brac)--;
 		i ++;
 	}
 	else
@@ -47,7 +47,8 @@ static int	check_inside_loop(char *input, int i, int *prev, int *brac)
 	new = 0;
 	i = pass_space(input, i);
 	if (!input[i])
-		return (i);	j = get_new_token(input, i, &new, brac);
+		return (i);
+	j = get_new_token(input, i, &new, brac);
 	if (j < 0)
 		return (-1);
 	if (*prev & FILES && new)
@@ -60,7 +61,7 @@ static int	check_inside_loop(char *input, int i, int *prev, int *brac)
 		return (errmsg_token(new), -1);
 	else if (new & start_b && !(*prev & (OPERATORS | start_b)))
 		return (errmsg_token(new), -1);
-	else if (new & end_b && (*prev && *prev != start_b))
+	else if (new & end_b && (*prev && *prev != end_b))
 		return (errmsg_token(new), -1);
 	*prev = new;
 	return (j);
@@ -83,6 +84,7 @@ int	check_input(char *input, int i)
 		if (input[i] == '(')
 		{
 			i ++;
+			out = start_b;
 			brac = 1;
 		}
 		else if (input[i] == '<' || input[i] == '>')

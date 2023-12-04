@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 19:16:28 by jngerng           #+#    #+#             */
-/*   Updated: 2023/11/30 22:23:47 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/04 20:12:07 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,37 +83,3 @@ int	int_strchr(char *s, char c)
 		return (-1);
 	return (i);
 }
-
-void	dev_print_tokens(t_token *t)
-{
-	while (t)
-	{
-		printf("test str: %s, type: %d\n", t->token, t->type);
-		t = t->next;
-	}
-}
-
-void	dev_print_data(t_proc *p)
-{
-	int	i;
-
-	while (p)
-	{
-		printf("test cmd\n");
-		dev_print_tokens(p->cmd);
-		printf("test here_doc\n");
-		dev_print_tokens(p->here_doc);
-		printf("test read\n");
-		dev_print_tokens(p->f_read);
-		printf("test out\n");
-		dev_print_tokens(p->f_out);
-		p = p->next;
-	}
-}
-
-// void	dev_print_proc(t_block b)
-// {
-// 	printf("testing block \n");
-// 	printf("test b.num(%d), b.add(%d)\n", b.num, b.add);
-// 	dev_print_data(b.proc);
-// }

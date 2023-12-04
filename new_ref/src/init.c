@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 10:21:56 by jngerng           #+#    #+#             */
-/*   Updated: 2023/12/01 13:49:19 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/04 20:04:32 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,21 @@ static char	*root_init(char **env)
 	char	*tmp2;
 
 	tmp1 = get_env(env, "LOGNAME", 7);
-	tmp2 = get_env(env, "USER", 4);
+	tmp2 = get_env(env, "NAME", 4);
+	if (!tmp2)
+		tmp2 = get_env(env, "USER", 4);
 	len1 = strlen(tmp1);
 	len2 = strlen(tmp2);
 	out = (char *) malloc ((len1 + len2 + 14) * sizeof(char));
 	if (!out)
 		return (NULL);
-	ft_strlcpy(out, GREEN, 7);
-	ft_strlcpy(&out[7], tmp1, len1);
+	ft_strlcpy(out, GREEN, 8);
+	ft_strlcpy(&out[7], tmp1, len1 + 1);
 	i = 7 + len1;
 	out[i ++] = '@';
-	ft_strlcpy(&out[i], tmp2, len2);
+	ft_strlcpy(&out[i], tmp2, len2 + 1);
 	i += len2;
-	ft_strlcpy(&out[i], RESET, 4);
+	ft_strlcpy(&out[i], RESET, 5);
 	i += 4;
 	out[i] = ':';
 	out[++ i] = '\0';
@@ -109,5 +111,7 @@ int	shell_init(t_shell *s, char **env)
 	s->env = env_list_init(env);
 	if (!s->env)
 		return (free(s->root.root_msg), free(s->path), 1);
+	s->root.pwd = search_env(s->env, "PWD", 3);
+	s->root.oldpwd = search_env(s->env, "OLDPWD", 6);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/30 15:56:23 by jngerng           #+#    #+#             */
-/*   Updated: 2023/12/01 16:20:03 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/04 20:10:17 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	add_section(t_shell *s, t_ptr_s	*ptr, int *index)
 	t_sect	*new;
 	t_ptr_p	buffer;
 
+	buffer = (t_ptr_p){0, 0};
 	new = (t_sect *) malloc(sizeof(t_sect));
 	if (!new)
 		return (1);
@@ -53,16 +54,14 @@ int	add_section(t_shell *s, t_ptr_s	*ptr, int *index)
 int	tokenize_and_sectioning(t_shell *s, t_processor	*p)
 {
 	int		index;
-	int		type;
 	t_ptr_s	buffer;
 
 	index = 0;
-	type = 0;
 	buffer = (t_ptr_s){0, 0};
 	while (s->input[index])
 	{
 		if (add_section(s, &buffer, &index))
-			return (1); // free_buffer
+			return (free_sect_list(buffer.head), 1);
 	}
 	p->buffer = buffer.head;
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2023/12/01 17:30:28 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/04 21:47:14 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,14 +131,6 @@ typedef struct s_ptr_s
 	t_sect	*tail;
 }	t_ptr_s;
 
-typedef struct s_root
-{
-	char	*root_msg;
-	char	*prompt;
-	char	directory[4097];
-	char	change;
-}	t_root;
-
 typedef struct s_env
 {
 	char			*key;
@@ -147,6 +139,15 @@ typedef struct s_env
 	struct s_env	*prev;
 }	t_env;
 
+typedef struct s_root
+{
+	char	*root_msg;
+	char	*prompt;
+	t_env	*pwd;
+	t_env	*oldpwd;
+	char	directory[4097];
+	char	change;
+}	t_root;
 
 typedef struct s_shell
 {
@@ -166,6 +167,7 @@ int		pass_space(char *input, int start);
 char	*get_env(char **env, char *var, int len);
 char	*get_input(t_shell *s, char *prompt);
 int		int_strchr(char *s, char c);
+int		strcpy_index(char *dst, int start, char *src);
 void	close_pipes(int *pipes, int len);
 int		prepare_pipes(int *pipes, int len);
 int		strcpy_index(char *dst, int start, char *src);
@@ -193,13 +195,15 @@ int		shell_init(t_shell *s, char **env);
 t_env	*env_list_init(char **env);
 t_env	*make_env_node(char *env, int equal);
 t_env	*search_env(t_env *head, char *key, int len);
-void	env_list_addback(t_env **list, t_env *new);
+void	env_list_addback(t_env **list, t_env *t_new);
+int		export(t_shell *s, char **cmd);
+int		unset(t_shell *s, char **cmd);
 int		find_equal_sign(char *s);
 int		read_quo(char ref, int quo);
 int		complete_input(t_shell *s, t_token **head, char *r, int c);
 int		check_logical_operator(char *input, int *index);
 int		check_redirection(char *input, int *index);
-int		iter_token(char *input, int i, int *new);
+int		iter_token(char *input, int i, int *t_new);
 int		check_input(char *input, int i);
 int		bash(t_shell *s);
 int		do_bash(t_shell *s, int *index);
@@ -217,7 +221,7 @@ int		loop_here_doc(t_shell *s, t_processor *p, int *pfd);
 int		expand_here_doc(t_shell *s, t_token *t);
 int		copy_expand(char *dst, char *src, t_token *list, int file);
 int		search_expand(char *str, t_env *env, t_token **list, int *len);
-int		expand_cmd(t_token *now, t_token **prev, t_shell *s, int *size);
+int		expand_cmd(t_token *now, t_token **prev, t_shell *);
 int		expand(t_shell *s, t_sect *sect);
 // fork
 int		process_child(t_shell *s, t_processor *p, t_proc *hold);
@@ -227,18 +231,13 @@ int		cycle_input_files(t_token *f_read);
 //cmd
 char	**get_cmd_array(t_token *cmd);
 int		find_cmd(char **path, char **path_cmd, char *cmd, int *ext_code);
-// int		process_init(t_shell *s, int *i, int *type);
-// int		expand(t_shell *s, t_buffer *b);
-// int		expand_cmd(t_token *now, t_token **prev, t_shell *s, int *size);
-// int		search_expand(char *str, t_env *env, t_token **list, int *len);
-// int		copy_expand(char *dst, char *src, t_token *list, int file);
-// void	transfer_token_ptr(t_ptr *p, t_token *t);
-// void	transfer_token_buffer(t_proc *p, t_buffer *b, \
-								t_block *block, t_token *t);
-// int		do_processes(t_shell *s);
-// t_block	*process_input(t_shell *s, char *input);
+//utlis
+void	handle_signal(int signum);
+void	detach_node(t_env **head, t_env *target);
+// builtin
+int		check_special_process(t_shell *s, t_processor *p, t_proc *proc);
 
 // void	dev_print_tokens(t_token *t);
 // void	dev_print_data(t_proc *p);
-// # define NULL 0
+# define NULL ((void *)0)
 #endif

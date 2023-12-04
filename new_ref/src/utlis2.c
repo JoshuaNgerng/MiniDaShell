@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 08:41:32 by jngerng           #+#    #+#             */
-/*   Updated: 2023/12/01 16:41:57 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/04 21:08:41 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,10 @@ int	prepare_pipes(int *pipes, int len)
 	i = -1;
 	while (++ i < len)
 	{
-		if (pipe(&pipes[i * 2]))
+		if (pipe(&pipes[i * 2]) == -1)
 			return (close_pipes(pipes, i), 1);
+		// printf("test pipes %d %d\n", pipes[i *2], pipes[i * 2 + 1]);
+		// printf("test index write (%d) read (%d)\n", i * 2, i * 2 + 1);
 	}
 	return (0);
 }
@@ -82,4 +84,19 @@ void	handle_error(t_shell *s, int ext_code)
 {
 	s->status = ext_code;
 	s->check = 1;
+}
+
+void	detach_node(t_env **head, t_env *target)
+{
+	t_env	*ptr;
+
+	if (!target->prev)
+	{
+		*head = target->next;
+		target->next = NULL;
+	}
+	ptr = target->prev;
+	ptr->next = target->next;
+	target->next = NULL;
+	target->prev = NULL;
 }

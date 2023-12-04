@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 10:25:05 by jngerng           #+#    #+#             */
-/*   Updated: 2023/12/01 16:50:14 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/04 10:49:08 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ char	**get_cmd_array(t_token *cmd)
 		len ++;
 		ptr = ptr->next;
 	}
-	out = (char **) malloc(len * sizeof(char));
+	out = (char **) malloc(len * sizeof(char *));
 	if (!out)
 		return (errmsg_errno(11), NULL);
 	ptr = cmd;
 	i = -1;
-	while (++ i < len)
+	while (++ i < len - 1)
 	{
 		out[i] = ptr->token;
 		ptr->token = NULL;

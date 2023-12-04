@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 10:05:18 by jngerng           #+#    #+#             */
-/*   Updated: 2023/12/01 14:31:03 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/04 04:07:28 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,13 @@ void	*errmsg_var(int e, char *msg, int len)
 void	*errmsg_token(int token)
 {
 	char	**s;
-	int		*i;
+	int		i;
+	int		*array;
 	int		index;
 	int		check;
 
 	s = (char *[9]){"<<", "<", ">", ">>", "|", "||", "&&", "(", ")"};
-	i = (int []){2, 1, 1, 2, 1, 2, 2, 1, 1};
+	array = (int []){2, 1, 1, 2, 1, 2, 2, 1, 1};
 	index = 0;
 	check = 0;
 	if (!token || token < 0)
@@ -53,7 +54,8 @@ void	*errmsg_token(int token)
 		check = (token & (1 << index));
 		index ++;
 	}
-	return (errmsg_var(1, s[index -1], index - 1));
+	i = array[index - 1];
+	return (errmsg_var(1, s[index -1], i));
 }
 
 void	*errmsg_errno(int e)
@@ -73,7 +75,7 @@ void	*errmsg_errno(int e)
 	else if (e == 6)
 		write(2, "t_buffer (malloc): ", 19);
 	else if (e == 7)
-		write(2, "subshell (fork): ", 19);
+		write(2, "subshell (fork): ", 17);
 	else if (e == 8)
 		write(2, "t_env (malloc): ", 16);
 	else if (e == 9)
@@ -82,11 +84,9 @@ void	*errmsg_errno(int e)
 		write(2, "find_cmd (malloc): ", 19);
 	else if (e == 11)
 		write(2, "get_cmd_array (malloc): ", 24);
-	if (errno > 0)
-	{
-		ptr = strerror(errno);
+	ptr = strerror(errno);
+	if (ptr)
 		write(2, ptr, ft_strlen(ptr));
-	}
 	write(2, "\n", 1);
 	errno = 0;
 	return (NULL);

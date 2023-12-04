@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 13:03:32 by jngerng           #+#    #+#             */
-/*   Updated: 2023/12/01 17:21:08 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/04 22:04:01 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	check_valid_line(t_shell *s, char *cmd, int *equal)
 	i = -1;
 	while (cmd[++ i])
 	{
-		if (!ft_isalpha(cmd[i]))
+		if (ft_checkset(cmd[i], "$*&^"))
 			return (handle_error(s, 1), invalid_errmsg(cmd), 1);
 		if (equal)
 		{
@@ -84,13 +84,18 @@ t_env	*unset_proc(t_env *head, t_env *target)
 		head = target->next;
 		head->prev = NULL;
 		free_env_node(target);
-		return (head);
 	}
-	ptr = target->prev;
-	ptr2 = target->next;
-	ptr->next = ptr2;
-	ptr2->prev = ptr;
-	free_env_node(target);
+	else
+	{
+		ptr = target->prev;
+		ptr2 = target->next;
+		ptr->next = ptr2;
+		ptr2->prev = ptr;
+	}
+	if (ft_strncmp(target->key, "PWD", 4) && ft_strncmp(ptr->key, "OLDPWD", 7))
+		return (free_env_node(target), head);
+	target->next = NULL;
+	target->prev = NULL;
 	return (head);
 }
 

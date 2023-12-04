@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 19:50:32 by jngerng           #+#    #+#             */
-/*   Updated: 2023/12/01 15:31:51 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/04 21:32:56 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,10 @@ void	free_env_list(t_env *list)
 void	free_all(t_shell *s)
 {
 	free_strs(s->path);
+	// detach_node(&s->env, s->root.oldpwd);
+	// free_env_node(s->root.oldpwd);
+	// detach_node(&s->env, s->root.pwd);
+	// free_env_node(s->root.pwd);
 	free_env_list(s->env);
 	free_reset(s);
 	free(s->root.root_msg);
