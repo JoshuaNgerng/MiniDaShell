@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 13:30:13 by jngerng           #+#    #+#             */
-/*   Updated: 2023/12/04 22:05:53 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/04 22:10:11 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ int	process_children(t_shell *s, t_processor *p, t_sect *sect)
 
 	p->index_p = 0;
 	if (sect->pid == 1)
-		return (check_special_process(s, p, sect->block));
+	{
+		if (check_special_process(s, sect->block))
+			return (0);
+	}
 	if (prepare_pipes(p->pipe, p->pipe_num))
 		return (1);
 	while (sect->block)

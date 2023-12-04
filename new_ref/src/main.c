@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:31:16 by jngerng           #+#    #+#             */
-/*   Updated: 2023/12/04 20:24:22 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/04 22:12:04 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,11 @@ int	main(int ac, char **av, char **env)
 	errno = 0;
 	if (shell_init(&s, env))
 		return (s.ext_code);
+	if (signal(SIGINT, handle_signal) == SIG_ERR && signal(SIGQUIT, handle_signal) == SIG_ERR)
+	{
+		perror("Error! Signal handler!\n");
+		return (1);
+	}
 	s.input = get_user_input(&s);
 	while (s.input)
 	{

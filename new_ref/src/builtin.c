@@ -6,11 +6,21 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 21:46:26 by jngerng           #+#    #+#             */
-/*   Updated: 2023/12/04 22:02:17 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/04 22:13:34 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	cd_function(t_shell *s, char **cmd)
+{
+	free_strs(cmd);
+}
+
+void	pwd_function(t_shell *s, char **cmd)
+{
+	free_strs(cmd);
+}
 
 void	exit_function(t_shell *s, char **cmd)
 {
@@ -56,7 +66,7 @@ int	make_cmd_special_process(t_shell *s, t_proc *proc, int check)
 	return (free_strs(cmd), ext);
 }
 
-int	check_special_process(t_shell *s, t_processor *p, t_proc *proc)
+int	check_special_process(t_shell *s, t_proc *proc)
 {
 	int	check;
 
@@ -68,9 +78,6 @@ int	check_special_process(t_shell *s, t_processor *p, t_proc *proc)
 	if (!ft_strncmp(proc->cmd->token, "exit", 5))
 		check = 3;
 	if (check)
-		return (make_cmd_special_process(s, proc, check));
-	if (process_child(s, p, proc))
-		return (1);
-	waitpid(p->pid[0], &s->status, 0);
-	return (0);
+		make_cmd_special_process(s, proc, check);
+	return (check);
 }

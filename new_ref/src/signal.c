@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 19:35:11 by jngerng           #+#    #+#             */
-/*   Updated: 2023/12/04 19:35:53 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/04 22:12:42 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	handle_signal(int signum)
 {
 	if (signum == SIGINT)
 	{
+		
 		write(1, "\n", 1);
 	}
 	rl_on_new_line();

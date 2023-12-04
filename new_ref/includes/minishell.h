@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2023/12/04 21:47:14 by jngerng          ###   ########.fr       */
+/*   Updated: 2023/12/04 22:09:29 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,7 +235,7 @@ int		find_cmd(char **path, char **path_cmd, char *cmd, int *ext_code);
 void	handle_signal(int signum);
 void	detach_node(t_env **head, t_env *target);
 // builtin
-int		check_special_process(t_shell *s, t_processor *p, t_proc *proc);
+int		check_special_process(t_shell *s, t_proc *proc);
 
 // void	dev_print_tokens(t_token *t);
 // void	dev_print_data(t_proc *p);
