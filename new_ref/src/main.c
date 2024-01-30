@@ -5,24 +5,24 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/07 17:31:16 by jngerng           #+#    #+#             */
-/*   Updated: 2023/12/04 22:12:04 by jngerng          ###   ########.fr       */
+/*   Created: 2024/01/13 09:42:21 by jngerng           #+#    #+#             */
+/*   Updated: 2024/01/30 14:12:11 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	int_strcpy(char *dst, int index, const char *src)
-{
-	int	j;
+// static int	int_strcpy(char *dst, int index, const char *src)
+// {
+// 	int	j;
 
-	j = -1;
-	while (src[++ j])
-		dst[index ++] = src[j];
-	return (index);
-}
+// 	j = -1;
+// 	while (src[++ j])
+// 		dst[index ++] = src[j];
+// 	return (index);
+// }
 
-int	get_size(t_token *t)
+static int	get_size(const t_token *t)
 {
 	int	out;
 
@@ -37,15 +37,14 @@ int	get_size(t_token *t)
 	return (out);
 }
 
-char	*join_buffer(t_shell *s, t_token *t)
+static char	*join_buffer(t_shell *s, t_token *t, int *len)
 {
 	int		i;
-	int		l;
 	char	*out;
 	t_token	*ptr;
 
-	l = get_size(t);
-	out = (char *) malloc ((l + 1) * sizeof(char));
+	*len = get_size(t);
+	out = (char *) malloc ((*len + 1) * sizeof(char));
 	if (!out)
 		return (free_tokens(t), handle_error(s, 137), NULL);
 	i = 0;
@@ -73,6 +72,7 @@ char	*get_user_input(t_shell *s)
 	if (c > 0 && c & FILES)
 	{
 		c = -1;
+		s->check = 1;
 		errmsg_var(1, "newline", 7);
 	}
 	if (c > 0)
@@ -82,15 +82,15 @@ char	*get_user_input(t_shell *s)
 	}
 	if (head)
 	{
-		r = join_buffer(s, head);
+		r = join_buffer(s, head, &s->input_len);
 		if (!r)
 			handle_error(s, 137);
 	}
+	else if (r)
+		s->input_len = ft_strlen(r);
 	if (r)
 		add_history(r);
 	// printf("test added to history %s\n", r);
-	if (c == -1)
-		s->check = 1;
 	return (r);
 }
 
@@ -102,10 +102,10 @@ int	main(int ac, char **av, char **env)
 	(void) av;
 	errno = 0;
 	if (shell_init(&s, env))
-		return (s.ext_code);
+		return (s.status);
 	if (signal(SIGINT, handle_signal) == SIG_ERR && signal(SIGQUIT, handle_signal) == SIG_ERR)
 	{
-		perror("Error! Signal handler!\n");
+		perror("Error! Signal handler!\n"); // errmsg
 		return (1);
 	}
 	s.input = get_user_input(&s);
@@ -120,5 +120,5 @@ int	main(int ac, char **av, char **env)
 	}
 	write(1, "exit\n", 5);
 	// system("leaks minishell");
-	return (free_all(&s), s.ext_code);
+	return (free_all(&s), s.status);
 }
