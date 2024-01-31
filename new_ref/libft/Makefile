@@ -6,7 +6,7 @@
 #    By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/17 10:24:41 by jngerng           #+#    #+#              #
-#    Updated: 2023/11/17 10:49:36 by jngerng          ###   ########.fr        #
+#    Updated: 2024/01/31 12:32:01 by jngerng          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,9 +37,18 @@ $(NAME): $(OBJ)
 
 all : $(NAME)
 
+ifeq ($(wildcard $(OBJ_DIR)),)
+
 clean:
 	rm -f $(OBJ)
-	if [ -d $(OBJ_DIR) ]; then rmdir $(OBJ_DIR); fi
+
+else
+
+clean:
+	rm -f $(OBJ)
+	rmdir $(OBJ_DIR)
+
+endif
 
 fclean: clean
 	rm -f $(NAME)

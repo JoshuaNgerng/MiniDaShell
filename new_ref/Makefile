@@ -112,9 +112,18 @@ $(NAME): $(OBJ)
 
 all : $(NAME)
 
+ifeq ($(wildcard $(OBJ_DIR)),)
+
 oclean:
 	rm -f $(OBJ)
-	if [-d $(OBJ_DIR)]; then rmdir $(OBJ_DIR); fi
+
+else
+
+oclean:
+	rm -f $(OBJ)
+	rmdir $(OBJ_DIR)
+
+endif
 
 clean: oclean
 	$(MAKE) fclean -C libft
