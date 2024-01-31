@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 08:39:26 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/30 13:50:38 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 08:19:57 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,15 +91,9 @@ static int	process_children(t_shell *s, t_processor *p, t_sect *sect)
 	// printf("test1\n");
 	close_pipes(p->pipe, p->pipe_num);
 	if (p->stdin_ > 0)
-	{
 		close(p->stdin_);
-		p->stdin_ = 0;
-	}
 	if (p->stdout_ > 1)
-	{
 		close(p->stdout_);
-		p->stdout_ = 1;
-	}
 	// printf("test2 %p\n", p->pid);
 	i = -1;
 	while (++ i < sect->pid)
@@ -108,6 +102,8 @@ static int	process_children(t_shell *s, t_processor *p, t_sect *sect)
 	// printf("test3\n");
 	free(p->pipe);
 	p->pipe = NULL;
+	p->stdin_ = 0;
+	p->stdout_ = 1;
 	return (0);
 }
 

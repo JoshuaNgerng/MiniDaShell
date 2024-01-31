@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 09:59:45 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/27 09:52:34 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 11:06:34 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,9 @@ static int	check_inside_loop(char *input, int i, int *prev, int *brac)
 		return (-1);
 	if (*prev & FILES && new)
 		return (errmsg_token(new), -1);
-	else if (!new && *prev == start_b)
-		return (errmsg_var(1, &input[i], j - i), -1);
+	else if (new & OPERATORS && *prev == start_b)
+		return (errmsg_token(new), -1);
+		// return (errmsg_var(1, &input[i], j - i - 1), -1);
 	else if (new == _pipe && (*prev > 0 && *prev < end_b))
 		return (errmsg_token(new), -1);
 	else if (new & LOGIC && *prev && *prev != end_b)

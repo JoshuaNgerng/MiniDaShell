@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 13:25:58 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/30 12:21:25 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 08:55:21 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ char	*read_from_pipe(int fd)
 	char	*out;
 	char	*buffer;
 
+	out = NULL;
 	buffer = (char *) malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
 		return (NULL);
@@ -55,16 +56,22 @@ char	*read_from_pipe(int fd)
 	return (free(buffer), out);
 }
 
-int	finish_expand_subshell(t_token *new, int fd, t_ptr *buffer)
+int	finish_expand_subshell(t_token *new, int fd, t_ptr *buffer, t_expand *e)
 {
 	new->token = read_from_pipe(fd);
 	close(fd);
+	new->next = NULL;
+	// printf("testing fd(%d), token(%p)\n%s\n", fd, new->token, new->token);
+	if (!new->token)
+		new->token = ft_strdup("");
 	if (!new->token)
 		return (free(new), 1);
+	e->str[e->i] = '$' *-1;
+	e->len += ft_strlen(new->token);
 	return (transfer_token_ptr(buffer, new), 0);
 }
 
-t_proc	*make_subshell_node(char *str, int i)
+t_proc	*make_subshell_node(char *str, int i, int *ptr)
 {
 	int		j;
 	t_proc	*new;
@@ -78,10 +85,11 @@ t_proc	*make_subshell_node(char *str, int i)
 	j = i;
 	while (str[j] && str[j] != ')')
 		j ++;
-	new->cmd->token = ft_substr(str, i + 1, j - i);
+	*ptr = j - i;
+	new->cmd->token = ft_substr(str, i + 1, *ptr);
 	if (!new->cmd->token)
 		return (free(new->cmd), free(new), NULL);
-	printf("testing new cmd:%s\n", new->cmd->token);
+	// printf("testing new cmd:%s\n", new->cmd->token);
 	new->cmd->next = NULL;
 	new->f_out = NULL;
 	new->f_read = NULL;
@@ -98,13 +106,13 @@ int	expand_subshell(t_token *new, t_ptr *buffer, t_expand *e)
 	int		pipe_fd[2];
 	t_proc	*temp;
 
-	printf("test expand subshell\n");
-	temp = make_subshell_node(e->str,e->i);
+	// printf("test expand subshell\n");
+	temp = make_subshell_node(e->str, e->i, &new->type);
 	if (!temp)
 		return (free(new), 1);
 	if (pipe(pipe_fd))
 		return (free_process(temp), free(new), 1); //ermsg
-	printf("test pipe %d %d\n", pipe_fd[0], pipe_fd[1]);
+	// printf("test pipe %d %d\n", pipe_fd[0], pipe_fd[1]);
 	ref = e->s->processor.stdout_;
 	e->s->processor.stdout_ = pipe_fd[1];
 	pid = fork();
@@ -115,6 +123,7 @@ int	expand_subshell(t_token *new, t_ptr *buffer, t_expand *e)
 		e->s->processor.stdout_ = ref;
 		return (free_process(temp), free(new), 1);
 	}
+	// printf("test before dup stdin(%d) stdout(%d)\n", e->s->processor.stdin_, e->s->processor.stdout_);
 	if (!pid)
 		subshell(e->s, &e->s->processor, temp);
 	free_process(temp);
@@ -122,5 +131,5 @@ int	expand_subshell(t_token *new, t_ptr *buffer, t_expand *e)
 	waitpid(pid, &e->s->status, 0);
 	e->s->status = WEXITSTATUS(e->s->status);
 	e->s->processor.stdout_ = ref;
-	return (finish_expand_subshell(new, pipe_fd[0], buffer));
+	return (finish_expand_subshell(new, pipe_fd[0], buffer, e));
 }

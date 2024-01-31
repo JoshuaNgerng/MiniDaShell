@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 10:47:06 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/30 14:06:33 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 11:30:23 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	int_strchr(char *s, char c)
 	int	i;
 
 	i = 0;
-	while (s[i] != c)
+	while (s[i] && s[i] != c)
 		i ++;
 	if (s[i] != c)
 		return (-1);

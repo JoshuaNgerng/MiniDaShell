@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 09:16:25 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/22 21:00:32 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 11:06:30 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,11 @@ int	iter_token(char *input, int i, int *new)
 			if (input[i] == ref)
 				ref = 0;
 			else
+			{
+				if (new)
+					*new = ref;
 				return (i);
+			}
 		}
 		i ++;
 	}

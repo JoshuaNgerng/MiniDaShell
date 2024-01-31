@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:56:00 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/30 16:32:37 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 08:56:00 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ int	dup_stdin_stdout(t_shell *s, t_processor *p, t_proc *proc)
 		fd.fd_in = p->stdin_;
 	if (fd.fd_out == 1)
 		fd.fd_out = p->stdout_;
-	// printf("test fin stdout(%d) stdin(%d)\n", fd.fd_out, fd.fd_in);
 	// printf("test stdin(%d) stdout(%d)\n", p->stdin_, p->stdout_);
 	// printf("test fd_in(%d) fd_out(%d)\n", fd.fd_in, fd.fd_out);
 	// printf("test read(%d) write(%d)\n", fd.read_, fd.write_);

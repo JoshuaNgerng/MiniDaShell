@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 09:42:21 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/30 14:12:11 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 11:12:31 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*get_user_input(t_shell *s)
 	head = NULL;
 	r = get_input(s, s->root.prompt);
 	c = check_input(r, 0);
-	if (c > 0 && c & FILES)
+	if (c > 0 && c != '\'' && c != '"' && c & FILES)
 	{
 		c = -1;
 		s->check = 1;
@@ -86,10 +86,13 @@ char	*get_user_input(t_shell *s)
 		if (!r)
 			handle_error(s, 137);
 	}
-	else if (r)
-		s->input_len = ft_strlen(r);
+	if (c < 0)
+		s->check = 1;
 	if (r)
+	{
+		s->input_len = ft_strlen(r);
 		add_history(r);
+	}
 	// printf("test added to history %s\n", r);
 	return (r);
 }

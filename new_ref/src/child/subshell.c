@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 03:07:13 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/30 13:34:36 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 08:56:41 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ void	subshell(t_shell *s, t_processor *p, t_proc *hold)
 	// printf("test\n");
 	free_sect_list(p->buffer);
 	len = ft_strlen(hold->cmd->token);
-	printf("test:%s\n", hold->cmd->token);
+	// printf("test:%s\n", hold->cmd->token);
 	hold->cmd->token[len - 1] = '\0';
 	ft_memmove(hold->cmd->token, &hold->cmd->token[1], len);
-	printf("test:%s\n", hold->cmd->token);
+	// printf("test:%s\n", hold->cmd->token);
 	p->buffer = NULL;
 	fd.read_ = cycle_input_files(hold->f_read);
 	fd.write_ = cycle_output_files(hold->f_out);
@@ -66,10 +66,10 @@ void	subshell(t_shell *s, t_processor *p, t_proc *hold)
 		free_all_exit(s, 1);
 	dup_helper(p, &fd, hold->in);
 	// printf("test fd_out(%d) fd_in(%d)\n", fd.fd_out, fd.fd_in);
-	free_reset(s);
+	// free_reset(s);
 	if (fd.fd_in > 0)
 		p->stdin_ = fd.fd_in;
-	if (fd.fd_out > 0)
+	if (fd.fd_out > 1)
 		p->stdout_ = fd.fd_out;
 	// printf("test stdout(%d) stdin(%d)\n", p->stdout_, p->stdin_);
 	free_close_pipes_subshell(p, &fd);

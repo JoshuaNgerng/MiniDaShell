@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 01:45:02 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/30 17:17:47 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/30 18:00:00 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,14 @@ static char	*strjoin_dir(const char *dir, const char *fname)
 	return (out);
 }
 
-static int	process_file(const char *dir, const char *fname, t_ptr *buffer)
+static int	process_file(const char *dir, const char *fname, t_ptr *buffer, int type)
 {
 	t_token	*new;
 
 	new = (t_token *) malloc(sizeof(t_token));
 	if (!new)
 		return (1);
-	if (dir)
+	if (type)
 		new->token = strjoin_dir(dir, fname);
 	else
 		new->token = ft_strdup(fname);
@@ -94,7 +94,7 @@ int	read_from_dir(t_star *s, DIR *d, t_ptr *buffer, int *len_ptr)
 		if (!check_file(s, dir->d_name, len))
 		{
 			// printf("testing files:%s\n", dir->d_name);
-			if (process_file(s->str, dir->d_name, buffer))
+			if (process_file(s->str, dir->d_name, buffer, s->head_type))
 				return (1);
 			if (s->head_type)
 				*len_ptr += ft_strlen(&s->str[s->start]) + 1;

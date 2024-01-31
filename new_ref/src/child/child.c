@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:57:10 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/30 13:23:17 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 08:55:46 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ static void	child_process(t_shell *s, t_processor *p, t_proc *hold)
 	c = (t_child){NULL, NULL, hold};
 	free_sect_list(p->buffer);
 	p->buffer = NULL;
+	// printf("test before dup stdin(%d) stdout(%d)\n", p->stdin_, p->stdout_);
 	if (dup_stdin_stdout(s, p, hold))
 		free_child_exit(s, &c, s->status);
 	if (!hold->cmd)

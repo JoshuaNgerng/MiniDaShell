@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
+// #include <stdio.h>
 
 static int	get_size(int n)
 {
@@ -34,21 +35,6 @@ static int	get_size(int n)
 	return (i);
 }
 
-static int	get_base(int n, int size)
-{
-	int	base;
-
-	base = 1;
-	if (n < 0)
-		size --;
-	while (size > 1)
-	{
-		base *= 10;
-		size --;
-	}
-	return (base);
-}
-
 static char	*ft_strcpy(char *dest, char *src)
 {
 	char	*buffer;
@@ -64,32 +50,32 @@ static char	*ft_strcpy(char *dest, char *src)
 	return (dest);
 }
 
-static char	*get_number(char *input, int n, int size)
+static char	*get_number(char *input, int n, int len)
 {
-	int	i;
-	int	base;
+	int	sign;
 
-	i = 0;
-	base = get_base(n, size);
+	sign = 0;
 	if (n == -2147483648)
+		return (ft_strcpy(input, "-2147483648"));
+	input[len --] = '\0';
+	if (n == 0)
 	{
-		input = ft_strcpy(input, "-2147483648");
+		input[0] = '0';
 		return (input);
 	}
 	if (n < 0)
 	{
-		input[i] = '-';
 		n = -n;
-		i ++;
+		sign = 1;
 	}
-	while (base >= 1)
+	while (n > 0)
 	{
-		input[i] = n / base + '0';
-		i ++;
-		n %= base;
-		base /= 10;
+		input[len] = n % 10 + '0';
+		n /= 10;
+		len --;
 	}
-	input[i] = '\0';
+	if (sign)
+		input[0] = '-';
 	return (input);
 }
 
@@ -100,8 +86,18 @@ char	*ft_itoa(int n)
 
 	s = get_size(n);
 	ptr = (char *)malloc((s + 1) * sizeof(char));
-	if (ptr == NULL)
+	if (!ptr)
 		return (NULL);
 	ptr = get_number(ptr, n, s);
 	return (ptr);
 }
+
+// #include <stdio.h>
+// int	main(void)
+// {
+// 	int	n = 0;
+// 	char	*s = ft_itoa(n);
+// 	printf("test fin:%s\n", s);
+// 	free(s);
+// 	return (0);
+// }

@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 09:59:47 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/30 14:11:56 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 11:30:36 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,14 @@ static void	complete_quo_helper(t_token *new, char *r, int *c)
 
 	new->token = r;
 	new->type = *c;
+	// printf("testing end c %d\n", *c);
 	i = int_strchr(r, *c);
-	if (i >= 0)
-	{
-		*c = check_input(r, i);
-		new->type = 0;
-	}
+	// printf("testing i %d\n", i);
+	if (i < 0)
+		return ;
+	*c = check_input(r, i + 1);
+	// printf("testing end c %d\n", *c);
+	new->type = 0;
 }
 
 /*
@@ -96,6 +98,7 @@ int	complete_input_helper(t_shell *s, t_token **tail, int *c)
 {
 	if (*c == '\'' || *c == '"')
 	{
+		// printf("testing\n");
 		if (complete_quo(s, tail, c))
 			return (1);
 	}
@@ -104,8 +107,8 @@ int	complete_input_helper(t_shell *s, t_token **tail, int *c)
 		if (complete_sp(s, tail, c))
 			return (1);
 	}
-	else if (*c > 0 && *c & FILES)
-		return (1);
+	else if (*c > 0 && *c != '\'' && *c != '"' && *c & FILES)
+		return (errmsg_var(1, "newline", 7), 1);
 	return (0);
 }
 
@@ -133,6 +136,10 @@ int	complete_input(t_shell *s, t_token **head, char *r, int c)
 	if (c == '\'' || c == '"')
 		tail->type = c;
 	while (c > 0 && c != end_b)
-		complete_input_helper(s, &tail, &c);
+	{
+		if (complete_input_helper(s, &tail, &c))
+			return (1);
+		// printf("testing fin c %d\n", c);
+	}
 	return (0);
 }
