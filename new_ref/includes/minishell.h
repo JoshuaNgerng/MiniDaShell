@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/30 16:16:56 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 15:04:45 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,11 +212,13 @@ void	free_env_list(t_env *list);
 
 /* error messages */
 
+void	errmsg_name(char *name_);
 void	*errmsg(int e);
 void	*errmsg_var(int e, char *msg, int len);
 void	*errmsg_token(int token);
 void	*errmsg_errno(int e);
 void	*sp_errmsg(int e, char *msg);
+void	*errmsg_expand(char *cmd, t_token *list, t_token *list_malloc);
 
 /* handle strings */
 
@@ -255,7 +257,7 @@ void	clear_here_doc(t_processor *p);
 
 /* intialize  */
 
-int		shell_init(t_shell *s, char **env);
+int		shell_init(t_shell *s, char **av, char **env);
 char	*root_init(char **env);
 char	*get_prompt(char *direc, char *root);
 void	handle_signal(int signum);

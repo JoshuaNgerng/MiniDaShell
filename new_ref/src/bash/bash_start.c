@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 08:39:26 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 08:19:57 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 14:50:36 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ static int	bash_helper(t_shell *s, t_processor *p)
 	p->pid = (int *) malloc(p->buffer->pid * sizeof(int));
 	p->pipe = (int *) malloc(p->pipe_num * sizeof(int) * 2);
 	if (!p->pid || !p->pipe)
-		return (errmsg_errno(0), handle_error(s, 137), 1);
+		return (errmsg_errno(23), handle_error(s, 137), 1);
 	if (expand(s, p->buffer))
 		return (1);
 	if (p->pipe_num == 0)

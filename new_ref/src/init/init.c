@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 08:35:47 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/26 21:00:32 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 14:46:43 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static char	**get_path(char **env)
 	return (out);
 }
 
-static void	set_builtins(t_shell *s)
+static void	set_builtins(t_shell *s, char **av)
 {
 	s->builtin[0] = export; //root.
 	s->builtin[1] = unset;
@@ -45,9 +45,10 @@ static void	set_builtins(t_shell *s)
 	s->builtin[3] = cd_function;
 	s->builtin[4] = pwd_function;
 	s->builtin[5] = env_print;
+	errmsg_name(av[0]);
 }
 
-int	shell_init(t_shell *s, char **env)
+int	shell_init(t_shell *s, char **av, char **env)
 {
 	char	dir[4097];
 
@@ -73,7 +74,7 @@ int	shell_init(t_shell *s, char **env)
 		return (free_env_list(s->env), free(s->root.root_msg),
 			free(s->path), 1);
 	s->processor.stdout_ = 1;
-	return (set_builtins(s), 0);
+	return (set_builtins(s, av), 0);
 }
 
 void	handle_signal(int signum)

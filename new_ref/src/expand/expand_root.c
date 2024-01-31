@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 15:22:48 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/30 16:32:20 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 15:21:18 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	expand_file(t_shell *s, t_token *t, char *status)
 	while (out[++ i])
 	{
 		if (out[i] == ' ')
-			return (errmsg(0), free_tokens_empty(e.list),
+			return (errmsg_expand(t->token, e.list, e.list_malloc), free_tokens_empty(e.list),
 				free_tokens(e.list_malloc), free(out), 1);
 		else if (out[i] == -32)
 			out[i] = ' ';
@@ -121,7 +121,7 @@ int	expand(t_shell *s, t_sect *sect)
 	ptr = sect->block;
 	status = ft_itoa(s->status);
 	if (!status)
-		return (errmsg_errno(0), handle_error(s, 137), 1);
+		return (errmsg_errno(15), handle_error(s, 137), 1);
 	// printf("test before expand\n");
 	// dev_print_sect(sect);
 	while (ptr)

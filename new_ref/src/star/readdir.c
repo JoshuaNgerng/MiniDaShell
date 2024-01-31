@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 01:45:02 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/30 18:00:00 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 15:42:28 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	read_from_dir(t_star *s, DIR *d, t_ptr *buffer, int *len_ptr)
 		{
 			// printf("testing files:%s\n", dir->d_name);
 			if (process_file(s->str, dir->d_name, buffer, s->head_type))
-				return (1);
+				return (errmsg_errno(19), 1);
 			if (s->head_type)
 				*len_ptr += ft_strlen(&s->str[s->start]) + 1;
 			*len_ptr += len + 1;

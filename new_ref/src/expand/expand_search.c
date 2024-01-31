@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 10:40:34 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/30 16:40:28 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 16:33:15 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,16 @@ static int	expand_special_status(t_token *new, t_ptr *buffer, t_expand *e)
 static int	expand_env_list(t_expand *e, t_ptr *buffer, t_ptr *buffer_malloc)
 {
 	int		i;
+	// int		check;
 	t_env	*search;
 	t_token	*new;
 
 	i = e->i + 1;
+	// check = 0;
 	// printf("testing check %c %c\n", e->str[e->i], e->str[i]);
 	new = (t_token *) malloc(sizeof(t_token));
 	if (!new)
-		return (errmsg_errno(0), -1);
+		return (errmsg_errno(17), -1);
 	if (e->str[e->i] == '*')
 		return (expand_star(new, buffer_malloc, e));
 	if (e->str[i] == '?')
@@ -41,7 +43,8 @@ static int	expand_env_list(t_expand *e, t_ptr *buffer, t_ptr *buffer_malloc)
 		return (expand_subshell(new, buffer_malloc, e));
 	while (e->str[i] && !ft_checkset(e->str[i], "*$ \\\"'"))
 		i ++;
-	search = search_env(e->s->env, &e->str[e->i + 1], i - 1);
+	// printf("testing i %d\n", i);
+	search = search_env(e->s->env, &e->str[e->i + 1], i - e->i - 1);
 	if (!search)
 		new->token = NULL;
 	else

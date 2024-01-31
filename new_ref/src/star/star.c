@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 20:35:48 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/30 16:32:48 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 15:42:33 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*join_buffer_star(t_token *head, int len)
 
 	out = (char *) malloc((len + 1) * sizeof(char));
 	if (!out)
-		return (NULL);
+		return (errmsg_errno(18), NULL);
 	// printf("test len %d\n", len);
 	i = 0;
 	ptr = head;
@@ -48,10 +48,10 @@ char	*join_buffer_star(t_token *head, int len)
 
 int	read_star(t_star *s, t_token *new, int *ptr)
 {
-	int				len;
-	DIR				*d;
-	char			*dir;
-	t_ptr			buffer;//
+	int		len;
+	DIR		*d;
+	char	*dir;
+	t_ptr	buffer;
 
 	len = 0;
 	dir = ".";

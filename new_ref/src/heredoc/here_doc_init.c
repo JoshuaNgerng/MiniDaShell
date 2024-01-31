@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:00:33 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/27 03:24:59 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 15:49:52 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	do_here_doc(t_shell *s, t_processor *p)
 		return (0);
 	p->here_doc_pipe = (int *) malloc(p->here_doc_num * 2 * sizeof(int));
 	if (!p->here_doc_pipe)
-		return (errmsg_errno(0), handle_error(s, 137), 1);
+		return (errmsg_errno(12), handle_error(s, 137), 1);
 	i = -1;
 	while (++ i < p->here_doc_num)
 	{

@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 13:25:58 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 08:55:21 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 16:34:59 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,13 @@ int	finish_expand_subshell(t_token *new, int fd, t_ptr *buffer, t_expand *e)
 	close(fd);
 	new->next = NULL;
 	// printf("testing fd(%d), token(%p)\n%s\n", fd, new->token, new->token);
-	if (!new->token)
-		new->token = ft_strdup("");
-	if (!new->token)
-		return (free(new), 1);
+	// if (!new->token)
+	// 	new->token = ft_strdup("");
+	// if (!new->token)
+	// 	return (free(new), 1);
 	e->str[e->i] = '$' *-1;
-	e->len += ft_strlen(new->token);
+	if (new->token)
+		e->len += ft_strlen(new->token);
 	return (transfer_token_ptr(buffer, new), 0);
 }
 

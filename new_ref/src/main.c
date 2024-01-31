@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 09:42:21 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 11:12:31 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 14:46:59 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static char	*join_buffer(t_shell *s, t_token *t, int *len)
 	*len = get_size(t);
 	out = (char *) malloc ((*len + 1) * sizeof(char));
 	if (!out)
-		return (free_tokens(t), handle_error(s, 137), NULL);
+		return (free_tokens(t), handle_error(s, 137), errmsg_errno(14), NULL);
 	i = 0;
 	ptr = t;
 	while (ptr)
@@ -72,7 +72,6 @@ char	*get_user_input(t_shell *s)
 	if (c > 0 && c != '\'' && c != '"' && c & FILES)
 	{
 		c = -1;
-		s->check = 1;
 		errmsg_var(1, "newline", 7);
 	}
 	if (c > 0)
@@ -81,11 +80,7 @@ char	*get_user_input(t_shell *s)
 			return (free_tokens(head), NULL);
 	}
 	if (head)
-	{
 		r = join_buffer(s, head, &s->input_len);
-		if (!r)
-			handle_error(s, 137);
-	}
 	if (c < 0)
 		s->check = 1;
 	if (r)
@@ -102,15 +97,11 @@ int	main(int ac, char **av, char **env)
 	static t_shell	s;
 
 	(void) ac;
-	(void) av;
 	errno = 0;
-	if (shell_init(&s, env))
+	if (shell_init(&s, av, env))
 		return (s.status);
 	if (signal(SIGINT, handle_signal) == SIG_ERR && signal(SIGQUIT, handle_signal) == SIG_ERR)
-	{
-		perror("Error! Signal handler!\n"); // errmsg
-		return (1);
-	}
+		return (errmsg_errno(13), 1);
 	s.input = get_user_input(&s);
 	while (s.input)
 	{

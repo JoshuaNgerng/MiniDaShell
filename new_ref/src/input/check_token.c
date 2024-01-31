@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 09:16:25 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 11:06:30 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 12:47:51 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,12 @@ int	check_redirection(char *input, int *index)
 	return (out);
 }
 
+static void	update_ptr(int *new, int ref)
+{
+	if (new)
+		*new = ref;
+}
+
 int	iter_token(char *input, int i, int *new)
 {
 	int	ref;
@@ -74,15 +80,9 @@ int	iter_token(char *input, int i, int *new)
 			if (input[i] == ref)
 				ref = 0;
 			else
-			{
-				if (new)
-					*new = ref;
-				return (i);
-			}
+				return (update_ptr(new, ref), i);
 		}
 		i ++;
 	}
-	if (new)
-		*new = ref;
-	return (i);
+	return (update_ptr(new, ref), i);
 }

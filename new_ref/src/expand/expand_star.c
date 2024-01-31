@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 08:58:36 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/30 16:33:35 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 15:03:57 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	expand_star(t_token *new, t_ptr *buffer, t_expand *e)
 	if (!new->token)
 		return (none_star(new, e), 0);
 	e->len -= star.start - star.star_pos;
-	e->str[star.start] = -1 * '*';
+	e->str[star.start] *= -1;
 	new->type = star.end - star.start;
 	// printf("testing type(skip)%d\n", new->type);
 	e->i = star.end;
