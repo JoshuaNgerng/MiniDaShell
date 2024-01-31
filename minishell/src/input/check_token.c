@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 09:16:25 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 12:47:51 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 03:42:01 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ int	iter_token(char *input, int i, int *new)
 		if (input[i] == '"' || input[i] == '\'')
 		{
 			ref = input[i ++];
-			// printf("test iter quo %c\n", ref);
 			while (input[i] && input[i] != ref)
 				i ++;
 			if (input[i] == ref)

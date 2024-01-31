@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:04:54 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 14:42:33 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 05:37:16 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ static char	*find_shell_cmd(char **path, char *cmd, int *ext_code)
 
 	i = -1;
 	out = NULL;
+	if (!path)
+		return (NULL);
 	while (path[++ i])
 	{
 		out = ft_strjoin(path[i], cmd);
@@ -85,6 +87,5 @@ int	find_cmd(char **path, char **path_cmd, char *cmd, int *ext_code)
 		}
 	}
 	*path_cmd = find_cmd;
-	// printf("test cmd path %s\n", find_cmd);
 	return (0);
 }

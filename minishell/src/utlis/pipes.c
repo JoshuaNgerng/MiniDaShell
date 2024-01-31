@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:07:59 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/27 01:05:32 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 03:57:59 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ int	prepare_pipes(int *pipes, int len)
 	{
 		if (pipe(&pipes[i * 2]) == -1)
 			return (close_pipes(pipes, i), 1);
-		// printf("test pipes %d %d\n", pipes[i *2], pipes[i * 2 + 1]);
-		// printf("test index write (%d) read (%d)\n", i * 2, i * 2 + 1);
 	}
 	return (0);
 }

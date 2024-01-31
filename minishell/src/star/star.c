@@ -6,19 +6,19 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 20:35:48 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 15:42:33 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 03:49:31 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	close_free(DIR *d, t_token *buffer)
+static void	close_free(DIR *d, t_token *buffer)
 {
 	closedir(d);
 	free_tokens(buffer);
 }
 
-char	*join_buffer_star(t_token *head, int len)
+static char	*join_buffer_star(t_token *head, int len)
 {
 	int		i;
 	char	*out;
@@ -27,23 +27,22 @@ char	*join_buffer_star(t_token *head, int len)
 	out = (char *) malloc((len + 1) * sizeof(char));
 	if (!out)
 		return (errmsg_errno(18), NULL);
-	// printf("test len %d\n", len);
 	i = 0;
 	ptr = head;
 	while (ptr)
 	{
 		i = int_strcpy(out, i, ptr->token);
-		// printf("testing %s\n", ptr->token);
 		out[i ++] = ' ';
-		// out[i] = '\0';
-		// printf("test |%s|\n", out);
-		// printf("test index %d\n", i);
 		ptr = ptr->next;
 	}
 	out[i - 1] = '\0';
-	// printf("test index %d\n", i - 1);
-	// printf("testing fin %s\n", out);
 	return (out);
+}
+
+static char	*dir_init(t_star *s)
+{
+	s->str[s->star_pos - 1] = '\0';
+	return (&s->str[s->start]);
 }
 
 int	read_star(t_star *s, t_token *new, int *ptr)
@@ -58,10 +57,7 @@ int	read_star(t_star *s, t_token *new, int *ptr)
 	new->token = NULL;
 	buffer = (t_ptr){NULL, NULL};
 	if (s->head_type)
-	{
-		dir = &s->str[s->start];
-		s->str[s->star_pos - 1] = '\0';
-	}
+		dir = dir_init(s);
 	d = opendir(dir);
 	if (!d)
 		return (0);

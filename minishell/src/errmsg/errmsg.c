@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:43:01 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 15:09:15 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 03:28:22 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ void	errmsg_name(char *name_)
 
 void	*errmsg(int e)
 {
-	// if (e == 0)
-	// 	write(2, "test error\n", 11);
 	if (e == 1)
 		write(2, "syntax error have non-ascii char\n", 33);
 	else if (e == 2)
 		write(2, "syntax error: unexpected end of file\n", 37);
+	else if (e == 3)
+		write(2, "warning: here-document delimited by end-of-file\n", 48);
 	return (NULL);
 }
 

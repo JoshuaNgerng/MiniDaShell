@@ -6,21 +6,13 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 09:42:21 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 14:46:59 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 06:16:05 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// static int	int_strcpy(char *dst, int index, const char *src)
-// {
-// 	int	j;
-
-// 	j = -1;
-// 	while (src[++ j])
-// 		dst[index ++] = src[j];
-// 	return (index);
-// }
+int	g_ctrl_c;
 
 static int	get_size(const t_token *t)
 {
@@ -60,7 +52,23 @@ static char	*join_buffer(t_shell *s, t_token *t, int *len)
 	return (free_tokens(t), out);
 }
 
-char	*get_user_input(t_shell *s)
+static void	get_user_input_helper(t_shell *s, int c, char *r)
+{
+	if (c < 0)
+		s->check = 1;
+	if (r)
+	{
+		s->input_len = ft_strlen(r);
+		add_history(r);
+	}
+	if (g_ctrl_c)
+	{
+		s->status = 1;
+		g_ctrl_c = 0;
+	}
+}
+
+static char	*get_user_input(t_shell *s)
 {
 	int		c;
 	char	*r;
@@ -81,15 +89,7 @@ char	*get_user_input(t_shell *s)
 	}
 	if (head)
 		r = join_buffer(s, head, &s->input_len);
-	if (c < 0)
-		s->check = 1;
-	if (r)
-	{
-		s->input_len = ft_strlen(r);
-		add_history(r);
-	}
-	// printf("test added to history %s\n", r);
-	return (r);
+	return (get_user_input_helper(s, c, r), r);
 }
 
 int	main(int ac, char **av, char **env)
@@ -100,7 +100,9 @@ int	main(int ac, char **av, char **env)
 	errno = 0;
 	if (shell_init(&s, av, env))
 		return (s.status);
-	if (signal(SIGINT, handle_signal) == SIG_ERR && signal(SIGQUIT, handle_signal) == SIG_ERR)
+	g_ctrl_c = 0;
+	if (signal(SIGINT, handle_signal) == SIG_ERR && \
+		signal(SIGQUIT, handle_signal) == SIG_ERR)
 		return (errmsg_errno(13), 1);
 	s.input = get_user_input(&s);
 	while (s.input)
@@ -109,10 +111,8 @@ int	main(int ac, char **av, char **env)
 			bash(&s);
 		free_reset(&s);
 		errno = 0;
-		// system("leaks minishell");
 		s.input = get_user_input(&s);
 	}
 	write(1, "exit\n", 5);
-	// system("leaks minishell");
 	return (free_all(&s), s.status);
 }

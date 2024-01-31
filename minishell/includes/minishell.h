@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 17:49:35 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 06:15:56 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include "main_struct.h"
 # include "libft.h"
 # define GREEN "\33[0;32m"
 # define BLUE "\33[0;34m"
@@ -63,13 +64,6 @@ typedef struct s_fd
 	int	fd_out;
 }	t_fd;
 
-typedef struct s_token
-{
-	char			*token;
-	int				type;
-	struct s_token	*next;
-}	t_token;
-
 typedef struct s_ptr
 {
 	t_token	*head;
@@ -83,38 +77,6 @@ typedef struct s_buffer
 	t_ptr	read;
 	t_ptr	out;
 }	t_buffer;
-
-typedef struct s_proc
-{
-	t_token			*cmd;
-	t_token			*here_doc;
-	t_token			*f_read;
-	t_token			*f_out;
-	int				in;
-	struct s_proc	*next;
-}	t_proc;
-
-typedef struct s_sect
-{
-	t_proc			*block;
-	int				pid;
-	int				operator;
-	struct s_sect	*next;
-}	t_sect;
-
-typedef struct s_processor
-{
-	int		here_doc_num;
-	int		pipe_num;
-	int		index_h;
-	int		index_p;
-	int		stdin_;
-	int		stdout_;
-	t_sect	*buffer;
-	int		*here_doc_pipe;
-	int		*pid;
-	int		*pipe;
-}	t_processor;
 
 typedef struct s_ptr_p
 {
@@ -152,36 +114,6 @@ typedef struct s_star
 	char	*str;
 }	t_star;
 
-typedef struct s_env
-{
-	char			*key;
-	char			*value;
-	struct s_env	*next;
-	struct s_env	*prev;
-}	t_env;
-
-typedef struct s_root
-{
-	char	*root_msg;
-	char	*prompt;
-	char	*pwd;
-	char	change;
-}	t_root;
-
-typedef struct s_shell
-{
-	int			status;
-	int			check;
-	int			input_len;
-	char		*input;
-	char		**env_ptr;
-	char		**path;
-	t_env		*env;
-	t_root		root;
-	int			(*builtin[6]) (struct s_shell *, char **);
-	t_processor	processor;
-}	t_shell;
-
 typedef struct s_expand
 {
 	int		i;
@@ -192,6 +124,8 @@ typedef struct s_expand
 	t_token	*list;
 	t_token	*list_malloc;
 }	t_expand;
+
+extern int	g_ctrl_c;
 
 /* free functions */
 
@@ -224,10 +158,7 @@ void	*errmsg_expand(char *cmd, t_token *list, t_token *list_malloc);
 int		ft_checkset(char const s, char const *set);
 int		pass_space(char *input, int start);
 int		int_strchr(char *s, char c);
-int		strcpy_index(char *dst, int start, char *src);
 int		int_strcpy(char *dst, int index, const char *src);
-// int		itoa_len(int n);
-// void	itoa_cpy(char *dst, int n);
 int		read_quo(char ref, int quo);
 
 /* env list */
@@ -243,7 +174,6 @@ void	env_list_addback(t_env **list, t_env *new);
 
 void	transfer_token_ptr(t_ptr *p, t_token *t);
 void	handle_error(t_shell *s, int ext_code);
-void	detach_node(t_env **head, t_env *target);
 char	*get_env(char **env, char *var, int len);
 char	*get_input(t_shell *s, const char *prompt);
 
@@ -272,6 +202,8 @@ int		check_logical_operator(char *input, int *index);
 /* bash function */
 
 int		bash(t_shell *s);
+t_sect	*get_next_process(t_shell *s, t_sect *buffer, int type);
+int		prepare_env_n_path(t_env *env, t_processor *p);
 
 /* section and tokenize */
 
@@ -279,7 +211,7 @@ int		tokenize_and_sectioning(t_shell *s, t_processor	*p);
 int		add_process(t_shell *s, t_ptr_p *ptr, t_sect *sec, int *index);
 int		tokenize_input(t_shell *s, t_token **head, int *index, int *type);
 
-/* expand */ // modifed expand cmd to have ft_split // modifed struct for norm // modify with added struct list for bonus
+/* expand */
 
 int		expand(t_shell *s, t_sect *sect);
 int		expand_here_doc(t_shell *s, t_token *t);
@@ -299,6 +231,7 @@ int		loop_here_doc(t_shell *s, t_processor *p, int *pfd);
 /* children process */
 
 int		process_child(t_shell *s, t_processor *p, t_proc *hold);
+int		process_builtins(t_shell *s, t_proc *p, int check);
 char	**get_cmd_array(t_token *cmd);
 int		find_cmd(char **path, char **path_cmd, char *cmd, int *ext_code);
 int		cycle_output_files(t_token *f_out);

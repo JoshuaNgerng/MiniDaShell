@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 10:52:32 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 17:54:45 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 03:58:08 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,6 @@ void	handle_error(t_shell *s, int ext_code)
 {
 	s->status = ext_code;
 	s->check = 1;
-}
-
-void	detach_node(t_env **head, t_env *target)
-{
-	t_env	*ptr;
-
-	if (!target->prev)
-	{
-		*head = target->next;
-		target->next = NULL;
-	}
-	ptr = target->prev;
-	ptr->next = target->next;
-	target->next = NULL;
-	target->prev = NULL;
 }
 
 char	*get_env(char **env, char *var, int len)

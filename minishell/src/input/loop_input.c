@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 09:59:47 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 13:26:38 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 03:42:24 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,10 @@ static void	complete_quo_helper(t_token *new, char *r, int *c)
 
 	new->token = r;
 	new->type = *c;
-	// printf("testing end c %d\n", *c);
 	i = int_strchr(r, *c);
-	// printf("testing i %d\n", i);
 	if (i < 0)
 		return ;
 	*c = check_input(r, i + 1);
-	// printf("testing end c %d\n", *c);
 	new->type = 0;
 }
 
@@ -98,7 +95,6 @@ int	complete_input_helper(t_shell *s, t_token **tail, int *c)
 {
 	if (*c == '\'' || *c == '"')
 	{
-		// printf("testing\n");
 		if (complete_quo(s, tail, c))
 			return (1);
 	}
@@ -139,7 +135,6 @@ int	complete_input(t_shell *s, t_token **head, char *r, int c)
 	{
 		if (complete_input_helper(s, &tail, &c))
 			return (1);
-		// printf("testing fin c %d\n", c);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 10:47:06 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 11:30:23 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 03:59:06 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,6 @@ int	int_strchr(char *s, char c)
 	if (s[i] != c)
 		return (-1);
 	return (i);
-}
-
-int	strcpy_index(char *dst, int start, char *src)
-{
-	int	len;
-
-	len = -1;
-	while (src[++ len])
-		dst[start + len] = src[len];
-	return (len);
 }
 
 int	read_quo(char ref, int quo)

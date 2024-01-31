@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 12:58:22 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/18 12:58:26 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 03:15:42 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,21 @@ void	transfer_token_buffer(t_proc *p, t_buffer *b, t_token *t)
 		transfer_token_ptr(&b->cmd, t);
 }
 
+static void	loop_token_list(t_proc *p, t_token *list, t_buffer *buffer)
+{
+	t_token	*temp;
+
+	while (list)
+	{
+		temp = list;
+		list = list->next;
+		transfer_token_buffer(p, buffer, temp);
+	}
+}
+
 int	add_process(t_shell *s, t_ptr_p *ptr, t_sect *sec, int *index)
 {
 	int			type;
-	t_token		*temp;
 	t_token		*list;
 	t_proc		*new;
 	t_buffer	buffer;
@@ -70,11 +81,6 @@ int	add_process(t_shell *s, t_ptr_p *ptr, t_sect *sec, int *index)
 	if (!new)
 		return (free_tokens(list), handle_error(s, 137), errmsg_errno(5), -1);
 	new->in = 0;
-	while (list)
-	{
-		temp = list;
-		list = list->next;
-		transfer_token_buffer(new, &buffer, temp);
-	}
+	loop_token_list(new, list, &buffer);
 	return (cont_proc_list(new, buffer, ptr), type);
 }

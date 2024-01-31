@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:00:33 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 15:49:52 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 03:28:56 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ static int	get_here_doc_num(t_processor *p)
 
 	out = 0;
 	ptr = p->buffer;
-	// printf("test here doc %p\n", p->buffer);
 	while (ptr)
 	{
 		ptr2 = ptr->block;
@@ -64,7 +63,6 @@ int	do_here_doc(t_shell *s, t_processor *p)
 	{
 		if (pipe(&p->here_doc_pipe[i * 2]))
 			return (close_pipes(p->here_doc_pipe, i), 1);
-		// printf("test pipes %d %d\n", p->here_doc_pipe[i * 2], p->here_doc_pipe[i * 2 + 1]);
 	}
 	if (loop_here_doc(s, p, p->here_doc_pipe))
 		return (close_pipes(p->here_doc_pipe, i), 1);

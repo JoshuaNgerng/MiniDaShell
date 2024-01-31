@@ -6,62 +6,34 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 08:39:26 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 14:50:36 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 05:52:09 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	process_builtins(t_shell *s, t_proc *p, int check)
+static int	process_children_loop_sect(t_shell *s, t_processor *p, t_sect *sect)
 {
-	int		fd_in;
-	int		fd_out;
-	int		status;
-	char	**cmd;
+	t_proc	*store;
 
-	fd_in = cycle_input_files(p->f_read);
-	fd_out = cycle_output_files(p->f_out);
-	if (fd_in > 0)
-		close(fd_in);
-	if (fd_out > 1)
-		s->check = fd_out;
-	cmd = get_cmd_array(p->cmd);
-	if (!cmd)
-		return (handle_error(s, 137), 1);
-	// printf("test builtins\n");
-	status = s->builtin[check - 1](s, cmd);
-	if (fd_out > 1)
-		close(fd_out);
-	s->check = 0;
-	return (free_strs(cmd), status);
-}
-
-static t_sect	*get_next_process(t_shell *s, t_sect *buffer, int type)
-{
-	int		skip;
-	t_sect	*ptr;
-
-	skip = 0;
-	if (type == _or && !s->status)
-		skip = type;
-	else if (type == _and && s->status)
-		skip = type;
-	if (skip)
+	while (sect->block)
 	{
-		while (buffer && buffer->operator != skip)
-		{
-			ptr = buffer;
-			buffer = buffer->next;
-			free_sect(ptr);
-		}
-		if (buffer)
-		{
-			ptr = buffer;
-			buffer = buffer->next;
-			free_sect(ptr);
-		}
+		store = sect->block;
+		sect->block = sect->block->next;
+		if (prepare_env_n_path(s->env, p))
+			return (clear_pipes(p), handle_error(s, 137), 1);
+		if (process_child(s, p, store))
+			return (clear_pipes(p), 1);
+		free_process(store);
+		if (p->env)
+			free_strs(p->env);
+		if (p->path)
+			free_strs(p->path);
+		p->env = NULL;
+		p->path = NULL;
+		p->index_p ++;
 	}
-	return (buffer);
+	return (0);
 }
 
 /*
@@ -73,33 +45,21 @@ else it will sent to child process as usual
 static int	process_children(t_shell *s, t_processor *p, t_sect *sect)
 {
 	int		i;
-	t_proc	*store;
 
 	p->index_p = 0;
 	if (prepare_pipes(p->pipe, p->pipe_num))
 		return (1);
-	while (sect->block)
-	{
-		store = sect->block;
-		sect->block = sect->block->next;
-		store->next = NULL;
-		if (process_child(s, p, store))
-			return (clear_pipes(p), 1);
-		free_process(store);
-		p->index_p ++;
-	}
-	// printf("test1\n");
+	if (process_children_loop_sect(s, p, sect))
+		return (1);
 	close_pipes(p->pipe, p->pipe_num);
 	if (p->stdin_ > 0)
 		close(p->stdin_);
 	if (p->stdout_ > 1)
 		close(p->stdout_);
-	// printf("test2 %p\n", p->pid);
 	i = -1;
 	while (++ i < sect->pid)
 		waitpid(p->pid[i], &s->status, 0);
 	s->status = WEXITSTATUS(s->status);
-	// printf("test3\n");
 	free(p->pipe);
 	p->pipe = NULL;
 	p->stdin_ = 0;
@@ -150,19 +110,15 @@ int	bash(t_shell *s)
 	t_sect		*ptr;
 
 	p = &s->processor;
-	// printf("processing\n");
 	if (tokenize_and_sectioning(s, p))
 		return (1);
-	// dev_print_sect(p->buffer);
 	free(s->input);
 	s->input = NULL;
 	if (do_here_doc(s, p))
 		return (1);
-	// printf("test %p\n", p->buffer);
 	while (p->buffer)
 	{
 		type = p->buffer->operator;
-		// printf("test\n");
 		if (bash_helper(s, p))
 			return (1);
 		ptr = p->buffer;
@@ -170,7 +126,6 @@ int	bash(t_shell *s)
 		free_sect(ptr);
 		p->buffer = get_next_process(s, p->buffer, type);
 	}
-	// printf("test\n");
 	clear_here_doc(p);
 	return (0);
 }

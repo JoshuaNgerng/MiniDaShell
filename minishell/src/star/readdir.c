@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 01:45:02 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 15:42:28 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 03:47:04 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,11 @@ static int	check_file(const t_star *s, const char *fname, int len)
 	n = s->end - s->star_pos;
 	if ((s->head_type || s->start == s->star_pos) && s->end != s->star_pos)
 	{
-		// printf("test a %s %s\n", &fname[len - n], &s->str[s->star_pos + 1]);
 		if (!ft_strncmp(&fname[len - n], &s->str[s->star_pos + 1], n))
 			return (0);
 	}
 	else if (s->end != s->star_pos)
 	{
-		// printf("test name:%s\n", fname);
-		// printf("test n %d n* %d\n", n, s->star_pos - s->start);
-		// printf("test b %s %s\n", &fname[len - n], &s->str[s->star_pos + 1]);
-		// printf("test b %s %s\n", fname, &s->str[s->start]);
 		if (!ft_strncmp(&fname[len - n], &s->str[s->star_pos + 1], n) && \
 			!ft_strncmp(fname, &s->str[s->start], s->star_pos - s->start))
 			return (0);
@@ -57,7 +52,8 @@ static char	*strjoin_dir(const char *dir, const char *fname)
 	return (out);
 }
 
-static int	process_file(const char *dir, const char *fname, t_ptr *buffer, int type)
+static int	process_file(const char *dir, const char *fname,
+						t_ptr *buffer, int type)
 {
 	t_token	*new;
 
@@ -79,7 +75,6 @@ int	read_from_dir(t_star *s, DIR *d, t_ptr *buffer, int *len_ptr)
 	int				len;
 	struct dirent	*dir;
 
-	// printf("test %s\n", s->str);
 	dir = readdir(d);
 	while (dir)
 	{
@@ -90,10 +85,8 @@ int	read_from_dir(t_star *s, DIR *d, t_ptr *buffer, int *len_ptr)
 	while (dir)
 	{
 		len = ft_strlen(dir->d_name);
-		// printf("testing files:%s\n", dir->d_name);
 		if (!check_file(s, dir->d_name, len))
 		{
-			// printf("testing files:%s\n", dir->d_name);
 			if (process_file(s->str, dir->d_name, buffer, s->head_type))
 				return (errmsg_errno(19), 1);
 			if (s->head_type)

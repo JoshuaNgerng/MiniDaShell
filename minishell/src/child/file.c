@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:56:00 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 08:56:00 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 03:27:41 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void	dup_helper(t_processor *p, t_fd *fd, int check)
 
 	if (check == here_doc)
 		fd->fd_in = p->here_doc_pipe[p->index_h * 2];
-		// printf("test here_doc pipe %d\n", *fd_in);
 	if (p->pipe)
 	{
 		if (fd->fd_in == 0 && p->index_p > 0)
@@ -79,8 +78,19 @@ void	dup_helper(t_processor *p, t_fd *fd, int check)
 			index_out = (p->pipe_num - p->index_p) * 2 - 1;
 			fd->fd_out = p->pipe[index_out];
 		}
-		// printf("test out(%d) in(%d)\n", fd->fd_out, fd->fd_in);
 	}
+}
+
+static void	close_extra_fd(int read_, int write_, int in, int out)
+{
+	if (read_ > 0)
+		close(read_);
+	if (write_ > 1)
+		close(write_);
+	if (in > 0)
+		close(in);
+	if (out > 1)
+		close(out);
 }
 
 int	dup_stdin_stdout(t_shell *s, t_processor *p, t_proc *proc)
@@ -98,21 +108,9 @@ int	dup_stdin_stdout(t_shell *s, t_processor *p, t_proc *proc)
 		fd.fd_in = p->stdin_;
 	if (fd.fd_out == 1)
 		fd.fd_out = p->stdout_;
-	// printf("test stdin(%d) stdout(%d)\n", p->stdin_, p->stdout_);
-	// printf("test fd_in(%d) fd_out(%d)\n", fd.fd_in, fd.fd_out);
-	// printf("test read(%d) write(%d)\n", fd.read_, fd.write_);
 	if (dup2(fd.fd_in, 0) == -1 || dup2(fd.fd_out, 1) == -1)
 		return (handle_error(s, 1), errmsg_errno(9), 1);
-	// handle_error(s, 1);
 	close_pipes(p->pipe, p->pipe_num);
 	clear_here_doc(p);
-	if (fd.read_ > 0)
-		close(fd.read_);
-	if (fd.write_ > 1)
-		close(fd.write_);
-	if (p->stdin_ > 0)
-		close(p->stdin_);
-	if (p->stdout_ > 1)
-		close(p->stdout_);
-	return (0);
+	return (close_extra_fd(fd.read_, fd.write_, p->stdin_, p->stdout_), 0);
 }

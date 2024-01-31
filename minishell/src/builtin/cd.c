@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 16:34:03 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 09:49:46 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 05:40:54 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static int	env_transfer(t_shell *s, t_env *pwd, t_env *old, char *dir)
 	free(s->root.pwd);
 	s->root.pwd = ft_strdup(dir);
 	pwd->value = ft_strdup(s->root.pwd);
-	// printf("3) test oldpwd pwd root\n%s\n%s\n%s\n", old->value, pwd->value, s->root.pwd);
 	if (!s->root.pwd || !pwd->value)
 		return (1);
 	return (0);
@@ -42,7 +41,6 @@ static int	cd_helper_root(t_shell *s)
 		return (errmsg_errno(0), 1);
 	ptr_pwd = search_env(s->env, "PWD", 3);
 	ptr_old = search_env(s->env, "OLDPWD", 6);
-	// printf("2) test pwd oldpwd %p %p\n", ptr_pwd, ptr_old);
 	if (ptr_pwd)
 		return (env_transfer(s, ptr_pwd, ptr_old, dir));
 	if (ptr_old)
@@ -60,13 +58,11 @@ int	check_oldpwd(t_shell *s)
 	t_env	*new;
 
 	s->root.change = 1;
-	if (search_env(s->env, "OLDPWD", 7))
+	if (search_env(s->env, "OLDPWD", 6))
 		return (0);
 	new = make_env_node("OLDPWD=", 6);
 	if (!new)
 		return (handle_error(s, 137), 1);
-	// printf("1) test new key value %s %s\n", new->key, new->value);
-	// printf("1) test len key %ld\n", ft_strlen(new->key));
 	env_list_addback(&s->env, new);
 	return (0);
 }

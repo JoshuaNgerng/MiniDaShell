@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:01:36 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 15:52:47 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 23:36:37 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	empty_here_doc(const char *lim)
 		buffer = readline(">> ");
 	}
 	if (!buffer)
-		return (errmsg_errno(3), 1);
+		return (errmsg(3), 1);
 	return (free(buffer), 0);
 }
 
@@ -47,18 +47,19 @@ static int	here_doc_write(const char *lim, int pfd)
 	while (r)
 	{
 		l = ft_strlen(r);
-		if (!strncmp(r, lim, l) && l == x)
+		if (!ft_strncmp(r, lim, l) && l == x)
 			break ;
 		ptr = ft_strjoin(r, "\n");
 		e = write(pfd, ptr, l + 1);
 		free(r);
 		r = NULL;
 		free(ptr);
-		if (e != -1)
+		if (e == -1)
 			return (errmsg_errno(4), 1);
+		r = readline(">> ");
 	}
 	if (!r)
-		return (errmsg_errno(3), 1);
+		return (errmsg(3), 1);
 	return (free(r), 0);
 }
 
@@ -81,7 +82,6 @@ static int	loop_here_doc_helper(t_shell *s, t_token *t, int *pfd, int *index)
 	if (ptr)
 	{
 		i = *index;
-		// printf("test here doc fd %d\n", pfd[i * 2 + 1]);
 		if (here_doc_write(ptr->token, pfd[i * 2 + 1]))
 			return (1);
 		*index = i + 1;

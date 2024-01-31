@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 09:30:43 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/26 18:45:37 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/01/31 23:48:52 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ static t_token	*get_token(char *input, int i, int *index, int *type)
 	out->token = ft_substr(input, i, j - i);
 	if (!out->token)
 		return (free(out), NULL);
-	// printf("test tokenize %s\n", out->token);
 	*index = j;
 	return (out);
 }

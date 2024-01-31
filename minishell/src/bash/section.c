@@ -6,11 +6,67 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 09:23:05 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/27 03:24:52 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 03:16:03 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	clear_section(t_shell *s, t_sect *target)
+{
+	t_processor	*p;
+	t_proc		*ptr;
+
+	p = &s->processor;
+	if (p->here_doc_pipe)
+	{
+		if (!target->block->here_doc)
+		{
+			free_sect(target);
+			return ;
+		}
+		ptr = target->block;
+		while (ptr)
+		{
+			if (ptr->here_doc)
+			{
+				close(p->here_doc_pipe[p->index_h * 2]);
+				close(p->here_doc_pipe[p->index_h * 2 + 1]);
+				p->index_h ++;
+			}
+			ptr = ptr->next;
+		}
+	}
+	free_sect(target);
+}
+
+t_sect	*get_next_process(t_shell *s, t_sect *buffer, int type)
+{
+	int		skip;
+	t_sect	*ptr;
+
+	skip = 0;
+	if (type == _or && !s->status)
+		skip = type;
+	else if (type == _and && s->status)
+		skip = type;
+	if (skip)
+	{
+		while (buffer && buffer->operator == skip)
+		{
+			ptr = buffer;
+			buffer = buffer->next;
+			clear_section(s, ptr);
+		}
+		if (buffer)
+		{
+			ptr = buffer;
+			buffer = buffer->next;
+			clear_section(s, ptr);
+		}
+	}
+	return (buffer);
+}
 
 void	cont_section_list(t_sect *new, t_ptr_s *ptr)
 {

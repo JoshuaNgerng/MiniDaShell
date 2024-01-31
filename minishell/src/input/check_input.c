@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 09:59:45 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 11:06:34 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 04:02:12 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ static int	check_inside_loop(char *input, int i, int *prev, int *brac)
 		return (errmsg_token(new), -1);
 	else if (new & OPERATORS && *prev == start_b)
 		return (errmsg_token(new), -1);
-		// return (errmsg_var(1, &input[i], j - i - 1), -1);
 	else if (new == _pipe && (*prev > 0 && *prev < end_b))
 		return (errmsg_token(new), -1);
 	else if (new & LOGIC && *prev && *prev != end_b)
@@ -66,6 +65,28 @@ static int	check_inside_loop(char *input, int i, int *prev, int *brac)
 		return (errmsg_token(new), -1);
 	*prev = new;
 	return (j);
+}
+
+static int	start_check_input(char *input, int *ptr, int *out, int *brac)
+{
+	int	i;
+
+	i = *ptr;
+	i = pass_space(input, i);
+	if (ft_checkset(input[i], "|&)"))
+		return (-1);
+	if (input[i] == '(')
+	{
+		i ++;
+		*out = start_b;
+		*brac = 1;
+	}
+	else if (input[i] == '<' || input[i] == '>')
+		*out = check_redirection(input, &i);
+	else
+		i = iter_token(input, i, out);
+	*ptr = i;
+	return (0);
 }
 
 /*
@@ -85,6 +106,17 @@ int	check_input(char *input, int i)
 	brac = 0;
 	if (!i)
 	{
+		if (start_check_input(input, &i, &out, &brac))
+			return (-1);
+	}
+	while (i >= 0 && input[i])
+		i = check_inside_loop(input, i, &out, &brac);
+	if (brac > 0 || i < 0)
+		return (-1);
+	return (out);
+}
+/*
+	{
 		i = pass_space(input, i);
 		if (ft_checkset(input[i], "|&)"))
 			return (-1);
@@ -99,11 +131,4 @@ int	check_input(char *input, int i)
 		else
 			i = iter_token(input, i, &out);
 	}
-	while (i >= 0 && input[i])
-		i = check_inside_loop(input, i, &out, &brac);
-	if (brac > 0)
-		return (-1);
-	if (i < 0)
-		return (-1);
-	return (out);
-} // too many lines
+*/
