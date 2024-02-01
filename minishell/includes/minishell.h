@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 08:20:10 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 09:57:00 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,6 +243,10 @@ void	dup_helper(t_processor *p, t_fd *fd, int check);
 /* builtins */
 
 int		check_builtins(const t_proc *proc);
+void	builtin_errmsg_opt(char *name);
+void	builtin_errmsg_arg(char *name);
+int		check_options(char *cmd);
+int		get_number_arg(char **cmd, int check);
 int		pwd_function(t_shell *s, char **cmd);
 int		cd_function(t_shell *s, char **cmd);
 int		exit_function(t_shell *s, char **cmd);

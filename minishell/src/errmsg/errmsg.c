@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:43:01 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 08:30:16 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 08:32:05 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	errmsg_name(char *name_)
 
 	if (!name)
 	{
-		name = name_;
+		name = &name_[2];
 		len = ft_strlen(name);
 		return ;
 	}

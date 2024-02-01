@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 09:59:47 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 03:42:24 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 09:56:18 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ int	complete_input(t_shell *s, t_token **head, char *r, int c)
 	while (c > 0 && c != end_b)
 	{
 		if (complete_input_helper(s, &tail, &c))
-			return (1);
+			return (0);
 	}
 	return (0);
 }

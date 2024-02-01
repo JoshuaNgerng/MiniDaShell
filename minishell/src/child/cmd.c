@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:04:54 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 05:37:16 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 09:48:45 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,20 +71,23 @@ int	find_cmd(char **path, char **path_cmd, char *cmd, int *ext_code)
 {
 	char	*find_cmd;
 
-	find_cmd = find_shell_cmd(path, cmd, ext_code);
-	if (!find_cmd)
+	if (ft_strrchr(cmd, '/') && !access(cmd, F_OK | X_OK))
 	{
-		if (*ext_code == 137)
-			return (errmsg_errno(10), 1);
-		if (!ft_strrchr(cmd, '/') || access(cmd, F_OK | X_OK))
-			return (errmsg_var(3, cmd, ft_strlen(cmd)), 1);
-		*ext_code = 0;
 		find_cmd = ft_strdup(&cmd[2]);
 		if (!find_cmd)
 		{
 			*ext_code = 137;
 			return (errmsg_errno(10), 1);
 		}
+		*path_cmd = find_cmd;
+		return (0);
+	}
+	find_cmd = find_shell_cmd(path, cmd, ext_code);
+	if (!find_cmd)
+	{
+		if (*ext_code == 137)
+			return (errmsg_errno(10), 1);
+		return (errmsg_var(3, cmd, ft_strlen(cmd)), 1);
 	}
 	*path_cmd = find_cmd;
 	return (0);

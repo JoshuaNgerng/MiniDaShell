@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:57:10 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 05:49:49 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 09:08:52 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,10 @@ int	process_child(t_shell *s, t_processor *p, t_proc *hold)
 		return (1);
 	if (!pid)
 	{
-		if (!hold->cmd->type)
-			child_process(s, p, hold);
-		else
-			subshell(s, p, hold);
+		if (hold->cmd)
+			if (hold->cmd->type)
+				subshell(s, p, hold);
+		child_process(s, p, hold);
 	}
 	else
 	{

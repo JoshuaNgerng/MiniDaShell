@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 09:42:21 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 06:16:05 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 09:52:44 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ int	main(int ac, char **av, char **env)
 	s.input = get_user_input(&s);
 	while (s.input)
 	{
+		printf("testing %d\n", s.check);
 		if (!s.check)
 			bash(&s);
 		free_reset(&s);

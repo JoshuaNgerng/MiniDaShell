@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 09:59:45 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 04:02:12 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 09:00:09 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ static int	check_inside_loop(char *input, int i, int *prev, int *brac)
 	return (j);
 }
 
+// static void	start_token_errmsg()
+
 static int	start_check_input(char *input, int *ptr, int *out, int *brac)
 {
 	int	i;
@@ -74,7 +76,10 @@ static int	start_check_input(char *input, int *ptr, int *out, int *brac)
 	i = *ptr;
 	i = pass_space(input, i);
 	if (ft_checkset(input[i], "|&)"))
-		return (-1);
+	{
+		get_new_token(input, i, out, brac);
+		return (errmsg_token(*out), -1);
+	}
 	if (input[i] == '(')
 	{
 		i ++;

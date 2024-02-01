@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:12:27 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 04:26:25 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 08:40:08 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,10 @@ char	*get_prompt(char *direc, char *root)
 	int		len_root;
 	int		i;
 	char	*out;
+	char	*ptr;
 
-	len = ft_strlen(direc);
+	ptr = ft_strrchr(direc, '/');
+	len = ft_strlen(ptr) - 1;
 	len_root = ft_strlen(root);
 	out = (char *) malloc ((len + len_root + 14) * sizeof(char));
 	if (!out)
@@ -60,7 +62,7 @@ char	*get_prompt(char *direc, char *root)
 	ft_strlcpy(out, root, len_root + 1);
 	ft_strlcpy(&out[len_root], BLUE, 8);
 	i = len_root + 7;
-	ft_strlcpy(&out[i], direc, len + 1);
+	ft_strlcpy(&out[i], &ptr[1], len + 1);
 	i += len;
 	ft_strlcpy(&out[i], RESET, 5);
 	i += 4;

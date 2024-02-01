@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 14:59:42 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 05:47:52 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 09:38:16 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 int	env_print(t_shell *s, char **cmd)
 {
-	int		i;
+	int		n;
 	t_env	*ptr;
 
-	i = 0;
-	while (cmd[i])
-		i ++;
-	if (i > 1)
-		errmsg(0);
+	n = get_number_arg(cmd, 1);
+	if (n < 0)
+		return (handle_error(s, 1), 0);
+	if (n > 1)
+		return (handle_error(s, 1), builtin_errmsg_arg(cmd[0]), 0);
 	ptr = s->env;
 	while (ptr)
 	{
@@ -37,15 +37,13 @@ int	env_print(t_shell *s, char **cmd)
 
 int	pwd_function(t_shell *s, char **cmd)
 {
-	int		i;
+	int		n;
 	int		fd;
 	char	dir[4097];
 
-	i = 0;
-	while (cmd[i])
-		i ++;
-	if (i > 1)
-		errmsg_errno(0);
+	n = get_number_arg(cmd, 1);
+	if (n < 0)
+		return (handle_error(s, 1), 0);
 	fd = 1;
 	if (s->check)
 		fd = s->check;
@@ -102,6 +100,8 @@ int	exit_function(t_shell *s, char **cmd)
 
 int	check_builtins(const t_proc *proc)
 {
+	if (!proc->cmd)
+		return (0);
 	if (!ft_strncmp(proc->cmd->token, "export", 7))
 		return (1);
 	else if (!ft_strncmp(proc->cmd->token, "unset", 6))
