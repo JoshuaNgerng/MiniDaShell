@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:43:01 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 08:32:05 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 13:55:27 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,11 @@ void	*sp_errmsg(int e, char *msg)
 	char	*ptr;
 
 	errmsg_name(NULL);
+	if (e == 4)
+		write(2, "cd : ", 5);
 	if (msg)
 		write(2, msg, ft_strlen(msg));
-	if (e == 3)
+	if (e == 3 || e == 4)
 		write(2, ": ", 2);
 	if (errno > 0)
 	{

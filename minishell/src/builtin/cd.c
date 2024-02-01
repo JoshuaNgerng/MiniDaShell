@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 16:34:03 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 09:33:20 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 13:54:58 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	cd_chdir(char *dir, t_env *env)
 		dir = ptr->value;
 	}
 	if (chdir(dir))
-		return (errmsg_errno(0), 1);
+		return (sp_errmsg(4, dir), 1);
 	return (0);
 }
 
