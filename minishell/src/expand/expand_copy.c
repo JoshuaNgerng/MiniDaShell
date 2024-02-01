@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 11:52:18 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 16:35:09 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 08:04:14 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,12 @@ void	copy_expand(char *dst, char *src, t_token *list, t_token *list_malloc)
 	i = -1;
 	j = 0;
 	quo = 0;
-	// printf("test list\n");
-	// dev_print_tokens(list);
-	// printf("test list_malloc\n");
-	// dev_print_tokens(list_malloc);
 	while (src[++ i])
 	{
 		if (!check_src_copy(dst, &src[i], &j, &quo))
 			continue ;
 		if (src[i] < 0)
 		{
-			// printf("testing list_malloc %p\n", list_malloc);
 			j += copy_expand_env(&dst[j], list_malloc, quo);
 			i += list_malloc->type;
 			list_malloc = list_malloc->next;

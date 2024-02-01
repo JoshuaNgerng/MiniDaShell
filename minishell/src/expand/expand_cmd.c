@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 15:23:21 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/30 11:39:17 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 08:03:58 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,21 +63,15 @@ int	expand_env_cmd(char *str, t_ptr *buffer, t_token *next)
 	int		out;
 	char	**strs;
 
-	// printf("test str in expand_env_cmd:%s\n", str);
 	strs = ft_split(str, ' ');
 	if (!strs)
 		return (free(str), 1);
-	// printf("test %s\n", str);
 	free(str);
 	if (!strs[0])
 		return (free(strs), empty_cmd(buffer, next));
-	// printf("test strs[0] %s\n", strs[0]);
 	free(buffer->tail->token);
-	// printf("test strs[0]:%s\n", strs[0]);
 	buffer->tail->token = clean_token(strs[0]);
-	// printf("test token %s\n", buffer->tail->token);
 	out = loop_strs_transfer(strs, buffer, next);
-	// printf("test token %s\n", buffer->tail->token);
 	return (free(strs), out);
 }
 
@@ -90,7 +84,7 @@ free the list
 then ft_split to get the different parts of line
 a new list is made and inserted into the existing list
 */
-int	expand_cmd(t_token *now, t_token **prev, t_shell *s, char *status)//, int *size)
+int	expand_cmd(t_token *now, t_token **prev, t_shell *s, char *status)
 {
 	char		*line;
 	t_token		*next;
@@ -99,26 +93,21 @@ int	expand_cmd(t_token *now, t_token **prev, t_shell *s, char *status)//, int *s
 
 	next = now->next;
 	buffer = (t_ptr){now, now};
-	e = (t_expand) {-1, 0, now->token, status, s, NULL, NULL};
+	e = (t_expand){-1, 0, now->token, status, s, NULL, NULL};
 	if (search_expand(s, &e))
 		return (handle_error(s, 137), 1);
 	line = (char *) malloc((e.len + 1) * sizeof(char));
 	if (!line)
-		return (free_tokens_empty(e.list), free_tokens(e.list_malloc), handle_error(s, 137), 1);
+		return (free_tokens_empty(e.list),
+			free_tokens(e.list_malloc), handle_error(s, 137), 1);
 	copy_expand(line, now->token, e.list, e.list_malloc);
 	free_tokens_empty(e.list);
 	free_tokens(e.list_malloc);
 	if (expand_env_cmd(line, &buffer, next))
 		return (handle_error(s, 137), 1);
-	// printf("test out token %s\n", buffer.head->token);
-	// printf("test out token %s\n", buffer.tail->token);
 	if (!(*prev))
 		return (0);
-	// printf("test expand buffer\n");
-	// dev_print_tokens(buffer.head);
 	(*prev)->next = buffer.head;
-	// printf("test out token %s\n", buffer.head->token);
-	// printf("test out token %s\n", buffer.tail->token);
 	*prev = buffer.tail;
 	return (0);
 }

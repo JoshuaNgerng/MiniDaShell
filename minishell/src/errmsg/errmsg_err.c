@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 12:51:19 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 23:09:03 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 08:27:00 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,9 @@ static void	errmsg_ptr_1(int e)
 		write(2, "here_doc_pipe (malloc): ", 24);
 }
 
-void	*errmsg_errno(int e)
+static void	errmsg_ptr_2(int e)
 {
-	char	*ptr;
-
-	if (e < 12)
-		errmsg_ptr_1(e);
-	else if (e == 13)
+	if (e == 13)
 		write(2, "Cannot initiate signal handler: ", 32);
 	else if (e == 14)
 		write(2, "join_buffer[input] (malloc): ", 29);
@@ -60,6 +56,20 @@ void	*errmsg_errno(int e)
 		write(2, "join_buffer_star (malloc): ", 27);
 	else if (e == 19)
 		write(2, "process_file; ", 14);
+	else if (e == 20)
+		write(2, "Cannot make pipe[expand]: ", 26);
+	else if (e == 21)
+		write(2, "Cannot make child process[expand]: ", 35);
+}
+
+void	*errmsg_errno(int e)
+{
+	char	*ptr;
+
+	if (e < 12)
+		errmsg_ptr_1(e);
+	else
+		errmsg_ptr_2(e);
 	ptr = strerror(errno);
 	if (ptr)
 		write(2, ptr, ft_strlen(ptr));

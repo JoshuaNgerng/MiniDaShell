@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:46:59 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/18 17:13:13 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 08:28:25 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,6 @@ void	dev_print_processor(t_processor p)
 	printf("print out section list\n");
 	dev_print_sect(p.buffer);
 	printf("here_doc index (%d), pipe/pid_index (%d)\n", p.index_h, p.index_p);
-	printf("no of pipes (%d), no of here_doc (%d) \n", p.pipe_num, p.here_doc_num);
+	printf("no of pipes (%d), "
+		"no of here_doc (%d) \n", p.pipe_num, p.here_doc_num);
 }

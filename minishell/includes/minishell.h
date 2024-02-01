@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 06:15:56 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 08:20:10 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,7 @@ void	close_pipes(int *pipes, int len);
 int		prepare_pipes(int *pipes, int len);
 void	clear_pipes(t_processor *p);
 void	clear_here_doc(t_processor *p);
+char	*read_from_pipe(int fd);
 
 /* intialize  */
 

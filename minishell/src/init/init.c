@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 08:35:47 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 06:16:14 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 08:27:48 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,4 @@ void	handle_signal(int signum)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-} 
+}

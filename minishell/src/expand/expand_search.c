@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 10:40:34 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 16:33:15 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 08:10:47 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,21 @@ static int	expand_special_status(t_token *new, t_ptr *buffer, t_expand *e)
 	return (0);
 }
 
+static char	*handle_env_search(t_env *search, t_expand *e)
+{
+	if (!search)
+		return (NULL);
+	e->len += ft_strlen(search->value);
+	return (search->value);
+}
+
 static int	expand_env_list(t_expand *e, t_ptr *buffer, t_ptr *buffer_malloc)
 {
 	int		i;
-	// int		check;
 	t_env	*search;
 	t_token	*new;
 
 	i = e->i + 1;
-	// check = 0;
-	// printf("testing check %c %c\n", e->str[e->i], e->str[i]);
 	new = (t_token *) malloc(sizeof(t_token));
 	if (!new)
 		return (errmsg_errno(17), -1);
@@ -43,15 +48,8 @@ static int	expand_env_list(t_expand *e, t_ptr *buffer, t_ptr *buffer_malloc)
 		return (expand_subshell(new, buffer_malloc, e));
 	while (e->str[i] && !ft_checkset(e->str[i], "*$ \\\"'"))
 		i ++;
-	// printf("testing i %d\n", i);
 	search = search_env(e->s->env, &e->str[e->i + 1], i - e->i - 1);
-	if (!search)
-		new->token = NULL;
-	else
-	{
-		new->token = search->value;
-		e->len += ft_strlen(new->token);
-	}
+	new->token = handle_env_search(search, e);
 	new->type = i - 1 - e->i;
 	e->i = i - 1;
 	return (transfer_token_ptr(buffer, new), 0);
@@ -90,7 +88,6 @@ int	search_expand(t_shell *s, t_expand *e)
 	{
 		if (check_str_expand(e->str, e->i, &e->len, &quo))
 		{
-			// printf("test check expand search \n");
 			if (expand_env_list(e, &buffer, &buffer_malloc) < 0)
 				return (handle_error(s, 137), free_tokens_empty(buffer.head),
 					free_tokens(buffer_malloc.head), 1);
@@ -98,7 +95,5 @@ int	search_expand(t_shell *s, t_expand *e)
 	}
 	e->list = buffer.head;
 	e->list_malloc = buffer_malloc.head;
-	// printf("search env end\n");
-	// dev_print_tokens(e->list);
 	return (0);
 }
