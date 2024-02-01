@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:43:01 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 03:28:22 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 08:30:16 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	errmsg_name(char *name_)
 
 void	*errmsg(int e)
 {
+	errmsg_name(NULL);
 	if (e == 1)
 		write(2, "syntax error have non-ascii char\n", 33);
 	else if (e == 2)
@@ -40,6 +41,7 @@ void	*errmsg(int e)
 
 void	*errmsg_var(int e, char *msg, int len)
 {
+	errmsg_name(NULL);
 	if (!len)
 		len = ft_strlen(msg);
 	if (e == 1)
@@ -82,6 +84,7 @@ void	*sp_errmsg(int e, char *msg)
 {
 	char	*ptr;
 
+	errmsg_name(NULL);
 	if (msg)
 		write(2, msg, ft_strlen(msg));
 	if (e == 3)

@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 12:51:19 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 08:27:00 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 08:30:30 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	*errmsg_errno(int e)
 {
 	char	*ptr;
 
+	errmsg_name(NULL);
 	if (e < 12)
 		errmsg_ptr_1(e);
 	else
@@ -105,6 +106,7 @@ void	*errmsg_expand(char *cmd, t_token *list, t_token *list_malloc)
 
 	i = -1;
 	quo = 0;
+	errmsg_name(NULL);
 	while (cmd[++ i])
 	{
 		if (cmd[i] == '\'' || cmd[i] == '"')
