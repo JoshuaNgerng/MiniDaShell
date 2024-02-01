@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:57:10 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 09:08:52 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 16:20:20 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,14 @@ static void	child_process(t_shell *s, t_processor *p, t_proc *hold)
 	free_child_exit(s, &c, 1);
 }
 
+// void	signal_child(t_shell *s)
+// {
+	// tcgetattr(0, &s->termios_);
+	// s->termios_.c_lflag;
+	//  |= !ECHOCTL;
+	// tcsetattr(1, TCSANOW, &s->termios_);
+// }
+
 int	process_child(t_shell *s, t_processor *p, t_proc *hold)
 {
 	int	pid;
@@ -82,6 +90,7 @@ int	process_child(t_shell *s, t_processor *p, t_proc *hold)
 			if (hold->cmd->type)
 				subshell(s, p, hold);
 		child_process(s, p, hold);
+		exit(1);
 	}
 	else
 	{

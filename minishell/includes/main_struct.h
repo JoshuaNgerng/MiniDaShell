@@ -6,12 +6,13 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 04:13:56 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 05:05:35 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 15:00:49 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAIN_STRUCT_H
 # define MAIN_STRUCT_H
+# include <termios.h>
 
 typedef struct s_token
 {
@@ -72,14 +73,15 @@ typedef struct s_root
 
 typedef struct s_shell
 {
-	int			status;
-	int			check;
-	int			input_len;
-	char		*input;
-	t_env		*env;
-	t_root		root;
-	int			(*builtin[6])(struct s_shell *, char **);
-	t_processor	processor;
+	int				status;
+	int				check;
+	int				input_len;
+	char			*input;
+	t_env			*env;
+	t_root			root;
+	int				(*builtin[6])(struct s_shell *, char **);
+	struct termios	termios_;
+	t_processor		processor;
 }	t_shell;
 
 // #define NULL ((void *) 0)

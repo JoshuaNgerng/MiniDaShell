@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 09:42:21 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 10:26:44 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 14:58:32 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,6 @@ int	main(int ac, char **av, char **env)
 	if (shell_init(&s, av, env))
 		return (s.status);
 	g_ctrl_c = 0;
-	if (signal(SIGINT, handle_signal) == SIG_ERR && \
-		signal(SIGQUIT, handle_signal) == SIG_ERR)
-		return (errmsg_errno(13), 1);
 	s.input = get_user_input(&s);
 	while (s.input)
 	{

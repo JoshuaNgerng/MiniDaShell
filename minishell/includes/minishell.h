@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 11:32:46 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 15:47:23 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,7 @@ int		shell_init(t_shell *s, char **av, char **env);
 char	*root_init(char **env);
 char	*get_prompt(char *direc, char *root);
 void	handle_signal(int signum);
+int		setup_signal(t_shell *s);
 
 /* handle input */
 

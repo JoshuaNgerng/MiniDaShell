@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:04:54 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 09:48:45 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 16:18:30 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,21 +67,10 @@ static char	*find_shell_cmd(char **path, char *cmd, int *ext_code)
 	return (out);
 }
 
-int	find_cmd(char **path, char **path_cmd, char *cmd, int *ext_code)
+static int	search_path(char **path, char **path_cmd, char *cmd, int *ext_code)
 {
 	char	*find_cmd;
 
-	if (ft_strrchr(cmd, '/') && !access(cmd, F_OK | X_OK))
-	{
-		find_cmd = ft_strdup(&cmd[2]);
-		if (!find_cmd)
-		{
-			*ext_code = 137;
-			return (errmsg_errno(10), 1);
-		}
-		*path_cmd = find_cmd;
-		return (0);
-	}
 	find_cmd = find_shell_cmd(path, cmd, ext_code);
 	if (!find_cmd)
 	{
@@ -91,4 +80,28 @@ int	find_cmd(char **path, char **path_cmd, char *cmd, int *ext_code)
 	}
 	*path_cmd = find_cmd;
 	return (0);
+}
+
+int	find_cmd(char **path, char **path_cmd, char *cmd, int *ext_code)
+{
+	if (cmd[0] == '/' && !access(cmd, F_OK | X_OK))
+	{
+		*path_cmd = ft_strdup(cmd);
+		if (!(*path_cmd))
+		{
+			*ext_code = 137;
+			return (errmsg_errno(10), 1);
+		}
+		return (0);
+	}
+	if (ft_strrchr(cmd, '/') && !access(cmd, F_OK | X_OK))
+	{
+		*path_cmd = ft_strdup(&cmd[2]);
+		if (!(*path_cmd))
+		{
+			*ext_code = 137;
+			return (errmsg_errno(10), 1);
+		}
+	}
+	return (search_path(path, path_cmd, cmd, ext_code));
 }

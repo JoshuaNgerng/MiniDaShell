@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 12:51:19 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 12:39:23 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 15:03:43 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,10 @@ static void	errmsg_ptr_2(int e)
 		write(2, "Cannot make pipe[expand]: ", 26);
 	else if (e == 21)
 		write(2, "Cannot make child process[expand]: ", 35);
+	else if (e == 22)
+		write(2, "tcgetattr cannot run: ", 22);
+	else if (e == 23)
+		write(2, "tcsetattr cannot run: ", 22);
 }
 
 void	*errmsg_errno(int e)
