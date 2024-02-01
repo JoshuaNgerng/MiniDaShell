@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 09:57:00 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 10:21:25 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,7 @@ void	handle_signal(int signum);
 
 /* handle input */
 
-int		complete_input(t_shell *s, t_token **head, char *r, int c);
+int		complete_input(t_shell *s, t_token **head, char *r, int *c);
 int		check_input(char *input, int i);
 int		iter_token(char *input, int i, int *new);
 int		check_redirection(char *input, int *index);

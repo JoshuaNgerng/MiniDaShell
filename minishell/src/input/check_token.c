@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 09:16:25 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 03:42:01 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 10:04:58 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	iter_token(char *input, int i, int *new)
 	int	ref;
 
 	ref = 0;
-	while (input[i] && !ft_checkset(input[i], "&|<> "))
+	while (input[i] && !ft_checkset(input[i], "&|<> ()"))
 	{
 		if (!ft_isascii(input[i]))
 			return (errmsg(1), -1);

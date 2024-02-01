@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 09:59:47 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 09:56:18 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 10:22:12 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ intialize link list to hold memory for input
 token hold the readline
 type hold whether it is start or end of a quotation
 */
-int	complete_input(t_shell *s, t_token **head, char *r, int c)
+int	complete_input(t_shell *s, t_token **head, char *r, int *c)
 {
 	t_token	*tail;
 
@@ -129,11 +129,11 @@ int	complete_input(t_shell *s, t_token **head, char *r, int c)
 	tail = (*head);
 	tail->type = 0;
 	tail->next = NULL;
-	if (c == '\'' || c == '"')
-		tail->type = c;
-	while (c > 0 && c != end_b)
+	if (*c == '\'' || *c == '"')
+		tail->type = *c;
+	while (*c > 0 && *c != end_b)
 	{
-		if (complete_input_helper(s, &tail, &c))
+		if (complete_input_helper(s, &tail, c))
 			return (0);
 	}
 	return (0);

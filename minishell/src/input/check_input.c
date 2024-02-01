@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 09:59:45 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 09:00:09 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 10:23:19 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,30 +110,13 @@ int	check_input(char *input, int i)
 	out = 0;
 	brac = 0;
 	if (!i)
-	{
 		if (start_check_input(input, &i, &out, &brac))
 			return (-1);
-	}
 	while (i >= 0 && input[i])
 		i = check_inside_loop(input, i, &out, &brac);
-	if (brac > 0 || i < 0)
+	if (i < 0)
 		return (-1);
+	if (brac > 0)
+		return (errmsg_var(1, ")", 1), -1);
 	return (out);
 }
-/*
-	{
-		i = pass_space(input, i);
-		if (ft_checkset(input[i], "|&)"))
-			return (-1);
-		if (input[i] == '(')
-		{
-			i ++;
-			out = start_b;
-			brac = 1;
-		}
-		else if (input[i] == '<' || input[i] == '>')
-			out = check_redirection(input, &i);
-		else
-			i = iter_token(input, i, &out);
-	}
-*/

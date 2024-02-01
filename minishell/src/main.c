@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 09:42:21 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 09:52:44 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 10:26:44 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,10 @@ static char	*join_buffer(t_shell *s, t_token *t, int *len)
 static void	get_user_input_helper(t_shell *s, int c, char *r)
 {
 	if (c < 0)
+	{
+		s->status = 1;
 		s->check = 1;
+	}
 	if (r)
 	{
 		s->input_len = ft_strlen(r);
@@ -84,7 +87,7 @@ static char	*get_user_input(t_shell *s)
 	}
 	if (c > 0)
 	{
-		if (complete_input(s, &head, r, c))
+		if (complete_input(s, &head, r, &c))
 			return (free_tokens(head), NULL);
 	}
 	if (head)
@@ -107,7 +110,6 @@ int	main(int ac, char **av, char **env)
 	s.input = get_user_input(&s);
 	while (s.input)
 	{
-		printf("testing %d\n", s.check);
 		if (!s.check)
 			bash(&s);
 		free_reset(&s);

@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 01:45:02 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 03:47:04 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 10:32:42 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ static int	check_file(const t_star *s, const char *fname, int len)
 	if ((s->head_type || s->start == s->star_pos) && s->end != s->star_pos)
 	{
 		if (!ft_strncmp(&fname[len - n], &s->str[s->star_pos + 1], n))
+			return (0);
+	}
+	else if (!s->head_type && s->start != s->star_pos && s->end == s->star_pos)
+	{
+		if (!ft_strncmp(fname, &s->str[s->start], s->star_pos - s->start))
 			return (0);
 	}
 	else if (s->end != s->star_pos)
