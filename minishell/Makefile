@@ -19,7 +19,7 @@ S_NAME_U = env free free2 free3 misc pipes string read_pipe
 DIR_INPUT = input
 S_NAME_INPUT = check_input check_loop loop_input check_token
 DIR_INIT = init
-S_NAME_INIT = init prompt
+S_NAME_INIT = init sig
 DIR_HD = heredoc
 S_NAME_HD = here_doc_init here_doc_wrt
 DIR_EX = expand
@@ -54,7 +54,7 @@ S_LIST = $(S_NAME) $(S_NAME_U) $(S_NAME_INPUT) $(S_NAME_INIT) $(S_NAME_HD) $(S_N
 OBJ = $(foreach item, $(S_LIST), $(OBJ_DIR)/$(item).o)
 CC = gcc
 CMEM = -fsanitize=address -g3
-CFLAGS = -Wall -Wextra -Werror $(CMEM)
+CFLAGS = -Wall -Wextra -Werror #$(CMEM)
 INC = -I includes -I libft/includes -I readline -I /usr/local/opt/readline/include
 LIBFT = -L libft -lft -lreadline -lncurses -L /usr/local/opt/readline/lib
 
