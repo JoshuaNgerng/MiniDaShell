@@ -6,13 +6,13 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 09:59:45 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 10:23:19 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 11:35:04 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	get_new_token(char *input, int i, int *new, int *brac)
+int	get_new_token(char *input, int i, int *new, int *brac)
 {
 	if (input[i] == '>' || input[i] == '<')
 		*new = check_redirection(input, &i);
@@ -34,40 +34,12 @@ static int	get_new_token(char *input, int i, int *new, int *brac)
 		(*brac)--;
 		i ++;
 	}
+	else if (input[i] == '$' && input[i + 1] == '(')
+		i = get_bracket(input, i + 1);
 	else
 		i = iter_token(input, i, new);
 	return (i);
 }
-
-static int	check_inside_loop(char *input, int i, int *prev, int *brac)
-{
-	int	j;
-	int	new;
-
-	new = 0;
-	i = pass_space(input, i);
-	if (!input[i])
-		return (i);
-	j = get_new_token(input, i, &new, brac);
-	if (j < 0)
-		return (-1);
-	if (*prev & FILES && new)
-		return (errmsg_token(new), -1);
-	else if (new & OPERATORS && *prev == start_b)
-		return (errmsg_token(new), -1);
-	else if (new == _pipe && (*prev > 0 && *prev < end_b))
-		return (errmsg_token(new), -1);
-	else if (new & LOGIC && *prev && *prev != end_b)
-		return (errmsg_token(new), -1);
-	else if (new & start_b && !(*prev & (OPERATORS | start_b)))
-		return (errmsg_token(new), -1);
-	else if (new & end_b && (*prev && *prev != end_b))
-		return (errmsg_token(new), -1);
-	*prev = new;
-	return (j);
-}
-
-// static void	start_token_errmsg()
 
 static int	start_check_input(char *input, int *ptr, int *out, int *brac)
 {
@@ -88,6 +60,8 @@ static int	start_check_input(char *input, int *ptr, int *out, int *brac)
 	}
 	else if (input[i] == '<' || input[i] == '>')
 		*out = check_redirection(input, &i);
+	else if (input[i] == '$' && input[i + 1] == '(')
+		i = get_bracket(input, i + 1);
 	else
 		i = iter_token(input, i, out);
 	*ptr = i;

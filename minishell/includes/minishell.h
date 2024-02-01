@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 10:21:25 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 11:32:46 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,8 @@ void	handle_signal(int signum);
 
 int		complete_input(t_shell *s, t_token **head, char *r, int *c);
 int		check_input(char *input, int i);
+int		check_inside_loop(char *input, int i, int *prev, int *brac);
+int		get_new_token(char *input, int i, int *new, int *brac);
 int		iter_token(char *input, int i, int *new);
 int		check_redirection(char *input, int *index);
 int		check_logical_operator(char *input, int *index);
@@ -211,11 +213,13 @@ int		prepare_env_n_path(t_env *env, t_processor *p);
 int		tokenize_and_sectioning(t_shell *s, t_processor	*p);
 int		add_process(t_shell *s, t_ptr_p *ptr, t_sect *sec, int *index);
 int		tokenize_input(t_shell *s, t_token **head, int *index, int *type);
+int		get_bracket(char *input, int i);
 
 /* expand */
 
 int		expand(t_shell *s, t_sect *sect);
 int		expand_here_doc(t_shell *s, t_token *t);
+char	*clean_token(char *str);
 void	copy_expand(char *dst, char *src, t_token *list, t_token *list_malloc);
 int		search_expand(t_shell *s, t_expand *e);
 int		expand_cmd(t_token *now, t_token **prev, t_shell *s, char *status);

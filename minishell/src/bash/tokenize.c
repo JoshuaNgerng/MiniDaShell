@@ -6,13 +6,13 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 09:30:43 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 23:48:52 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 11:30:24 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	get_bracket(char *input, int i)
+int	get_bracket(char *input, int i)
 {
 	int	brac;
 	int	j;
@@ -29,6 +29,8 @@ static int	get_bracket(char *input, int i)
 		if (brac == 0)
 			break ;
 	}
+	if (brac > 0)
+		return (-1);
 	return (j);
 }
 

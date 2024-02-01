@@ -6,24 +6,11 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 15:23:21 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 08:03:58 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 11:05:46 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*clean_token(char *str)
-{
-	int	i;
-
-	i = -1;
-	while (str[++ i])
-	{
-		if (str[i] == -32)
-			str[i] = 32;
-	}
-	return (str);
-}
 
 int	empty_cmd(t_ptr *buffer, t_token *next)
 {
@@ -75,6 +62,12 @@ int	expand_env_cmd(char *str, t_ptr *buffer, t_token *next)
 	return (free(strs), out);
 }
 
+static void	free_both_list(t_token *list, t_token *list2)
+{
+	free_tokens_empty(list);
+	free_tokens(list2);
+}
+
 /*
 iter through the str in token and find $
 then make list point to the env
@@ -94,15 +87,15 @@ int	expand_cmd(t_token *now, t_token **prev, t_shell *s, char *status)
 	next = now->next;
 	buffer = (t_ptr){now, now};
 	e = (t_expand){-1, 0, now->token, status, s, NULL, NULL};
+	if (now->type == start_b)
+		return (0);
 	if (search_expand(s, &e))
 		return (handle_error(s, 137), 1);
 	line = (char *) malloc((e.len + 1) * sizeof(char));
 	if (!line)
-		return (free_tokens_empty(e.list),
-			free_tokens(e.list_malloc), handle_error(s, 137), 1);
+		return (free_both_list(e.list, e.list_malloc), handle_error(s, 137), 1);
 	copy_expand(line, now->token, e.list, e.list_malloc);
-	free_tokens_empty(e.list);
-	free_tokens(e.list_malloc);
+	free_both_list(e.list, e.list_malloc);
 	if (expand_env_cmd(line, &buffer, next))
 		return (handle_error(s, 137), 1);
 	if (!(*prev))

@@ -6,11 +6,24 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 11:52:18 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 08:04:14 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/01 11:04:08 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*clean_token(char *str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++ i])
+	{
+		if (str[i] == -32)
+			str[i] = 32;
+	}
+	return (str);
+}
 
 static int	copy_expand_env(char *dst, t_token *list, int quo)
 {
