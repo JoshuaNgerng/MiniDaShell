@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 15:47:23 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/02 09:44:26 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <errno.h>
 # include <string.h>
 # include <sys/types.h>
+# include <sys/stat.h>
 # include <sys/wait.h>
 # include <signal.h>
 # include <readline/readline.h>
@@ -250,6 +251,7 @@ void	dup_helper(t_processor *p, t_fd *fd, int check);
 int		check_builtins(const t_proc *proc);
 void	builtin_errmsg_opt(char *name);
 void	builtin_errmsg_arg(char *name);
+void	invalid_errmsg(char *cmd);
 int		check_options(char *cmd);
 int		get_number_arg(char **cmd, int check);
 int		pwd_function(t_shell *s, char **cmd);
