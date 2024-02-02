@@ -6,39 +6,28 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 18:04:54 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 16:18:30 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/02 11:09:21 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**get_cmd_array(t_token *cmd)
+static void	set_ext_code(int *ext_code, int value)
 {
-	int		i;
-	int		len;
-	char	**out;
-	t_token	*ptr;
+	*ext_code = value;
+}
 
-	len = 1;
-	ptr = cmd;
-	while (ptr)
-	{
-		len ++;
-		ptr = ptr->next;
-	}
-	out = (char **) malloc(len * sizeof(char *));
-	if (!out)
-		return (errmsg_errno(11), NULL);
-	ptr = cmd;
-	i = -1;
-	while (++ i < len - 1)
-	{
-		out[i] = ptr->token;
-		ptr->token = NULL;
-		ptr = ptr->next;
-	}
-	out[i] = NULL;
-	return (out);
+static int	test_whether_is_file(const char *name)
+{
+	struct stat	statbuf;
+
+	if (access(name, F_OK | X_OK))
+		return (1);
+	if (stat(name, &statbuf))
+		return (1);
+	if (S_ISREG(statbuf.st_mode) == 1 && !S_ISDIR(statbuf.st_mode))
+		return (0);
+	return (1);
 }
 
 static char	*find_shell_cmd(char **path, char *cmd, int *ext_code)
@@ -54,17 +43,13 @@ static char	*find_shell_cmd(char **path, char *cmd, int *ext_code)
 	{
 		out = ft_strjoin(path[i], cmd);
 		if (!out)
-		{
-			*ext_code = 137;
-			return (NULL);
-		}
-		if (!access(out, F_OK | X_OK))
+			return (set_ext_code(ext_code, 137), NULL);
+		if (!test_whether_is_file(out))
 			return (out);
 		free(out);
 		out = NULL;
 	}
-	*ext_code = 127;
-	return (out);
+	return (set_ext_code(ext_code, 127), out);
 }
 
 static int	search_path(char **path, char **path_cmd, char *cmd, int *ext_code)
@@ -84,24 +69,18 @@ static int	search_path(char **path, char **path_cmd, char *cmd, int *ext_code)
 
 int	find_cmd(char **path, char **path_cmd, char *cmd, int *ext_code)
 {
-	if (cmd[0] == '/' && !access(cmd, F_OK | X_OK))
+	char	*ptr;
+
+	ptr = ft_strrchr(cmd, '/');
+	if (!ptr)
+		return (search_path(path, path_cmd, cmd, ext_code));
+	if (!test_whether_is_file(cmd))
 	{
 		*path_cmd = ft_strdup(cmd);
 		if (!(*path_cmd))
-		{
-			*ext_code = 137;
-			return (errmsg_errno(10), 1);
-		}
+			return (set_ext_code(ext_code, 137), errmsg_errno(10), 1);
 		return (0);
 	}
-	if (ft_strrchr(cmd, '/') && !access(cmd, F_OK | X_OK))
-	{
-		*path_cmd = ft_strdup(&cmd[2]);
-		if (!(*path_cmd))
-		{
-			*ext_code = 137;
-			return (errmsg_errno(10), 1);
-		}
-	}
-	return (search_path(path, path_cmd, cmd, ext_code));
+	set_ext_code(ext_code, 127);
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 15:22:48 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 08:05:29 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/02 10:40:47 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,35 +38,6 @@ static int	expand_file(t_shell *s, t_token *t, char *status)
 	free(t->token);
 	t->token = out;
 	return (free_tokens_empty(e.list), free_tokens(e.list_malloc), 0);
-}
-
-int	expand_here_doc(t_shell *s, t_token *t)
-{
-	int		i;
-	int		j;
-	int		len;
-	char	*out;
-
-	i = -1;
-	len = 0;
-	while (t->token[++ i])
-		if (t->token[i] == '\'' || t->token[i] == '"')
-			len ++;
-	len = i - len;
-	out = (char *) malloc((len + 1) * sizeof(char));
-	if (!out)
-		return (handle_error(s, 137), 1);
-	i = -1;
-	j = 0;
-	while (t->token[++ i])
-	{
-		if (t->token[i] != '\'' || t->token[i] != '"')
-			out[j ++] = t->token[i];
-	}
-	out[j] = '\0';
-	free(t->token);
-	t->token = out;
-	return (0);
 }
 
 static int	loop_files(t_shell *s, t_token *t, char *status)

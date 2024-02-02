@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 14:59:42 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 09:38:16 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/02 10:23:15 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static void	check_first_arug_exit(t_shell *s, char **cmd)
 		if (!ft_isdigit(cmd[1][i]))
 		{
 			write(2, "exit: numeric argument required\n", 32);
-			s->status = 2;
+			s->status = 255;
 			free_strs(cmd);
 			free_all_exit(s, s->status);
 		}
@@ -88,8 +88,8 @@ int	exit_function(t_shell *s, char **cmd)
 		check_first_arug_exit(s, cmd);
 	if (max > 2)
 	{
-		write(2, "exit: too many arguments\n", 25);
-		s->status = 2;
+		write(2, "exit\nexit: too many arguments\n", 30);
+		s->status = 1;
 		return (0);
 	}
 	if (max == 2)

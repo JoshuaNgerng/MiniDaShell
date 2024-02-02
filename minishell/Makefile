@@ -23,7 +23,8 @@ S_NAME_INIT = init sig
 DIR_HD = heredoc
 S_NAME_HD = here_doc_init here_doc_wrt
 DIR_EX = expand
-S_NAME_EX = expand_cmd expand_search expand_copy expand_root expand_star expand_subshell
+S_NAME_EX = expand_cmd expand_search expand_copy \
+			expand_root expand_heredoc expand_star expand_subshell 
 DIR_STAR = star
 S_NAME_STAR = star readdir
 DIR_ERR = errmsg
@@ -54,7 +55,7 @@ S_LIST = $(S_NAME) $(S_NAME_U) $(S_NAME_INPUT) $(S_NAME_INIT) $(S_NAME_HD) $(S_N
 OBJ = $(foreach item, $(S_LIST), $(OBJ_DIR)/$(item).o)
 CC = gcc
 CMEM = -fsanitize=address -g3
-CFLAGS = -Wall -Wextra -Werror #$(CMEM)
+CFLAGS = -Wall -Wextra -Werror $(CMEM)
 INC = -I includes -I libft/includes -I readline -I /usr/local/opt/readline/include
 LIBFT = -L libft -lft -lreadline -lncurses -L /usr/local/opt/readline/lib
 

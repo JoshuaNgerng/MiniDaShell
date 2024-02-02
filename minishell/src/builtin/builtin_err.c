@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 09:14:19 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 11:36:27 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/02 09:08:13 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,17 @@ int	get_number_arg(char **cmd, int check)
 		}
 	}
 	return (i);
+}
+
+void	invalid_errmsg(char *cmd)
+{
+	int	i;
+
+	write(2, "export: `", 9);
+	i = find_equal_sign(cmd);
+	if (i < 0)
+		write(2, cmd, ft_strlen(cmd));
+	else
+		write(2, cmd, i);
+	write(2, "': not a valid identifer\n", 25);
 }

@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:56:00 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 03:27:41 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/02 09:51:10 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,13 @@ int	dup_stdin_stdout(t_shell *s, t_processor *p, t_proc *proc)
 	t_fd	fd;
 
 	fd.read_ = cycle_input_files(proc->f_read);
+	if (fd.read_ < 0)
+		return (1);
 	fd.write_ = cycle_output_files(proc->f_out);
+	if (fd.write_ < 0)
+		return (1);
 	fd.fd_in = fd.read_;
 	fd.fd_out = fd.write_;
-	if (fd.read_ < 0 || fd.write_ < 0)
-		return (1);
 	dup_helper(p, &fd, proc->in);
 	if (!fd.fd_in)
 		fd.fd_in = p->stdin_;

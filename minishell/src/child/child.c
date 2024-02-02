@@ -6,11 +6,40 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:57:10 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 16:20:20 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/02 10:57:39 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	**get_cmd_array(t_token *cmd)
+{
+	int		i;
+	int		len;
+	char	**out;
+	t_token	*ptr;
+
+	len = 1;
+	ptr = cmd;
+	while (ptr)
+	{
+		len ++;
+		ptr = ptr->next;
+	}
+	out = (char **) malloc(len * sizeof(char *));
+	if (!out)
+		return (errmsg_errno(11), NULL);
+	ptr = cmd;
+	i = -1;
+	while (++ i < len - 1)
+	{
+		out[i] = ptr->token;
+		ptr->token = NULL;
+		ptr = ptr->next;
+	}
+	out[i] = NULL;
+	return (out);
+}
 
 int	process_builtins(t_shell *s, t_proc *p, int check)
 {
@@ -95,13 +124,12 @@ int	process_child(t_shell *s, t_processor *p, t_proc *hold)
 	else
 	{
 		p->pid[p->index_p] = pid;
-		if (p->here_doc_pipe)
+		if (p->here_doc_pipe && hold->here_doc)
 		{
 			close(p->here_doc_pipe[p->index_h * 2]);
 			close(p->here_doc_pipe[p->index_h * 2 + 1]);
-		}
-		if (hold->here_doc)
 			p->index_h ++;
+		}
 	}
 	return (0);
 }

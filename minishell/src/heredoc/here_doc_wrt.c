@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:01:36 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/31 23:36:37 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/02 10:32:01 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ static int	empty_here_doc(const char *lim)
 		buffer = NULL;
 		buffer = readline(">> ");
 	}
-	if (!buffer)
-		return (errmsg(3), 1);
-	return (free(buffer), 0);
+	if (buffer)
+		free(buffer);
+	return (0);
 }
 
 static int	here_doc_write(const char *lim, int pfd)
@@ -58,9 +58,9 @@ static int	here_doc_write(const char *lim, int pfd)
 			return (errmsg_errno(4), 1);
 		r = readline(">> ");
 	}
-	if (!r)
-		return (errmsg(3), 1);
-	return (free(r), 0);
+	if (r)
+		free(r);
+	return (0);
 }
 
 static int	loop_here_doc_helper(t_shell *s, t_token *t, int *pfd, int *index)

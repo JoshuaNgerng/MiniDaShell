@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 16:34:03 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 13:54:58 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/02 08:59:02 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,12 +93,6 @@ int	cd_function(t_shell *s, char **cmd)
 	n = get_number_arg(cmd, 1);
 	if (n < 0)
 		return (handle_error(s, 1), 0);
-	if (n > 2)
-	{
-		write(2, "cd: too many arguments\n", 23);
-		s->status = 1;
-		return (0);
-	}
 	if (cd_chdir(cmd[1], s->env))
 		return (handle_error(s, 1), 0);
 	if (!s->root.change)

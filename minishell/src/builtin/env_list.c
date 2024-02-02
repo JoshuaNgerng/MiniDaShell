@@ -6,24 +6,11 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 14:47:20 by jngerng           #+#    #+#             */
-/*   Updated: 2024/01/21 19:34:33 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/02 09:12:23 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	invalid_errmsg(char *cmd)
-{
-	int	i;
-
-	write(2, "export: `", 9);
-	i = find_equal_sign(cmd);
-	if (i < 0)
-		write(2, cmd, ft_strlen(cmd));
-	else
-		write(2, cmd, i);
-	write(2, "': not a valid identifer\n", 25);
-}
 
 int	check_valid_line(t_shell *s, char *cmd, int *equal)
 {
@@ -43,6 +30,24 @@ int	check_valid_line(t_shell *s, char *cmd, int *equal)
 	if (equal && !(*equal))
 		return (1);
 	return (0);
+}
+
+static void	empty_export(t_env *env, int i)
+{
+	t_env	*ptr;
+
+	if (i > 1)
+		return ;
+	ptr = env;
+	while (ptr)
+	{
+		write(1, "declare -x ", 11);
+		write(1, ptr->key, ft_strlen(ptr->key));
+		write(1, "=", 1);
+		write(1, ptr->value, ft_strlen(ptr->value));
+		write(1, "\n", 1);
+		ptr = ptr->next;
+	}
 }
 
 int	export(t_shell *s, char **cmd)
@@ -71,10 +76,10 @@ int	export(t_shell *s, char **cmd)
 			free_env_node(new);
 		}
 	}
-	return (0);
+	return (empty_export(s->env, i), 0);
 }
 
-t_env	*unset_node(t_env *head, t_env *target)
+static t_env	*unset_node(t_env *head, t_env *target)
 {
 	t_env	*ptr;
 	t_env	*ptr2;
