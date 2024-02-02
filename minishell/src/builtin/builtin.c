@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 14:59:42 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/02 10:23:15 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/02 12:21:30 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,5 +114,7 @@ int	check_builtins(const t_proc *proc)
 		return (5);
 	else if (!ft_strncmp(proc->cmd->token, "env", 4))
 		return (6);
+	else if (!ft_strncmp(proc->cmd->token, "echo", 5))
+		return (7);
 	return (0);
 }

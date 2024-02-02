@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 10:40:34 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 08:10:47 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/02 16:15:05 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ static int	expand_env_list(t_expand *e, t_ptr *buffer, t_ptr *buffer_malloc)
 		return (expand_star(new, buffer_malloc, e));
 	if (e->str[i] == '?')
 		return (expand_special_status(new, buffer, e));
-	if (e->str[i] == '(')
-		return (expand_subshell(new, buffer_malloc, e));
 	while (e->str[i] && !ft_checkset(e->str[i], "*$ \\\"'"))
 		i ++;
 	search = search_env(e->s->env, &e->str[e->i + 1], i - e->i - 1);

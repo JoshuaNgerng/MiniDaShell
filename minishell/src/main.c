@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 09:42:21 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 14:58:32 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/02 15:38:20 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static void	get_user_input_helper(t_shell *s, int c, char *r)
 	}
 	if (g_ctrl_c)
 	{
-		s->status = 1;
+		s->status = g_ctrl_c;
 		g_ctrl_c = 0;
 	}
 }

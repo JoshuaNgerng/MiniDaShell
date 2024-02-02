@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:43:01 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 13:55:27 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/02 13:07:31 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,12 @@ void	*errmsg_var(int e, char *msg, int len)
 		write(2, "unexpected EOF while looking for matching `", 43);
 	if (msg)
 		write(2, msg, len);
-	if (e != 3)
+	if (e < 3)
 		write(2, "'\n", 2);
 	if (e == 3)
 		write(2, ": command not found\n", 20);
+	if (e == 4)
+		write(2, ": is a directory\n", 17);
 	return (NULL);
 }
 
@@ -71,6 +73,10 @@ void	*errmsg_token(int token)
 	check = 0;
 	if (!token || token < 0)
 		return (NULL);
+	if (token == '\'')
+		return (errmsg_var(1, "'", 1));
+	if (token == '"')
+		return (errmsg_var(1, "\"", 1));
 	while (!check)
 	{
 		check = (token & (1 << index));

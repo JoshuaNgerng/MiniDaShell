@@ -24,7 +24,7 @@ DIR_HD = heredoc
 S_NAME_HD = here_doc_init here_doc_wrt
 DIR_EX = expand
 S_NAME_EX = expand_cmd expand_search expand_copy \
-			expand_root expand_heredoc expand_star expand_subshell 
+			expand_root expand_heredoc expand_star
 DIR_STAR = star
 S_NAME_STAR = star readdir
 DIR_ERR = errmsg
@@ -32,7 +32,7 @@ S_NAME_ERR = errmsg errmsg_err
 DIR_CHILD = child
 S_NAME_CHILD = child cmd file subshell
 DIR_BUILT = builtin
-S_NAME_BUILT = builtin env_list cd builtin_err
+S_NAME_BUILT = builtin env_list cd echo builtin_err
 DIR_BASH = bash
 S_NAME_BASH = bash_start section tokenize process preproc
 SRC_MAIN = $(foreach item, $(S_NAME), $(SRC_DIR)/$(item).c)

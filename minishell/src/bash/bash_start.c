@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 08:39:26 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 10:08:48 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/02 14:10:26 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ static int	process_children(t_shell *s, t_processor *p, t_sect *sect)
 	p->index_p = 0;
 	if (prepare_pipes(p->pipe, p->pipe_num))
 		return (1);
+	signal(SIGINT, handle_ctrl_c_child);
+	signal(SIGQUIT, handle_ctrl_z_child);
 	if (process_children_loop_sect(s, p, sect))
 		return (1);
 	close_pipes(p->pipe, p->pipe_num);
@@ -59,6 +61,8 @@ static int	process_children(t_shell *s, t_processor *p, t_sect *sect)
 	i = -1;
 	while (++ i < sect->pid)
 		waitpid(p->pid[i], &s->status, 0);
+	signal(SIGINT, handle_signal);
+	signal(SIGQUIT, SIG_IGN);
 	s->status = WEXITSTATUS(s->status);
 	free(p->pipe);
 	p->pipe = NULL;

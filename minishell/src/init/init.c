@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 14:12:27 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 16:19:08 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/02 16:31:29 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,9 @@ static void	set_builtins(t_shell *s, char **av)
 	s->builtin[3] = cd_function;
 	s->builtin[4] = pwd_function;
 	s->builtin[5] = env_print;
+	s->builtin[6] = echo_function;
 	errmsg_name(av[0]);
+	is_name(av[0]);
 }
 
 int	shell_init(t_shell *s, char **av, char **env)

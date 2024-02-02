@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:57:10 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/02 10:57:39 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/02 16:30:45 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ static void	child_process(t_shell *s, t_processor *p, t_proc *hold)
 		free_child_exit(s, &c, s->builtin[check - 1](s, c.cmd));
 	if (find_cmd(p->path, &c.path_cmd, c.cmd[0], &s->status))
 		free_child_exit(s, &c, s->status);
+	if (is_name(c.path_cmd))
+		free_child_exit(s, &c, s->status);
 	execve(c.path_cmd, c.cmd, p->env);
 	free_child_exit(s, &c, 1);
 }
@@ -101,8 +103,7 @@ static void	child_process(t_shell *s, t_processor *p, t_proc *hold)
 // void	signal_child(t_shell *s)
 // {
 	// tcgetattr(0, &s->termios_);
-	// s->termios_.c_lflag;
-	//  |= !ECHOCTL;
+	// s->termios_.c_lflag  |= !ECHOCTL;
 	// tcsetattr(1, TCSANOW, &s->termios_);
 // }
 

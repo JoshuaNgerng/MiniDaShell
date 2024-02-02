@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 10:52:32 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 03:58:08 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/02 16:32:23 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,25 @@ char	*get_input(t_shell *s, const char *prompt)
 		free(r);
 	}
 	return (r);
+}
+
+int	is_name(char *exe)
+{
+	static char	*name;
+	static	int	name_len;
+	int			len;
+
+	if (!name)
+	{
+		name = exe;
+		name_len = ft_strlen(name);
+		return (0);
+	}
+	len = ft_strlen(exe);
+	if (!ft_strncmp(exe, name, len) && len == name_len)
+	{
+		write(2, "Already in minishell cannot execute minishell\n", 46);
+		return (1);
+	}
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 14:47:20 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/02 09:12:23 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/02 16:18:05 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@ int	check_valid_line(t_shell *s, char *cmd, int *equal)
 {
 	int	i;
 
-	i = -1;
+	i = 0;
+	if (!ft_isalpha(cmd[0]))
+		return (handle_error(s, 1), invalid_errmsg(cmd), 1);
 	while (cmd[++ i])
 	{
-		if (ft_checkset(cmd[i], "$*&^"))
+		if (!ft_isalpha(cmd[i]) && cmd[i] != '=')
 			return (handle_error(s, 1), invalid_errmsg(cmd), 1);
 		if (equal)
 		{

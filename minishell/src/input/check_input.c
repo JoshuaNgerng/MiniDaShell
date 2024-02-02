@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 09:59:45 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 11:35:04 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/02 16:13:39 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ static int	start_check_input(char *input, int *ptr, int *out, int *brac)
 	}
 	else if (input[i] == '<' || input[i] == '>')
 		*out = check_redirection(input, &i);
-	else if (input[i] == '$' && input[i + 1] == '(')
-		i = get_bracket(input, i + 1);
 	else
 		i = iter_token(input, i, out);
 	*ptr = i;
