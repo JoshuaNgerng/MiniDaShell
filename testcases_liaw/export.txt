@@ -1,0 +1,79 @@
+export | grep -v -E '^declare -x _='
+export 1 _+ _OK _2? _OK2=VAR =NG OK3=; export | grep -v -E '^declare -x _='
+export dquote='"' dollar='$' backslash='\' backquote='`' newline='\n'; export | grep -v -E '^declare -x _='
+export APPEND=1; export APPEND+=2; export | grep APPEND
+export APPEND_NONE=1; export APPEND_NONE+=; export | grep APPEND_NONE
+export APPEND_NONE=; export APPEND_NONE=; export APPEND_NONE+=; export | grep APPEND_NONE
+export APPEND_EMPTY=""; export APPEND_EMPTY=""; export APPEND_EMPTY=""; export | grep APPEND_EMPTY
+export OVERWRITE=42; export OVERWRITE=a; export | grep OVERWRITE
+export A=B=C=D; export | grep A
+export PATH; export | grep PATH
+export PWD; export | grep PWD
+export OLDPWD; export | grep OLDPWD
+unset PWD; cd ..; export | grep PWD
+unset OLDPWD; cd ..; export | grep OLDPWD
+unset PWD; cd ..; export PWD=new_value; export | grep PWD
+unset OLDPWD; cd ..; export OLDPWD=new_value; export | grep OLDPWD
+unset PWD; cd ..; export PWD; export | grep PWD
+unset OLDPWD; cd ..; export OLDPWD; export | grep OLDPWD
+export =
+env | grep "_="
+export | grep "SHLVL"
+export | grep "OLDPWD"
+export | grep "PWD"
+export $? 
+export TEST
+export TEST=
+export TEST=123
+export ___TEST=123
+export --TEST=123
+export ""=""
+export ''=''
+export "="="="
+export '='='='
+export TE\\\ST=100
+export TE-ST=100
+export -TEST=100
+export TEST-=100
+export _TEST=100
+export | grep "SHLVL"
+export TEST
+export ==========
+export 1TEST=
+export TEST
+export ""=""
+export TES=T=""
+export TE+S=T=""
+export TES\\\\T=123
+export TES.T=123
+export TES\\\$T=123
+export TES\\\\T
+export TES.T=123
+export TES+T=123
+export TES=T=123
+export TES}T=123
+export TES{T=123
+export TES-T=123
+export -TEST=123
+export _TEST=123
+export TES_T=123
+export TEST_=123
+export TE*ST=123
+export TES#T=123
+export TES@T=123
+export TES!T=123
+export TES$?T=123
+export =============123
+export +++++++=123
+export ________=123
+export export
+export echo
+export pwd
+export cd
+export export
+export unset
+export sudo
+export TES^T=123
+export TES!T=123
+export TES\~T=123
+export TEST+=100
