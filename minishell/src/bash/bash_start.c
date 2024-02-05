@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 08:39:26 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/02 14:10:26 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/05 09:31:34 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,15 @@ static int	process_children_loop_sect(t_shell *s, t_processor *p, t_sect *sect)
 	return (0);
 }
 
+static void	close_pipes_children(t_processor *p)
+{
+	close_pipes(p->pipe, p->pipe_num);
+	if (p->stdin_ > 0)
+		close(p->stdin_);
+	if (p->stdout_ > 1)
+		close(p->stdout_);
+}
+
 /*
 builtins affect the main programme etc cd and export
 therefore if builtins are called and the number of process is one
@@ -44,7 +53,7 @@ else it will sent to child process as usual
 */
 static int	process_children(t_shell *s, t_processor *p, t_sect *sect)
 {
-	int		i;
+	int	i;
 
 	p->index_p = 0;
 	if (prepare_pipes(p->pipe, p->pipe_num))
@@ -53,14 +62,11 @@ static int	process_children(t_shell *s, t_processor *p, t_sect *sect)
 	signal(SIGQUIT, handle_ctrl_z_child);
 	if (process_children_loop_sect(s, p, sect))
 		return (1);
-	close_pipes(p->pipe, p->pipe_num);
-	if (p->stdin_ > 0)
-		close(p->stdin_);
-	if (p->stdout_ > 1)
-		close(p->stdout_);
-	i = -1;
-	while (++ i < sect->pid)
-		waitpid(p->pid[i], &s->status, 0);
+	close_pipes_children(p);
+	waitpid(p->pid[sect->pid - 1], &s->status, 0);
+	i = sect->pid - 1;
+	while (i -- > 0)
+		waitpid(p->pid[i], NULL, 0);
 	signal(SIGINT, handle_signal);
 	signal(SIGQUIT, SIG_IGN);
 	s->status = WEXITSTATUS(s->status);

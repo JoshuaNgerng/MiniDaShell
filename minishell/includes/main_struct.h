@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 04:13:56 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 15:00:49 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/02 12:20:42 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ typedef struct s_shell
 	char			*input;
 	t_env			*env;
 	t_root			root;
-	int				(*builtin[6])(struct s_shell *, char **);
+	int				(*builtin[7])(struct s_shell *, char **);
 	struct termios	termios_;
 	t_processor		processor;
 }	t_shell;

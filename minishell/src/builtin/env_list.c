@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 14:47:20 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/02 16:18:05 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/05 10:24:13 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	check_valid_line(t_shell *s, char *cmd, int *equal)
 	int	i;
 
 	i = 0;
-	if (!ft_isalpha(cmd[0]))
+	if (!ft_isalpha(cmd[0]) && cmd[0] != '_')
 		return (handle_error(s, 1), invalid_errmsg(cmd), 1);
 	while (cmd[++ i])
 	{
@@ -26,7 +26,10 @@ int	check_valid_line(t_shell *s, char *cmd, int *equal)
 		if (equal)
 		{
 			if (cmd[i] == '=')
+			{
 				*equal = i;
+				break ;
+			}
 		}
 	}
 	if (equal && !(*equal))
@@ -34,20 +37,24 @@ int	check_valid_line(t_shell *s, char *cmd, int *equal)
 	return (0);
 }
 
-static void	empty_export(t_env *env, int i)
+static void	empty_export(int ref, t_env *env, int i)
 {
+	int		fd;
 	t_env	*ptr;
 
+	fd = 1;
+	if (ref)
+		fd = ref;
 	if (i > 1)
 		return ;
 	ptr = env;
 	while (ptr)
 	{
-		write(1, "declare -x ", 11);
-		write(1, ptr->key, ft_strlen(ptr->key));
-		write(1, "=", 1);
-		write(1, ptr->value, ft_strlen(ptr->value));
-		write(1, "\n", 1);
+		write(fd, "declare -x ", 11);
+		write(fd, ptr->key, ft_strlen(ptr->key));
+		write(fd, "=", 1);
+		write(fd, ptr->value, ft_strlen(ptr->value));
+		write(fd, "\n", 1);
 		ptr = ptr->next;
 	}
 }
@@ -78,7 +85,7 @@ int	export(t_shell *s, char **cmd)
 			free_env_node(new);
 		}
 	}
-	return (empty_export(s->env, i), 0);
+	return (empty_export(s->check, s->env, i), 0);
 }
 
 static t_env	*unset_node(t_env *head, t_env *target)

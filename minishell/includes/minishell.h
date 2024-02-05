@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/02 09:44:26 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/05 07:56:39 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,7 @@ void	transfer_token_ptr(t_ptr *p, t_token *t);
 void	handle_error(t_shell *s, int ext_code);
 char	*get_env(char **env, char *var, int len);
 char	*get_input(t_shell *s, const char *prompt);
+int		is_name(char *exe);
 
 /* handle pipes */
 
@@ -193,6 +194,8 @@ char	*root_init(char **env);
 char	*get_prompt(char *direc, char *root);
 void	handle_signal(int signum);
 int		setup_signal(t_shell *s);
+void	handle_ctrl_c_child(int signum);
+void	handle_ctrl_z_child(int signum);
 
 /* handle input */
 
@@ -257,6 +260,7 @@ int		get_number_arg(char **cmd, int check);
 int		pwd_function(t_shell *s, char **cmd);
 int		cd_function(t_shell *s, char **cmd);
 int		exit_function(t_shell *s, char **cmd);
+int		echo_function(t_shell *s, char **cmd);
 int		export(t_shell *s, char **cmd);
 int		unset(t_shell *s, char **cmd);
 int		env_print(t_shell *s, char **cmd);
@@ -272,5 +276,6 @@ void	dev_print_tokens(t_token *t);
 void	dev_print_proc_list(t_proc *p);
 void	dev_print_sect(t_sect *sec);
 void	dev_print_processor(t_processor p);
+void	check_leaks(void);
 
 #endif
