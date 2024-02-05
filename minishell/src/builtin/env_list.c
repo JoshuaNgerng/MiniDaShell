@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 14:47:20 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/05 10:24:13 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/05 17:19:53 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	check_valid_line(t_shell *s, char *cmd, int *equal)
 		return (handle_error(s, 1), invalid_errmsg(cmd), 1);
 	while (cmd[++ i])
 	{
-		if (!ft_isalpha(cmd[i]) && cmd[i] != '=')
+		if (!ft_isalpha(cmd[i]) && cmd[i] != '=' &&!ft_isdigit(cmd[i]))
 			return (handle_error(s, 1), invalid_errmsg(cmd), 1);
 		if (equal)
 		{
@@ -52,9 +52,9 @@ static void	empty_export(int ref, t_env *env, int i)
 	{
 		write(fd, "declare -x ", 11);
 		write(fd, ptr->key, ft_strlen(ptr->key));
-		write(fd, "=", 1);
+		write(fd, "=\"", 2);
 		write(fd, ptr->value, ft_strlen(ptr->value));
-		write(fd, "\n", 1);
+		write(fd, "\"\n", 2);
 		ptr = ptr->next;
 	}
 }

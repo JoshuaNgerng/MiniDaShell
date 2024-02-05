@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 10:52:32 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/04 10:54:03 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/05 16:14:28 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*get_input(t_shell *s, const char *prompt)
 int	is_name(char *exe)
 {
 	static char	*name;
-	static	int	name_len;
+	static int	name_len;
 	int			len;
 
 	if (!name)

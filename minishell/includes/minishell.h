@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/05 07:56:39 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/05 16:26:57 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,7 @@ void	handle_signal(int signum);
 int		setup_signal(t_shell *s);
 void	handle_ctrl_c_child(int signum);
 void	handle_ctrl_z_child(int signum);
+void	handle_sig_limbo(int signum);
 
 /* handle input */
 

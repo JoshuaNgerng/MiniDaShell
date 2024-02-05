@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 16:34:03 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/02 08:59:02 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/05 13:22:39 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,5 +102,6 @@ int	cd_function(t_shell *s, char **cmd)
 	}
 	if (cd_helper_root(s))
 		return (handle_error(s, 137), 1);
+	s->status = 0;
 	return (0);
 }

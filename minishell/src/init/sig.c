@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 08:35:47 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/02 15:21:38 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/05 14:59:59 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,12 @@ void	handle_ctrl_z_child(int signum)
 	(void) signum;
 	g_ctrl_c = 131;
 	write(1, "^\\Quit: 3\n", 10);
+}
+
+void	handle_sig_limbo(int signum)
+{
+	if (signum == SIGINT)
+		write(1, "^C\n", 3);
+	if (signum == SIGQUIT)
+		write(1, "^\\", 2);
 }

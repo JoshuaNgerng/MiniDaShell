@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 14:59:42 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/02 12:21:30 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/05 17:24:12 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	env_print(t_shell *s, char **cmd)
 		write(1, "\n", 1);
 		ptr = ptr->next;
 	}
+	s->status = 0;
 	return (0);
 }
 
@@ -57,6 +58,7 @@ int	pwd_function(t_shell *s, char **cmd)
 	getcwd(dir, 4096);
 	write(fd, dir, ft_strlen(dir));
 	write(fd, "\n", 1);
+	s->status = 0;
 	return (0);
 }
 
@@ -64,8 +66,10 @@ static void	check_first_arug_exit(t_shell *s, char **cmd)
 {
 	int	i;
 
-	i = -1;
-	while (cmd[1][++ i])
+	i = 0;
+	if (cmd[1][i] == '-' || cmd[1][i] == '+')
+		i ++;
+	while (cmd[1][i])
 	{
 		if (!ft_isdigit(cmd[1][i]))
 		{
@@ -74,6 +78,7 @@ static void	check_first_arug_exit(t_shell *s, char **cmd)
 			free_strs(cmd);
 			free_all_exit(s, s->status);
 		}
+		i ++;
 	}
 }
 
@@ -93,7 +98,7 @@ int	exit_function(t_shell *s, char **cmd)
 		return (0);
 	}
 	if (max == 2)
-		s->status = ft_atoi(cmd[1]);
+		s->status = ((256 + ft_atoi(cmd[1])) % (unsigned)256);
 	write(1, "exit\n", 5);
 	return (free_strs(cmd), free_all_exit(s, s->status), 1);
 }

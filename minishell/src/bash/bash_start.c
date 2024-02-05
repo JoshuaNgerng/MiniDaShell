@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 08:39:26 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/05 09:31:34 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/05 13:24:57 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ static int	process_children(t_shell *s, t_processor *p, t_sect *sect)
 		return (1);
 	close_pipes_children(p);
 	waitpid(p->pid[sect->pid - 1], &s->status, 0);
+	signal(SIGINT, handle_sig_limbo);
+	signal(SIGQUIT, handle_sig_limbo);
 	i = sect->pid - 1;
 	while (i -- > 0)
 		waitpid(p->pid[i], NULL, 0);
