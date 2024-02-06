@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 14:47:20 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/05 17:19:53 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/06 16:28:55 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int	export(t_shell *s, char **cmd)
 			env_list_addback(&s->env, new);
 		else
 		{
+			free(ptr->value);
 			ptr->value = new->value;
 			new->value = NULL;
 			free_env_node(new);
