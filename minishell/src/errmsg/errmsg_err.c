@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 12:51:19 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 15:03:43 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/07 10:48:43 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ static void	errmsg_ptr_2(int e)
 	else if (e == 19)
 		write(2, "process_file; ", 14);
 	else if (e == 20)
-		write(2, "Cannot make pipe[expand]: ", 26);
+		write(2, "Cannot make child process[here_doc] (fork): ", 44);
 	else if (e == 21)
-		write(2, "Cannot make child process[expand]: ", 35);
+		write(2, "Cannot make child process (fork): ", 34);
 	else if (e == 22)
 		write(2, "tcgetattr cannot run: ", 22);
 	else if (e == 23)

@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 13:18:34 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/05 16:06:50 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/07 11:56:58 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,12 @@ void	free_reset(t_shell *s)
 	if (s->processor.here_doc_pipe)
 		free(s->processor.here_doc_pipe);
 	reset_struct_var(s);
+}
+
+void	free_reset_pipe_pid(t_processor *p)
+{
+	free(p->pid);
+	p->pid = NULL;
+	free(p->pipe);
+	p->pipe = NULL;
 }

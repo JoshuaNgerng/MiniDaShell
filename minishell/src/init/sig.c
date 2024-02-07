@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 08:35:47 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/05 14:59:59 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/07 12:08:14 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int	setup_signal(t_shell *s)
 	s->termios_.c_lflag &= ~ECHOCTL;
 	if (tcsetattr(STDIN_FILENO, TCSANOW, &s->termios_) == -1)
 		return (errmsg_errno(23), 1);
-	(void)s;
 	return (0);
 }
 
@@ -36,18 +35,18 @@ void	handle_signal(int signum)
 	rl_redisplay();
 }
 
-void	handle_ctrl_c_child(int signum)
+void	handle_sig_child(int signum)
 {
-	(void) signum;
-	g_ctrl_c = 130;
-	write(1, "^C\n", 3);
-}
-
-void	handle_ctrl_z_child(int signum)
-{
-	(void) signum;
-	g_ctrl_c = 131;
-	write(1, "^\\Quit: 3\n", 10);
+	if (signum == SIGINT)
+	{
+		g_ctrl_c = 130;
+		write(1, "^C\n", 3);
+	}
+	if (signum == SIGQUIT)
+	{
+		g_ctrl_c = 131;
+		write(1, "^\\Quit: 3\n", 10);
+	}
 }
 
 void	handle_sig_limbo(int signum)
@@ -56,4 +55,12 @@ void	handle_sig_limbo(int signum)
 		write(1, "^C\n", 3);
 	if (signum == SIGQUIT)
 		write(1, "^\\", 2);
+}
+
+void	reassign_sig(int check, void (*f)(int))
+{
+	if (check)
+		return ;
+	signal(SIGINT, f);
+	signal(SIGQUIT, f);
 }

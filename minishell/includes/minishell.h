@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/05 16:26:57 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/07 11:56:22 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ void	free_all(t_shell *s);
 void	free_all_exit(t_shell *s, int ext_code);
 void	free_env_node(t_env *env);
 void	free_env_list(t_env *list);
+void	free_reset_pipe_pid(t_processor *p);
 
 /* error messages */
 
@@ -175,9 +176,9 @@ void	env_list_addback(t_env **list, t_env *new);
 
 void	transfer_token_ptr(t_ptr *p, t_token *t);
 void	handle_error(t_shell *s, int ext_code);
-char	*get_env(char **env, char *var, int len);
 char	*get_input(t_shell *s, const char *prompt);
 int		is_name(char *exe);
+int		test_whether_is_file(const char *name);
 
 /* handle pipes */
 
@@ -185,18 +186,16 @@ void	close_pipes(int *pipes, int len);
 int		prepare_pipes(int *pipes, int len);
 void	clear_pipes(t_processor *p);
 void	clear_here_doc(t_processor *p);
-char	*read_from_pipe(int fd);
 
 /* intialize  */
 
 int		shell_init(t_shell *s, char **av, char **env);
-char	*root_init(char **env);
 char	*get_prompt(char *direc, char *root);
 void	handle_signal(int signum);
 int		setup_signal(t_shell *s);
-void	handle_ctrl_c_child(int signum);
-void	handle_ctrl_z_child(int signum);
+void	handle_sig_child(int signum);
 void	handle_sig_limbo(int signum);
+void	reassign_sig(int check, void (*f)(int));
 
 /* handle input */
 

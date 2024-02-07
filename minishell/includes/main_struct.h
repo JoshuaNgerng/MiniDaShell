@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 04:13:56 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/02 12:20:42 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/07 11:50:18 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct s_shell
 {
 	int				status;
 	int				check;
+	int				subshell_status;
 	int				input_len;
 	char			*input;
 	t_env			*env;

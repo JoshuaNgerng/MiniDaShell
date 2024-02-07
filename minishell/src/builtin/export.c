@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_list.c                                         :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 14:47:20 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/06 16:28:55 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/07 09:54:22 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	check_valid_line(t_shell *s, char *cmd, int *equal)
 	return (0);
 }
 
-static void	empty_export(int ref, t_env *env, int i)
+static void	empty_export(int ref, t_env *env)
 {
 	int		fd;
 	t_env	*ptr;
@@ -45,8 +45,6 @@ static void	empty_export(int ref, t_env *env, int i)
 	fd = 1;
 	if (ref)
 		fd = ref;
-	if (i > 1)
-		return ;
 	ptr = env;
 	while (ptr)
 	{
@@ -57,6 +55,14 @@ static void	empty_export(int ref, t_env *env, int i)
 		write(fd, "\"\n", 2);
 		ptr = ptr->next;
 	}
+}
+
+static void	transfer_value(t_env *target, t_env *new)
+{
+	free(target->value);
+	target->value = new->value;
+	new->value = NULL;
+	free_env_node(new);
 }
 
 int	export(t_shell *s, char **cmd)
@@ -79,55 +85,9 @@ int	export(t_shell *s, char **cmd)
 		if (!ptr)
 			env_list_addback(&s->env, new);
 		else
-		{
-			free(ptr->value);
-			ptr->value = new->value;
-			new->value = NULL;
-			free_env_node(new);
-		}
+			transfer_value(ptr, new);
 	}
-	return (empty_export(s->check, s->env, i), 0);
-}
-
-static t_env	*unset_node(t_env *head, t_env *target)
-{
-	t_env	*ptr;
-	t_env	*ptr2;
-
-	if (!target->prev)
-	{
-		head = target->next;
-		head->prev = NULL;
-	}
-	else if (!target->next)
-	{
-		ptr = target->prev;
-		ptr->next = NULL;
-	}
-	else
-	{
-		ptr = target->prev;
-		ptr2 = target->next;
-		ptr->next = ptr2;
-		ptr2->prev = ptr;
-	}
-	free_env_node(target);
-	return (head);
-}
-
-int	unset(t_shell *s, char **cmd)
-{
-	int		i;
-	t_env	*ptr;
-
-	i = 0;
-	ptr = s->env;
-	while (cmd[++ i])
-	{
-		ptr = search_env(s->env, cmd[i], ft_strlen(cmd[i]));
-		if (!ptr)
-			continue ;
-		s->env = unset_node(s->env, ptr);
-	}
-	return (0);
+	if (i > 1)
+		return (0);
+	return (empty_export(s->check, s->env), 0);
 }

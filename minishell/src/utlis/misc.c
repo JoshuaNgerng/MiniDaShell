@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 10:52:32 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/05 16:14:28 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/07 09:45:42 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,6 @@ void	handle_error(t_shell *s, int ext_code)
 {
 	s->status = ext_code;
 	s->check = 1;
-}
-
-char	*get_env(char **env, char *var, int len)
-{
-	char	**buffer;
-
-	buffer = env;
-	while (*buffer)
-	{
-		if (!ft_strncmp(*buffer, var, len))
-			return (*(buffer) + len + 1);
-		buffer ++;
-	}
-	return (NULL);
 }
 
 char	*get_input(t_shell *s, const char *prompt)
@@ -90,4 +76,19 @@ int	is_name(char *exe)
 		return (1);
 	}
 	return (0);
+}
+
+int	test_whether_is_file(const char *name)
+{
+	struct stat	statbuf;
+
+	if (access(name, F_OK | X_OK))
+		return (-1);
+	if (stat(name, &statbuf))
+		return (-2);
+	if (S_ISREG(statbuf.st_mode) == 1 && !S_ISDIR(statbuf.st_mode))
+		return (0);
+	if (S_ISDIR(statbuf.st_mode) == 1)
+		return (1);
+	return (-3);
 }

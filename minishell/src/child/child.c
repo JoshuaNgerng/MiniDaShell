@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:57:10 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/06 16:13:50 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/07 10:47:38 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,12 +106,11 @@ int	process_child(t_shell *s, t_processor *p, t_proc *hold)
 
 	pid = fork();
 	if (pid < 0)
-		return (1);
+		return (errmsg_errno(21), handle_error(s, 137), 1);
 	if (!pid)
 	{
-		if (hold->cmd)
-			if (hold->cmd->type)
-				subshell(s, p, hold);
+		if (hold->cmd && hold->cmd->type > 0)
+			subshell(s, p, hold);
 		child_process(s, p, hold);
 		exit(1);
 	}

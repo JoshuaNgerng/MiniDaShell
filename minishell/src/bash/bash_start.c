@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 08:39:26 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/05 13:24:57 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/07 11:58:33 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,20 @@ static int	process_children(t_shell *s, t_processor *p, t_sect *sect)
 	p->index_p = 0;
 	if (prepare_pipes(p->pipe, p->pipe_num))
 		return (1);
-	signal(SIGINT, handle_ctrl_c_child);
-	signal(SIGQUIT, handle_ctrl_z_child);
+	reassign_sig(s->subshell_status, handle_sig_child);
 	if (process_children_loop_sect(s, p, sect))
 		return (1);
 	close_pipes_children(p);
 	waitpid(p->pid[sect->pid - 1], &s->status, 0);
-	signal(SIGINT, handle_sig_limbo);
-	signal(SIGQUIT, handle_sig_limbo);
+	reassign_sig(s->subshell_status, handle_sig_limbo);
 	i = sect->pid - 1;
 	while (i -- > 0)
 		waitpid(p->pid[i], NULL, 0);
-	signal(SIGINT, handle_signal);
-	signal(SIGQUIT, SIG_IGN);
+	if (!s->subshell_status)
+	{
+		signal(SIGINT, handle_signal);
+		signal(SIGQUIT, SIG_IGN);
+	}
 	s->status = WEXITSTATUS(s->status);
 	free(p->pipe);
 	p->pipe = NULL;
@@ -94,13 +95,12 @@ static int	bash_helper(t_shell *s, t_processor *p)
 	{
 		check = check_builtins(p->buffer->block);
 		if (check)
-			return (process_builtins(s, p->buffer->block, check));
+			return (free_reset_pipe_pid(p),
+				process_builtins(s, p->buffer->block, check));
 	}
 	if (process_children(s, p, p->buffer))
-		return (1);
-	free(p->pid);
-	p->pid = NULL;
-	return (0);
+		return (free_reset_pipe_pid(p), 1);
+	return (free_reset_pipe_pid(p), 0);
 }
 
 /*

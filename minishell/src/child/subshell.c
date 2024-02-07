@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 03:07:13 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 11:00:30 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/07 11:58:55 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,31 +45,43 @@ void	free_close_pipes_subshell(t_processor *p, t_fd *fd)
 		close(fd->write_);
 }
 
+void	subshell_fd(t_shell *s, t_processor *p, t_proc *hold, t_fd *fd)
+{
+	fd->read_ = cycle_input_files(hold->f_read);
+	if (fd->read_ < 0)
+		free_all_exit(s, 1);
+	fd->write_ = cycle_output_files(hold->f_out);
+	if (fd->read_ < 0)
+		free_all_exit(s, 1);
+	fd->fd_in = fd->read_;
+	fd->fd_out = fd->write_;
+	dup_helper(p, fd, hold->in);
+	if (fd->fd_in > 0)
+		p->stdin_ = fd->fd_in;
+	if (fd->fd_out > 1)
+		p->stdout_ = fd->fd_out;
+	free_close_pipes_subshell(p, fd);
+}
+
 void	subshell(t_shell *s, t_processor *p, t_proc *hold)
 {
 	int		len;
 	t_fd	fd;
 
-	free_sect_list(p->buffer);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	fd.fd_in = p->stdin_;
+	fd.fd_out = p->stdout_;
+	free_reset(s);
 	len = ft_strlen(hold->cmd->token);
 	hold->cmd->token[len - 1] = '\0';
 	ft_memmove(hold->cmd->token, &hold->cmd->token[1], len);
 	p->buffer = NULL;
-	fd.read_ = cycle_input_files(hold->f_read);
-	fd.write_ = cycle_output_files(hold->f_out);
-	fd.fd_in = fd.read_;
-	fd.fd_out = fd.write_;
-	if (fd.read_ < 0 || fd.write_ < 0)
-		free_all_exit(s, 1);
-	dup_helper(p, &fd, hold->in);
-	if (fd.fd_in > 0)
-		p->stdin_ = fd.fd_in;
-	if (fd.fd_out > 1)
-		p->stdout_ = fd.fd_out;
-	free_close_pipes_subshell(p, &fd);
+	subshell_fd(s, p, hold, &fd);
 	s->input = hold->cmd->token;
 	hold->cmd->token = NULL;
 	free_process(hold);
+	s->subshell_status = 1;
 	bash(s);
 	free_all_exit(s, s->status);
 }
