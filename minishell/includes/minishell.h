@@ -199,6 +199,7 @@ int		shell_init(t_shell *s, char **av, char **env);
 char	*get_prompt(char *direc, char *root);
 void	handle_signal(int signum);
 int		setup_signal(t_shell *s);
+void	handle_signal_heredoc(int signum);
 void	handle_sig_child(int signum);
 void	handle_sig_limbo(int signum);
 void	reassign_sig(int check, void (*f)(int));

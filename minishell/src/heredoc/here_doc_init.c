@@ -59,7 +59,7 @@ int	here_doc_child_proc(t_shell *s, t_processor *p)
 	if (!pid)
 	{
 		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
+		signal(SIGQUIT, SIG_IGN);
 		check = loop_here_doc(s, p, p->here_doc_pipe);
 		close_pipes(p->here_doc_pipe, p->here_doc_num);
 		if (check && !s->status)
@@ -68,8 +68,10 @@ int	here_doc_child_proc(t_shell *s, t_processor *p)
 	}
 	else
 	{
+		signal(SIGINT, handle_signal_heredoc);
 		waitpid(pid, &s->status, 0);
 		s->status = WEXITSTATUS(s->status);
+		signal(SIGINT, handle_signal);
 	}
 	return (0);
 }

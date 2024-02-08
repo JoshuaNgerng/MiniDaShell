@@ -12,6 +12,19 @@
 
 #include "minishell.h"
 
+int	setup_signal(t_shell *s)
+{
+	if (signal(SIGINT, handle_signal) == SIG_ERR || \
+		signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+		return (errmsg_errno(13), 1);
+	if (tcgetattr(STDIN_FILENO, &s->termios_) == -1)
+		return (errmsg_errno(22), 1);
+	s->termios_.c_lflag &= ~ECHOCTL;
+	if (tcsetattr(STDIN_FILENO, TCSANOW, &s->termios_) == -1)
+		return (errmsg_errno(23), 1);
+	return (0);
+}
+
 char	*get_prompt(char *direc, char *root)
 {
 	int		len;
