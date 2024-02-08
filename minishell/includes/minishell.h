@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 17:32:39 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/07 11:56:22 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/07 17:11:43 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,12 @@ enum	e_token
 	start_b = 128,
 	end_b = 256
 }	;
+
+typedef struct s_check
+{
+	int	brac;
+	int	brac_state;
+}	t_check;
 
 typedef struct s_fd
 {
@@ -201,8 +207,7 @@ void	reassign_sig(int check, void (*f)(int));
 
 int		complete_input(t_shell *s, t_token **head, char *r, int *c);
 int		check_input(char *input, int i);
-int		check_inside_loop(char *input, int i, int *prev, int *brac);
-int		get_new_token(char *input, int i, int *new, int *brac);
+int		check_new_prev_tokens(int new, int prev);
 int		iter_token(char *input, int i, int *new);
 int		check_redirection(char *input, int *index);
 int		check_logical_operator(char *input, int *index);
