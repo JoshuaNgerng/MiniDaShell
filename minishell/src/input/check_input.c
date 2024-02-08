@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 09:59:45 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/07 22:56:09 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/08 15:01:11 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ int	check_input(char *input, int i)
 
 	if (!input)
 		return (0);
+	out = 0;
 	c = (t_check){0, 0};
 	if (!i)
 	{
@@ -109,6 +110,7 @@ int	check_input(char *input, int i)
 	}
 	while (i >= 0 && input[i])
 		i = check_inside_loop(input, i, &out, &c);
+	// printf("test after i:%d\n", i);
 	if (i < 0)
 		return (-1);
 	if (c.brac != 0)

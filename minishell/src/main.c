@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 09:42:21 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/07 17:23:08 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/08 14:41:58 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	get_user_input_helper(t_shell *s, int c, char *r)
 {
 	if (c < 0)
 	{
-		s->status = 1;
+		s->status = 258;
 		s->check = 1;
 	}
 	if (r)

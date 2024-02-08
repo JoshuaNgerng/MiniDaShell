@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 09:59:47 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/07 15:59:04 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/08 15:01:08 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	complete_quo(t_shell *s, t_token **tail, int *c)
 	if (!r)
 	{
 		if (!s->status)
-			return (handle_error(s, 2), errmsg_token(*c), 1);
+			return (handle_error(s, 258), errmsg_token(*c), 1);
 		return (1);
 	}
 	new = (t_token *) malloc (sizeof(t_token));
@@ -71,7 +71,7 @@ static int	complete_sp(t_shell *s, t_token **tail, int *c)
 	if (!r)
 	{
 		if (!s->status)
-			return (handle_error(s, 2), errmsg(2), 1);
+			return (handle_error(s, 258), errmsg(2), 1);
 		return (1);
 	}
 	new = (t_token *) malloc (sizeof(t_token));
@@ -104,7 +104,7 @@ int	complete_input_helper(t_shell *s, t_token **tail, int *c)
 			return (1);
 	}
 	else if (*c > 0 && *c != '\'' && *c != '"' && *c & FILES)
-		return (errmsg_var(1, "newline", 7), 1);
+		return (errmsg_var(1, "newline", 7), handle_error(s, 258), 1);
 	return (0);
 }
 
