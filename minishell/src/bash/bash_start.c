@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 08:39:26 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/07 11:58:33 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/08 10:08:50 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,6 @@ static int	process_children(t_shell *s, t_processor *p, t_sect *sect)
 		signal(SIGQUIT, SIG_IGN);
 	}
 	s->status = WEXITSTATUS(s->status);
-	free(p->pipe);
-	p->pipe = NULL;
 	p->stdin_ = 0;
 	p->stdout_ = 1;
 	return (0);

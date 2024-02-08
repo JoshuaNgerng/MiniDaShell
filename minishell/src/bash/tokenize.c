@@ -6,7 +6,7 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 09:30:43 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/01 11:30:24 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/07 16:10:05 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static t_token	*get_token(char *input, int i, int *index, int *type)
 	int		j;
 	t_token	*out;
 
-	out = (t_token *) malloc (sizeof(t_token));
+	out = (t_token *) malloc(sizeof(t_token));
 	if (!out)
 		return (NULL);
 	if (input[i] == '(')

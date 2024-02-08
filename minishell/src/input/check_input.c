@@ -6,42 +6,41 @@
 /*   By: jngerng <jngerng@student.42kl.edu.my>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 09:59:45 by jngerng           #+#    #+#             */
-/*   Updated: 2024/02/02 16:13:39 by jngerng          ###   ########.fr       */
+/*   Updated: 2024/02/07 22:56:09 by jngerng          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	get_new_token(char *input, int i, int *new, int *brac)
+static int	get_new_token(char *input, int i, int *out, t_check *c)
 {
 	if (input[i] == '>' || input[i] == '<')
-		*new = check_redirection(input, &i);
+		*out = check_redirection(input, &i);
 	else if (input[i] == '|' || input[i] == '&')
 	{
-		*new = check_logical_operator(input, &i);
-		if (!(*new))
+		*out = check_logical_operator(input, &i);
+		if (!(*out))
 			return (-1);
 	}
 	else if (input[i] == '(')
 	{
-		*new = start_b;
-		(*brac)++;
+		*out = start_b;
+		c->brac ++;
+		c->brac_state = 1;
 		i ++;
 	}
 	else if (input[i] == ')')
 	{
-		*new = end_b;
-		(*brac)--;
+		*out = end_b;
+		c->brac --;
 		i ++;
 	}
-	else if (input[i] == '$' && input[i + 1] == '(')
-		i = get_bracket(input, i + 1);
 	else
-		i = iter_token(input, i, new);
+		i = iter_token(input, i, out);
 	return (i);
 }
 
-static int	start_check_input(char *input, int *ptr, int *out, int *brac)
+static int	start_check_input(char *input, int *ptr, int *out, t_check *c)
 {
 	int	i;
 
@@ -49,14 +48,15 @@ static int	start_check_input(char *input, int *ptr, int *out, int *brac)
 	i = pass_space(input, i);
 	if (ft_checkset(input[i], "|&)"))
 	{
-		get_new_token(input, i, out, brac);
+		get_new_token(input, i, out, c);
 		return (errmsg_token(*out), -1);
 	}
 	if (input[i] == '(')
 	{
 		i ++;
 		*out = start_b;
-		*brac = 1;
+		c->brac = 1;
+		c->brac_state = 1;
 	}
 	else if (input[i] == '<' || input[i] == '>')
 		*out = check_redirection(input, &i);
@@ -66,29 +66,52 @@ static int	start_check_input(char *input, int *ptr, int *out, int *brac)
 	return (0);
 }
 
+static int	check_inside_loop(char *input, int i, int *out, t_check *c)
+{
+	int	j;
+	int	new;
+
+	new = 0;
+	i = pass_space(input, i);
+	if (!input[i])
+		return (i);
+	j = get_new_token(input, i, &new, c);
+	if (j < 0)
+		return (-1);
+	if (!new && c->brac_state && !(c->brac) && !(*out & FILES))
+		return (errmsg_var(1, &input[i], j - i), -1);
+	if (check_new_prev_tokens(new, *out))
+		return (-1);
+	if (new & OPERATORS && !(c->brac))
+		c->brac_state = 0;
+	*out = new;
+	return (j);
+}
+
 /*
 check input used on each readline
 compare next token with the prev one
 loop input till unexpected token is found
-return error with found and nothing on success or incomplete tokens 
+return error with found and nothing on success or incomplete tokens
 */
 int	check_input(char *input, int i)
 {
-	int	out;
-	int	brac;
+	int		out;
+	t_check	c;
 
 	if (!input)
 		return (0);
-	out = 0;
-	brac = 0;
+	c = (t_check){0, 0};
 	if (!i)
-		if (start_check_input(input, &i, &out, &brac))
+	{
+		if (start_check_input(input, &i, &out, &c))
 			return (-1);
+	}
 	while (i >= 0 && input[i])
-		i = check_inside_loop(input, i, &out, &brac);
+		i = check_inside_loop(input, i, &out, &c);
 	if (i < 0)
 		return (-1);
-	if (brac > 0)
+	if (c.brac != 0)
 		return (errmsg_var(1, ")", 1), -1);
 	return (out);
 }
